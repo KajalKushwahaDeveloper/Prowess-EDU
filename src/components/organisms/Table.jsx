@@ -1,26 +1,16 @@
-import { useState, useEffect } from 'react';
-import ReusableTable from './ReusableTable';
-import { ProductService } from './service/ProductService';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
-export default function BasicDemo() {
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        ProductService.getProductsMini().then(data => setProducts(data));
-    }, []);
-
-    const columns = [
-        { field: 'code', header: 'Code' },
-        { field: 'name', header: 'Name' },
-        { field: 'category', header: 'Category' },
-        { field: 'quantity', header: 'Quantity' }
-    ];
-
+const Table = ({ data = [], columns = [], tableStyle }) => {
     return (
-        <ReusableTable 
-            data={products} 
-            columns={columns} 
-            tableStyle={{ minWidth: '50rem' }} 
-        />
+        <div className="table-wrapper">
+            <DataTable value={data} responsiveLayout="scroll" style={tableStyle}>
+                {columns.map((col, index) => (
+                    <Column key={index} field={col.field} header={col.header} />
+                ))}
+            </DataTable>
+        </div>
     );
-}
+};
+
+export default Table;

@@ -1,12 +1,18 @@
 import { useState } from "react";
 import InputField from "../atoms/inputField.jsx";
 import Button from "../atoms/button.jsx";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    navigate('/adminDashboard');  // Navigate to the admin dashboard route
+  };
   // Array to store input field formData
   const inputFields = [
     {
@@ -59,7 +65,7 @@ const LoginForm = () => {
             );
           })}
 
-          <div className="flex items-center justify-start my-6">
+          <div className="flex items-center justify-start mt-6 mb-10">
             <input
               type="checkbox"
               id="remember"
@@ -71,7 +77,7 @@ const LoginForm = () => {
             </label>
           </div>
           <div className="w-full">
-            <Button label="Login" width="100%" />
+            <Button label="Login" onClick={handleLogin} width="100%" />
           </div>
         </div>
       </div>
