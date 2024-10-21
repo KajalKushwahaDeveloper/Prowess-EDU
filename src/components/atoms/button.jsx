@@ -1,11 +1,12 @@
-const Button = ({ label, onClick, width, height, customClass }) => {
+const Button = ({ label, onClick, width, height, customClass, icon ,backgroundColor}) => {
     return (
       <>
+        <div className="flex  items-center justify-center">
         <button
           type="button"
           onClick={onClick}
           style={{
-            backgroundColor: "#004871",    // Default background color
+            backgroundColor: backgroundColor || "#004871",   // Default background color
             color: "#fff",                  // Default text color
             width: width ,         // Default width
             height: height || "auto",       // Default height
@@ -16,8 +17,10 @@ const Button = ({ label, onClick, width, height, customClass }) => {
           }}
           className={`font-medium ${customClass} hover:opacity-90`} // Allows passing custom classes if needed
         >
+          {icon && <i className={`pi ${icon} mr-2`}></i>} 
           {label}
         </button>
+        </div>
       </>
     );
   };

@@ -77,7 +77,7 @@ const LoginForm = () => {
             </label>
           </div>
           <div className="w-full">
-            <Button label="Login" onClick={handleLogin} width="100%" />
+            <Button label="Login" onClick={handleLogin} width="100%" backgroundColor="#004871" />
           </div>
         </div>
       </div>
