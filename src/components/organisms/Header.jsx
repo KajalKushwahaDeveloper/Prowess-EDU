@@ -15,7 +15,7 @@ function Header({ isOpen, toggleSidebar }) {
           <i className={`pi ${isOpen ? "pi-times" : "pi-bars"}`}></i>
         </button>
       </div> */}
-      <div className="w-full h-[90px] bg-white flex flex-row justify-between shadow-lg shadow-zinc-200">
+     <div className="w-full h-[90px] bg-white flex flex-row justify-between shadow-lg shadow-zinc-200 fixed top-0 z-50">
         <div className="sm:text-2xl md:text-4xl lg:text-4xl font-bold pt-5 pl-10">
           <img src={logo} className="w-12" />
         </div>

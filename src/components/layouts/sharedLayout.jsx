@@ -6,7 +6,7 @@ const ProtectedRoute = ({ role, children }) => {
 
   if (userRole !== role) {
     // Redirect to login if the role does not match
-    return <Navigate to="/login" state={{ from: location }} />;
+    // return <Navigate to="/login" state={{ from: location }} />;
   }
 
   return children;  // If role matches, allow access to the route

@@ -1,41 +1,33 @@
-// import { Calendar } from "primereact/calendar";
-import Calender from "../atoms/dropdown";
-import  Button  from "../atoms/button";
-import  Dropdown  from "../atoms/dropdown";
+
+
+import Button from "../atoms/button";
+import { Icons } from "../../assets/icons";
+import Dropdown from "../atoms/dropdown";
+import Calender from "../atoms/calender";
+
 
 const Calender_Download_Component = () => {
+
+
   return (
-    // <>
-    //   <div>
-    //     <Calender />
-    //   </div>
-    // </>
+    <>
+      <div className="flex justify-between shadow-lg items-center ">
+        <h2 className="font-bold text-3xl">Student Report</h2>
+         {/* <h2 className="font-bold ">{parentDashboardHeading}</h2> */}
+        <div className="flex justify-evenly items-center">
+          <Dropdown />
 
-    <div className="p-fluid p-m-4">
-        {/* Header */}
-        <div className="p-col-12 p-md-3">
-          <h2>Student Report</h2>
-        </div>
-
-      <div className="p-grid p-align-center">
-        {/* Dropdown for Teacher Selection */}
-        <div className="p-col-12 p-md-3">
-          <Dropdown  />
-        </div>
-
-        {/* Calendar Input */}
-        <div className="p-col-12 p-md-3">
-            <Calender />
-        </div>
-
-        {/* Download Button */}
-        <div className="p-col-12 p-md-1 p-d-flex p-jc-center">
-          <Button icon="pi pi-download" className="p-button-primary" />
+          <Calender />
+          <Button
+            icon={Icons.downloadIcon}
+          // onClick={handleDownload}
+          />
         </div>
       </div>
-      <hr/>
-    </div>
+    </>
   );
-};
+}
+
+
 
 export default Calender_Download_Component;

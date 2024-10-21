@@ -1,34 +1,38 @@
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-dom';
 import Login from './pages/loginScreen';
 import AdminDashboard from './pages/admin_dashboard/adminDashboardScreen';
-// import StudentsTable from '../component/organism/studentTable';
-// import TeachersTable from '../component/organism/teachersTable';
+import AdminDashboardTeachers from "../src/pages/admin_dashboard/adminDashboardTeachers";
+import AdminDashboardStudent from "../src/pages/admin_dashboard/admindashboardStudents"
 // import ParentDashboard from './ParentDashboard';
 import SharedLayout from './components/layouts/sharedLayout';  // Layout with Header and Sidebar
 import ProtectedRoute from './components/routes/protectedRoutes';
+import Calender_Download_Component from './components/common/calender_download';
+import LoginForm from './components/organisms/login_form';
 // import Sidebar from "./components/organisms/sideBar.jsx";
 // import Table from "./components/organisms/Table.jsx";
 
 
 function App() {
   return (
+    // <LoginForm/>
+// {/* <Calender_Download_Component/> */}
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
 
         {/* Shared Layout with Protected Routes for Admin, Student, Teacher, and Parent */}
-        <Route element={<ProtectedRoute role="admin"><SharedLayout /></ProtectedRoute>}>
+        <Route element={<ProtectedRoute role="admin"></ProtectedRoute>}>
           <Route path="/adminDashboard" element={<AdminDashboard />} />
         </Route>
-{/*         
-        <Route element={<ProtectedRoute role="student"><SharedLayout /></ProtectedRoute>}>
-          <Route path="/teachers" element={<StudentsTable/>} />
+        
+        <Route element={<ProtectedRoute role="student"></ProtectedRoute>}>
+          <Route path="/students" element={<AdminDashboardStudent/>} />
         </Route>
 
-        <Route element={<ProtectedRoute role="teacher"><SharedLayout /></ProtectedRoute>}>
-          <Route path="/students" element={<TeachersTable />} />
-        </Route> */}
+        <Route element={<ProtectedRoute role="teacher"></ProtectedRoute>}>
+          <Route path="/teachers" element={<AdminDashboardTeachers />} />
+        </Route>
 
         {/* <Route element={<ProtectedRoute role="parent"><SharedLayout /></ProtectedRoute>}>
           <Route path="/parent" element={<ParentDashboard />} />

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import InputField from "../atoms/inputField.jsx";
+import InputFieldWithLabel from "../molecules/InputfieldWithLabel.jsx";
 import Button from "../atoms/button.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +16,7 @@ const LoginForm = () => {
   // Array to store input field formData
   const inputFields = [
     {
+      labelText:"Email",
       label: "Email",
       name: "Email",
       placeholder: "Enter your Email",
@@ -25,9 +26,10 @@ const LoginForm = () => {
       width: "100%",
     },
     {
+      labelText:"Password",
       label: "Password",
       name: "password",
-      placeholder: "Enter your password",
+      placeholder: "Enter your passwordasdasd",
       type: "password",
       value: formData.password,
       maxLength: 30,
@@ -46,7 +48,8 @@ const LoginForm = () => {
           {inputFields.map((inputFieldsData, index) => {
             return (
               <div key={index} className="mb-4">
-                <InputField
+                <InputFieldWithLabel
+                 labelText={inputFieldsData.labelText}
                   input_Lable={inputFieldsData.input_Lable}
                   input_Lable_For={inputFieldsData.input_Lable_For}
                   placeholder={inputFieldsData.placeholder}

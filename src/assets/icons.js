@@ -1,13 +1,8 @@
 // DashboardLinks.js
 export const adminLinks = [
   { icon: "pi-home", name: "Dashboard", path: "/adminDashboard" },
-  { icon: "pi-user", name: "Teachers", path: "/adminDashboardTeachers" },
-  { icon: "pi-users", name: "Students", path: "/adminDashboardStudents" },
-  {
-    icon: "pi-chart-line",
-    name: "Student Report",
-    path: "/admin/student-report",
-  },
+  { icon: "pi-user", name: "Teachers", path: "/teachers" },
+  { icon: "pi-users", name: "Students", path: "/students" },
 ];
 
 export const studentLinks = [

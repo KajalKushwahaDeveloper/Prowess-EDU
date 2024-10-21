@@ -2,7 +2,6 @@
 
   const InputField = ({
     type = "text",   
-    input_Lable, 
     input_Lable_For,        
     placeholder,
     value,                     
@@ -19,7 +18,6 @@
       <div className={`input-container ${customClass}`}>
         <InputText
           type={type}
-          label={input_Lable}
           labelfor={input_Lable_For}
           placeholder={placeholder}
           value={value}

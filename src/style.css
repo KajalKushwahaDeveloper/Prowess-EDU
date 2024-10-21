@@ -37,7 +37,9 @@
   font-size: 1.3rem ;
   line-height: inherit;
 }   
-
+.content{
+  margin-top: 8rem ;
+}
 @media screen and (min-width: 786px) {
   .dashboard{
     margin-left: 17rem;
