@@ -2,7 +2,8 @@ import { useState } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
 import TeachersTable from "../../components/organisms/teachersTable";
-import Modal from "../../components/organisms/modal";
+import Modal from "../../components/common/modal";
+import AddNewTeacherModal from "../../components/organisms/addNewTeacherModal";
 
 function AdminDashboardTeachers() {
   const [visible, setVisible] = useState(false);
@@ -31,7 +32,7 @@ function AdminDashboardTeachers() {
           <TeachersTable  />
         </div>
       </div>
-      <Modal visible={visible} setVisible={setVisible} headingName={headingName}/>
+      <AddNewTeacherModal visible={visible} setVisible={setVisible} />
     </div>
   );
 }

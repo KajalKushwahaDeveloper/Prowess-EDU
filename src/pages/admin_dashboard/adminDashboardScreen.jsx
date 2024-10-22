@@ -4,11 +4,12 @@ import Card from "../../components/molecules/Card";
 import { Icons } from "../../assets/icons";
 import TeachersTable from "../../components/organisms/teachersTable";
 import StudentsTable from "../../components/organisms/studentTable";
-import Modal from "../../components/organisms/modal";
+import AddNewTeacherModal from "../../components/organisms/addNewTeacherModal";
+import AddNewStudentModal from "../../components/organisms/addNewStudentModal";
 
 function AdminDashboard() {
-  const [visible, setVisible] = useState(false);
-  const [headingName, setHeadingName] = useState("");
+  const [addTeacherModalVisible, setAddTeacherModalVisible] = useState(false);
+  const [addStudentModalVisible, setAddStudentModalVisible] = useState(false);
 
   const cardDetails = [
     {
@@ -24,12 +25,12 @@ function AdminDashboard() {
   ];
 
   const handleAddTeacher = () => {
-    setHeadingName("Add New Teacher");
-    setVisible(true);
+
+    setAddTeacherModalVisible(true);
   };
   const handleAddStudent = () => {
-    setHeadingName("Add New Student");
-    setVisible(true);
+
+    setAddStudentModalVisible(true);
   };
 
   return (
@@ -40,7 +41,7 @@ function AdminDashboard() {
       </div>
       {/* <div className="flex flex-row items-center justify-start gap-6 md:flex-col md:gap-0 md:mb-8"> */}
       <div className=" flex  items-center  justify-center flex-col  gap-0 mb-8 md:flex md:flex-col md:items-center md:justify-start md:gap-0 md:mb-8 lg:flex lg:flex-row lg:gap-6">
-      {cardDetails.map((currentData, index) => {
+        {cardDetails.map((currentData, index) => {
           return (
             <>
               <Card
@@ -84,7 +85,9 @@ function AdminDashboard() {
           <StudentsTable />
         </div>
       </div>
-      <Modal visible={visible} setVisible={setVisible} headingName={headingName} />
+      <AddNewTeacherModal visible={addTeacherModalVisible} setVisible={setAddTeacherModalVisible} />
+      <AddNewStudentModal visible={addStudentModalVisible} setVisible={setAddStudentModalVisible} />
+
     </div>
   );
 }

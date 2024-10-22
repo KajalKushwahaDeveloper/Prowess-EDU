@@ -1,4 +1,4 @@
-import { InputText } from "primereact/inputtext";
+import InputField from "../atoms/inputField";
 
 const InputFieldWithLabel = ({
   type = "text",
@@ -21,13 +21,12 @@ const InputFieldWithLabel = ({
       {/* Label */}
       <label
         htmlFor={inputLabelFor || name}
-        className="block text-sm font-medium text-gray-700 mb-1"  // Tailwind CSS for styling
+        className="block text-lg font-medium text-gray-700 mb-1"  // Tailwind CSS for styling
       >
         {labelText}
       </label>
-
       {/* Input Field */}
-      <InputText
+      <InputField
         type={type}
         id={inputLabelFor || name}
         placeholder={placeholder}
@@ -36,18 +35,18 @@ const InputFieldWithLabel = ({
         style={{
           width: width || "100%",
           height: "48px",
-          boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
-          border: "none",                               
-          outline: "none",                             
-          padding: "0 10px",                            
-          backgroundColor: "#fff",                     
+          // boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
+          border: "2px solid #004871",
+          outline: "none",
+          padding: "0 10px",
+          backgroundColor: "red",
         }}
         disabled={disabled}
         keyfilter={keyfilter}
         maxLength={maxLength}
         name={name}
         autoComplete={autoComplete}
-        className="p-inputtext p-component shadow-none"
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
     </div>
   );

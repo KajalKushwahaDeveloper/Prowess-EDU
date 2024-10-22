@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route,Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/loginScreen';
 import AdminDashboard from './pages/admin_dashboard/adminDashboardScreen';
 import AdminDashboardTeachers from "../src/pages/admin_dashboard/adminDashboardTeachers";
@@ -9,14 +9,17 @@ import SharedLayout from './components/layouts/sharedLayout';  // Layout with He
 import ProtectedRoute from './components/routes/protectedRoutes';
 import Calender_Download_Component from './components/common/calender_download';
 import LoginForm from './components/organisms/login_form';
+import Dropdown from './components/molecules/dropdown';
+import ParentDashboard from './pages/parent_dashboard/parentDashboardScreen';
+import ParentDashboardStrongArea from './pages/parent_dashboard/parentDashboardStrongArea';
+import ParentDashboardWeakArea from './pages/parent_dashboard/parentDashboardWeakArea';
 // import Sidebar from "./components/organisms/sideBar.jsx";
 // import Table from "./components/organisms/Table.jsx";
 
 
 function App() {
   return (
-    // <LoginForm/>
-// {/* <Calender_Download_Component/> */}
+
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -25,9 +28,20 @@ function App() {
         <Route element={<ProtectedRoute role="admin"></ProtectedRoute>}>
           <Route path="/adminDashboard" element={<AdminDashboard />} />
         </Route>
-        
+
         <Route element={<ProtectedRoute role="student"></ProtectedRoute>}>
-          <Route path="/students" element={<AdminDashboardStudent/>} />
+          <Route path="/students" element={<AdminDashboardStudent />} />
+        </Route>
+
+        <Route element={<ProtectedRoute role="teacher"></ProtectedRoute>}>
+          <Route path="/parentdashboard" element={<ParentDashboard/>} />
+        </Route>
+        <Route element={<ProtectedRoute role="admin"></ProtectedRoute>}>
+          <Route path="/strongArea" element={<ParentDashboardStrongArea />} />
+        </Route>
+
+        <Route element={<ProtectedRoute role="student"></ProtectedRoute>}>
+          <Route path="/weakArea" element={<ParentDashboardWeakArea />} />
         </Route>
 
         <Route element={<ProtectedRoute role="teacher"></ProtectedRoute>}>

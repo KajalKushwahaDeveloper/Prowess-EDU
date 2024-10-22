@@ -2,7 +2,7 @@
 
 import Button from "../atoms/button";
 import { Icons } from "../../assets/icons";
-import Dropdown from "../atoms/dropdown";
+import Dropdown from "../molecules/dropdown";
 import Calender from "../atoms/calender";
 
 
@@ -11,12 +11,12 @@ const Calender_Download_Component = () => {
 
   return (
     <>
-      <div className="flex justify-between shadow-lg items-center ">
+      <div className="flex justify-between items-center ">
         <h2 className="font-bold text-3xl">Student Report</h2>
-         {/* <h2 className="font-bold ">{parentDashboardHeading}</h2> */}
-        <div className="flex justify-evenly items-center">
-          <Dropdown />
-
+        <div className="flex justify-evenly items-center space-x-4"> {/* Added space-x-4 for spacing */}
+          <div className="flex flex-col"> {/* Add flex-col to ensure label is on top */}
+            <Dropdown label="Select Teacher" />
+          </div>
           <Calender />
           <Button
             icon={Icons.downloadIcon}
