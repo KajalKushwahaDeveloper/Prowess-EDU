@@ -1,5 +1,6 @@
-import Button from "../../components/atoms/button";
-import Table from "./Table";
+import { Icons } from "../../../assets/icons";
+import Button from "../../atoms/button";
+import Table from "../../common/Table";
 import { useState } from "react";
 
 const StudentsTable = () => {
@@ -21,11 +22,13 @@ const StudentsTable = () => {
               label="Edit"
               // onClick={() => handleEdit(rowData)}
               backgroundColor="#FF8A00"
+              icon={Icons.plusIcon}
             />
             <Button
-              label="Delete"
+              label="reload"
               // onClick={() => handleDelete(rowData)}
               backgroundColor="#004871"
+              icon={Icons.reloadIcon}
             />
           </div>
         );

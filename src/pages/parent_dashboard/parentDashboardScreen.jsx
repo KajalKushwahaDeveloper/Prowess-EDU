@@ -1,10 +1,5 @@
-import { useState } from "react";
-import Button from "../../components/atoms/button";
-import { Icons } from "../../assets/icons";
-import StudentsTable from "../../components/organisms/studentTable";
-import Modal from "../../components/common/modal";
-import AddNewTeacherModal from "../../components/organisms/addNewStudentModal";
 import Calender_Download_Component from "../../components/common/calender_download";
+import ParentDashboardStudentReportTable from "../../components/organisms/tables/parentdashboardStudentsReportTable";
 
 function ParentDashboard() {
 
@@ -16,7 +11,7 @@ function ParentDashboard() {
                 <hr />
             <div>
                 <div className="md:overflow-none overflow-x-auto mb-16">
-                    
+                <ParentDashboardStudentReportTable/>
                 </div>
             </div>
         </div>

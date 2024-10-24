@@ -13,49 +13,57 @@ import Dropdown from './components/molecules/dropdown';
 import ParentDashboard from './pages/parent_dashboard/parentDashboardScreen';
 import ParentDashboardStrongArea from './pages/parent_dashboard/parentDashboardStrongArea';
 import ParentDashboardWeakArea from './pages/parent_dashboard/parentDashboardWeakArea';
+import StudentFAQ from "./components/organisms/studentFAQ"
 // import Sidebar from "./components/organisms/sideBar.jsx";
 // import Table from "./components/organisms/Table.jsx";
 
 
 function App() {
   return (
+    <StudentFAQ />
+    // <Router>
+    //   <Routes>
+    //     <Route path="/login" element={<Login />} />
 
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
+    //     {/*  Admin Dashboard */}
+    //     <Route element={<ProtectedRoute role="admin"></ProtectedRoute>}>
+    //       <Route path="/adminDashboard" element={<AdminDashboard />} />
+    //     </Route>
 
-        {/* Shared Layout with Protected Routes for Admin, Student, Teacher, and Parent */}
-        <Route element={<ProtectedRoute role="admin"></ProtectedRoute>}>
-          <Route path="/adminDashboard" element={<AdminDashboard />} />
-        </Route>
+    //     <Route element={<ProtectedRoute role="student"></ProtectedRoute>}>
+    //       <Route path="/students" element={<AdminDashboardStudent />} />
+    //     </Route>
 
-        <Route element={<ProtectedRoute role="student"></ProtectedRoute>}>
-          <Route path="/students" element={<AdminDashboardStudent />} />
-        </Route>
+    //     <Route element={<ProtectedRoute role="teacher"></ProtectedRoute>}>
+    //       <Route path="/teachers" element={<AdminDashboardTeachers />} />
+    //     </Route>
+    //     {/* Parent Dashboard */}
+    //     <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+    //       <Route path="/parentdashboard" element={<ParentDashboard />} />
+    //     </Route>
 
-        <Route element={<ProtectedRoute role="teacher"></ProtectedRoute>}>
-          <Route path="/parentdashboard" element={<ParentDashboard/>} />
-        </Route>
-        <Route element={<ProtectedRoute role="admin"></ProtectedRoute>}>
-          <Route path="/strongArea" element={<ParentDashboardStrongArea />} />
-        </Route>
+    //     <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+    //       <Route path="/strongArea" element={<ParentDashboardStrongArea />} />
+    //     </Route>
 
-        <Route element={<ProtectedRoute role="student"></ProtectedRoute>}>
-          <Route path="/weakArea" element={<ParentDashboardWeakArea />} />
-        </Route>
+    //     <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+    //       <Route path="/weakArea" element={<ParentDashboardWeakArea />} />
+    //     </Route>
 
-        <Route element={<ProtectedRoute role="teacher"></ProtectedRoute>}>
-          <Route path="/teachers" element={<AdminDashboardTeachers />} />
-        </Route>
+    //     {/*  Student Dashboard */}
 
-        {/* <Route element={<ProtectedRoute role="parent"><SharedLayout /></ProtectedRoute>}>
-          <Route path="/parent" element={<ParentDashboard />} />
-        </Route> */}
+    //     <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+    //       <Route path="/studentFAQ" element={<FAQ/>} />
+    //     </Route>
 
-        {/* Default route to redirect to login */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    </Router>
+    //     {/*  Teacher Dashboard */}
+
+
+
+    //     {/* Default route to redirect to login */}
+    //     <Route path="*" element={<Navigate to="/login" />} />
+    //   </Routes>
+    // </Router>
   );
 }
 

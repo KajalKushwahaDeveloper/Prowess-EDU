@@ -1,16 +1,16 @@
 import { useState } from "react";
-import InputFieldWithLabel from "../molecules/InputfieldWithLabel";
-import Button from "../atoms/button";
-import Modal from "../common/modal";
+import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
+import Button from "../../atoms/button";
+import Modal from "../../common/modal";
 
 function AddNewVideoModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
-        class:"",
+        class: "",
         subject: "",
-        chapter:"",
-        topicName:"",
-        date:"",
-        addLink:"",
+        chapter: "",
+        topicName: "",
+        date: "",
+        addLink: "",
     });
 
     const handleInputChange = (e) => {
@@ -36,7 +36,7 @@ function AddNewVideoModal({ visible, setVisible }) {
                 <hr className="mb-4" />
 
                 <div className="grid grid-cols-2 gap-4">
-                <InputFieldWithLabel
+                    <InputFieldWithLabel
                         type="text"
                         labelText="Class"
                         name="class"
@@ -44,7 +44,7 @@ function AddNewVideoModal({ visible, setVisible }) {
                         value={formData.class}
                         onChange={handleInputChange}
                     />
-                <InputFieldWithLabel
+                    <InputFieldWithLabel
                         type="text"
                         labelText="Subject"
                         name="subject"
@@ -68,7 +68,7 @@ function AddNewVideoModal({ visible, setVisible }) {
                         value={formData.parentName}
                         onChange={handleInputChange}
                     />
-                <InputFieldWithLabel
+                    <InputFieldWithLabel
                         type="date"
                         labelText="Date & time"
                         name="date"
@@ -84,8 +84,8 @@ function AddNewVideoModal({ visible, setVisible }) {
                         value={formData.addLink}
                         onChange={handleInputChange}
                     />
-                  
-                  
+
+
                 </div>
 
                 {/* Action buttons */}

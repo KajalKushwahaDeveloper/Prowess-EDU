@@ -2,10 +2,10 @@ import { useState } from "react";
 import Button from "../../components/atoms/button";
 import Card from "../../components/molecules/Card";
 import { Icons } from "../../assets/icons";
-import TeachersTable from "../../components/organisms/teachersTable";
-import StudentsTable from "../../components/organisms/studentTable";
-import AddNewTeacherModal from "../../components/organisms/addNewTeacherModal";
-import AddNewStudentModal from "../../components/organisms/addNewStudentModal";
+import TeachersTable from "../../components/organisms/tables/teachersTable";
+import StudentsTable from "../../components/organisms/tables/studentTable";
+import AddNewTeacherModal from "../../components/organisms/modals/addNewTeacherModal";
+import AddNewStudentModal from "../../components/organisms/modals/addNewStudentModal";
 
 function AdminDashboard() {
   const [addTeacherModalVisible, setAddTeacherModalVisible] = useState(false);

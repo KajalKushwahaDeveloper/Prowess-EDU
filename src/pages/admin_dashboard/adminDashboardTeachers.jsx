@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
-import TeachersTable from "../../components/organisms/teachersTable";
+import TeachersTable from "../../components/organisms/tables/teachersTable";
 import Modal from "../../components/common/modal";
-import AddNewTeacherModal from "../../components/organisms/addNewTeacherModal";
+import AddNewTeacherModal from "../../components/organisms/modals/addNewTeacherModal";
 
 function AdminDashboardTeachers() {
   const [visible, setVisible] = useState(false);

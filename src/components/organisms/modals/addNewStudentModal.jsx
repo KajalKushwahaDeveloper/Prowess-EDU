@@ -1,7 +1,7 @@
 import { useState } from "react";
-import InputFieldWithLabel from "../molecules/InputfieldWithLabel";
-import Button from "../atoms/button";
-import Modal from "../common/modal";
+import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
+import Button from "../../atoms/button";
+import Modal from "../../common/modal";
 
 function AddNewStudentModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({

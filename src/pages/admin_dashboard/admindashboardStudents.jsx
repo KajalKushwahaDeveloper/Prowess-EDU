@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
-import StudentsTable from "../../components/organisms/studentTable";
+import StudentsTable from "../../components/organisms/tables/studentTable";
 import Modal from "../../components/common/modal";
-import AddNewTeacherModal from "../../components/organisms/addNewStudentModal";
+import AddNewTeacherModal from "../../components/organisms/modals/addNewStudentModal";
 
 function AdminDashboardStudent() {
   const [visible, setVisible] = useState(false);

@@ -29,18 +29,19 @@ export const teacherLinks = [
 
 // Add parent links if necessary
 export const parentLinks = [
-  { icon: "pi-chart-line", name: "Student Reports", path: "/student/video" },
+  { icon: "pi-chart-line", name: "Student Reports", path: "/parentdashboard" },
   {
     icon: "pi-user",
     name: "Weak Area",
-    path: "/student/assignments",
+    path: "/WeakArea",
   },
-  { icon: "pi-check-circle", name: "Strong Area", path: "/student/faq" },
+  { icon: "pi-check-circle", name: "Strong Area", path: "/strongArea" },
 ];
 
 export const Icons = {
   plusIcon: "pi-plus",
   editIcon: "pi-pen-to-square",
+  viewIcon:"pi-eye",
   reloadIcon: "pi-refresh",
   downloadIcon: "pi-download", 
 };
