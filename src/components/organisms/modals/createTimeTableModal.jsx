@@ -27,13 +27,13 @@ function CreateOnlineClassModal({ visible, setVisible }) {
             setVisible={setVisible}
             style={{ width: "50vw", maxWidth: "700px" }}
             onHide={() => setVisible(false)}
-            className="border-[#004871] border rounded-lg"
+            className="rounded-lg"
         >
-            <div className="bg-white rounded-lg shadow-lg">
+            <div className="bg-white m-4">
                 <h1 className="font-medium text-2xl my-2">Add new Video</h1>
-                <hr className="mb-4" />
+                <hr className="mb-8 border-gray-300" />
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                     <InputFieldWithLabel
                         type="text"
                         labelText="Teacher Name"

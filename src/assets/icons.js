@@ -43,5 +43,7 @@ export const Icons = {
   editIcon: "pi-pen-to-square",
   viewIcon:"pi-eye",
   reloadIcon: "pi-refresh",
-  downloadIcon: "pi-download", 
+  downloadIcon: "pi-download",
+  rightArrow: "pi-arrow-right",
+  leftArrow: "pi-arrow-left",
 };

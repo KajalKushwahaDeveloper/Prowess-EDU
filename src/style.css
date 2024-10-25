@@ -13,14 +13,12 @@
 .bg_color {
   background: #004871;
 }
-.text_color {
-  color: #004871;
-}
 
+/* forms */
 .input-container input {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-  border: none;
+    border: 1px solid #004871;
   outline: none;
   padding: 0 10px;
   border-radius: 6px;
@@ -31,17 +29,66 @@
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; /* Ensure shadow remains consistent */
 }
-
+/* prime Icon */
 .pi {
   font-family: "primeicons" !important;
   font-size: 1.3rem ;
   line-height: inherit;
 }   
-.content{
-  margin-top: 7rem ;
+
+/* accordion */
+.custom-accordion-container .p-accordion-header {
+  background-color: #f7f7f7;
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+  font-weight: bold;
 }
-@media screen and (min-width: 786px) {
+
+.custom-accordion-container .p-accordion-header .p-accordion-header-text {
+  font-size: 16px;
+}
+
+.custom-accordion-container .p-accordion-content {
+  background-color: white;
+  padding: 16px;
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+}
+
+.custom-accordion-container .p-accordion-tab:not(.p-accordion-tab-active) .p-accordion-header {
+  background-color: #ffffff;
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+}
+
+.custom-accordion-container .p-accordion-tab:not(.p-accordion-tab-active) .p-accordion-header-text {
+  color: #000;
+}
+
+.content{
+  margin-top: 3rem ;
+}
+
+/* dashborad content */
+@media screen and (min-width: 768px) {
   .dashboard{
     margin-left: 17rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .content{
+    margin-top: 7rem ;
+  }
+}
+
+
+/* login screen  */
+@media screen and (min-width:768px){
+  .login_bg_img img{
+   background-color: white;
+  }
+  .school_name{
+    color: black; 
   }
 }

@@ -26,7 +26,7 @@
             width:  width || "100%" ,
             height: "48px",
             boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px',
-            border: 'none',                               // No border
+            border: '1px solid #004871',                               // No border
             outline: 'none',                              // Remove focus border
             padding: '0 10px',                            // Optional padding for better appearance
             backgroundColor: '#fff',                      // Ensure background is white

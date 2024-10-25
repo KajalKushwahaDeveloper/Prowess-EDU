@@ -7,11 +7,10 @@ const Modal = ({ visible, setVisible, children }) => {
                 visible={visible}
                 style={{ width: "90vw", maxWidth: "854px", height: "auto" }}
                 onHide={() => setVisible(false)}
-                className="border-[#004871] border rounded-lg"
+                className="rounded-lg shadow-lg"
             >
-                <div className="bg-white sm:p-6 rounded-lg shadow-lg">
+                <div className="bg-white sm:py-2 sm:px-6 md:pb-4">
                     {children} {/* Render children here */}
-                    <hr />
                 </div>
             </Dialog>
         </>

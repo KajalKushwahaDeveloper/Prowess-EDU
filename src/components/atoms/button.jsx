@@ -13,12 +13,15 @@ const Button = ({ label, onClick, width, height, customClass, icon, backgroundCo
             border: 'none',                 // No border
             outline: 'none',                // No outline on click
             borderRadius: '6px',            // Border radius of 6px
-            padding: '10px 20px',           // Optional padding for button
+            padding: '7px 20px',           // Optional padding for button
           }}
           className={`font-medium ${customClass} flex items-center justify-center hover:opacity-90`} // Applied flex here
         >
-          {icon && <i className={`pi ${icon} mr-2`}></i>}  {/* Removed unnecessary flex on icon */}
-          {label}
+          <div className="flex items-center justify-center gap-2 ml-2  mr-0.5">
+            <span >{icon && <i className={`pi ${icon}`}></i>} </span>
+            <span className="">{label}</span>
+          </div>
+
         </button>
       </div>
     </>

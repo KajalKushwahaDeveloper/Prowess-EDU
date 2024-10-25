@@ -7,63 +7,62 @@ import AdminDashboardStudent from "../src/pages/admin_dashboard/admindashboardSt
 // import ParentDashboard from './ParentDashboard';
 import SharedLayout from './components/layouts/sharedLayout';  // Layout with Header and Sidebar
 import ProtectedRoute from './components/routes/protectedRoutes';
-import Calender_Download_Component from './components/common/calender_download';
 import LoginForm from './components/organisms/login_form';
 import Dropdown from './components/molecules/dropdown';
 import ParentDashboard from './pages/parent_dashboard/parentDashboardScreen';
 import ParentDashboardStrongArea from './pages/parent_dashboard/parentDashboardStrongArea';
 import ParentDashboardWeakArea from './pages/parent_dashboard/parentDashboardWeakArea';
-import StudentFAQ from "./components/organisms/studentFAQ"
+// import StudentFAQ from "./components/organisms/studentFAQ"
 // import Sidebar from "./components/organisms/sideBar.jsx";
 // import Table from "./components/organisms/Table.jsx";
 
 
 function App() {
   return (
-    <StudentFAQ />
-    // <Router>
-    //   <Routes>
-    //     <Route path="/login" element={<Login />} />
+    // <StudentFAQ />
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
 
-    //     {/*  Admin Dashboard */}
-    //     <Route element={<ProtectedRoute role="admin"></ProtectedRoute>}>
-    //       <Route path="/adminDashboard" element={<AdminDashboard />} />
-    //     </Route>
+        {/*  Admin Dashboard */}
+        <Route element={<ProtectedRoute role="admin"></ProtectedRoute>}>
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
+        </Route>
 
-    //     <Route element={<ProtectedRoute role="student"></ProtectedRoute>}>
-    //       <Route path="/students" element={<AdminDashboardStudent />} />
-    //     </Route>
+        <Route element={<ProtectedRoute role="student"></ProtectedRoute>}>
+          <Route path="/students" element={<AdminDashboardStudent />} />
+        </Route>
 
-    //     <Route element={<ProtectedRoute role="teacher"></ProtectedRoute>}>
-    //       <Route path="/teachers" element={<AdminDashboardTeachers />} />
-    //     </Route>
-    //     {/* Parent Dashboard */}
-    //     <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-    //       <Route path="/parentdashboard" element={<ParentDashboard />} />
-    //     </Route>
+        <Route element={<ProtectedRoute role="teacher"></ProtectedRoute>}>
+          <Route path="/teachers" element={<AdminDashboardTeachers />} />
+        </Route>
+        {/* Parent Dashboard */}
+        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/parentdashboard" element={<ParentDashboard />} />
+        </Route>
 
-    //     <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-    //       <Route path="/strongArea" element={<ParentDashboardStrongArea />} />
-    //     </Route>
+        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/strongArea" element={<ParentDashboardStrongArea />} />
+        </Route>
 
-    //     <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-    //       <Route path="/weakArea" element={<ParentDashboardWeakArea />} />
-    //     </Route>
+        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/weakArea" element={<ParentDashboardWeakArea />} />
+        </Route>
 
-    //     {/*  Student Dashboard */}
+        {/*  Student Dashboard */}
 
-    //     <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-    //       <Route path="/studentFAQ" element={<FAQ/>} />
-    //     </Route>
+        {/* <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/studentFAQ" element={<FAQ/>} />
+        </Route> */}
 
-    //     {/*  Teacher Dashboard */}
+        {/*  Teacher Dashboard */}
 
 
 
-    //     {/* Default route to redirect to login */}
-    //     <Route path="*" element={<Navigate to="/login" />} />
-    //   </Routes>
-    // </Router>
+        {/* Default route to redirect to login */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
 }
 
