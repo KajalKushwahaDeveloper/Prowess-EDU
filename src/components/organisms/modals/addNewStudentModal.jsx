@@ -2,6 +2,7 @@ import { useState } from "react";
 import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
+import { addStudentSchema } from "../../common/validationSchema";
 
 function AddNewStudentModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
@@ -16,15 +17,31 @@ function AddNewStudentModal({ visible, setVisible }) {
         address: "",
         subjects: ""
     });
+    
+    const [errors, setErrors] = useState({});
+console.log("errors:", errors);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleAdd = () => {
-        // Handle adding student logic
-        console.log("Student Data: ", formData);
+    const handleAdd = async () => {
+        console.log("Add button clicked"); // Debugging
+        try {
+            // Validate the form data
+            await addStudentSchema.validate(formData, { abortEarly: false });
+            console.log("Student Data: ", formData); // For debugging
+            setErrors({}); // Clear previous errors if validation passes
+        } catch (validationErrors) {
+            // Collect validation errors and set them in the state
+            const formattedErrors = {};
+            validationErrors.inner.forEach((error) => {
+                formattedErrors[error.path] = error.message;
+            });
+            console.log("Validation errors:", formattedErrors); // For debugging
+            setErrors(formattedErrors);
+        }
     };
 
     return (
@@ -40,88 +57,126 @@ function AddNewStudentModal({ visible, setVisible }) {
                 <hr className="mb-8 border-gray-300" />
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Student Name"
-                        name="studentName"
-                        placeholder="Enter Student Name"
-                        value={formData.studentName}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Parent Name"
-                        name="parentName"
-                        placeholder="Enter Parent Name"
-                        value={formData.parentName}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Student/Parent Phone"
-                        name="phone"
-                        placeholder="Enter Phone Number"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="email"
-                        labelText="Student/Parent Email"
-                        name="email"
-                        placeholder="Enter Email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="date"
-                        labelText="Date of Birth"
-                        name="dob"
-                        value={formData.dob}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="select"
-                        labelText="Gender"
-                        name="gender"
-                        options={["Male", "Female", "Other"]} // Example gender options
-                        value={formData.gender}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Section"
-                        name="section"
-                        placeholder="Enter Section"
-                        value={formData.section}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Class"
-                        name="class"
-                        placeholder="Enter Class"
-                        value={formData.class}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Address"
-                        name="address"
-                        placeholder="Enter Address"
-                        value={formData.address}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Subjects"
-                        name="subjects"
-                        placeholder="Enter Subjects"
-                        value={formData.subjects}
-                        onChange={handleInputChange}
-                    />
+                    <div>
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Student Name"
+                            name="studentName"
+                            placeholder="Enter Student Name"
+                            value={formData.studentName}
+                            onChange={handleInputChange}
+                        />
+                        {errors.studentName && <p className="text-rose-600 text-md mt-1">{errors.studentName}</p>}
+                    </div>
+                    
+                    <div>
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Parent Name"
+                            name="parentName"
+                            placeholder="Enter Parent Name"
+                            value={formData.parentName}
+                            onChange={handleInputChange}
+                        />
+                        {errors.parentName && <p className="text-rose-600 text-md mt-1">{errors.parentName}</p>}
+                    </div>
+
+                    <div>
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Student/Parent Phone"
+                            name="phone"
+                            placeholder="Enter Phone Number"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                        />
+                        {errors.phone && <p className="text-rose-600 text-md mt-1">{errors.phone}</p>}
+                    </div>
+
+                    <div>
+                        <InputFieldWithLabel
+                            type="email"
+                            labelText="Student/Parent Email"
+                            name="email"
+                            placeholder="Enter Email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                        />
+                        {errors.email && <p className="text-rose-600 text-md mt-1">{errors.email}</p>}
+                    </div>
+
+                    <div>
+                        <InputFieldWithLabel
+                            type="date"
+                            labelText="Date of Birth"
+                            name="dob"
+                            value={formData.dob}
+                            onChange={handleInputChange}
+                        />
+                        {errors.dob && <p className="text-rose-600 text-md mt-1">{errors.dob}</p>}
+                    </div>
+
+                    <div>
+                        <InputFieldWithLabel
+                            type="select"
+                            labelText="Gender"
+                            name="gender"
+                            options={["Male", "Female", "Other"]}
+                            value={formData.gender}
+                            onChange={handleInputChange}
+                        />
+                        {errors.gender && <p className="text-rose-600 text-md mt-1">{errors.gender}</p>}
+                    </div>
+
+                    <div>
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Section"
+                            name="section"
+                            placeholder="Enter Section"
+                            value={formData.section}
+                            onChange={handleInputChange}
+                        />
+                        {errors.section && <p className="text-rose-600 text-md mt-1">{errors.section}</p>}
+                    </div>
+
+                    <div>
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Class"
+                            name="class"
+                            placeholder="Enter Class"
+                            value={formData.class}
+                            onChange={handleInputChange}
+                        />
+                        {errors.class && <p className="text-rose-600 text-md mt-1">{errors.class}</p>}
+                    </div>
+
+                    <div>
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Address"
+                            name="address"
+                            placeholder="Enter Address"
+                            value={formData.address}
+                            onChange={handleInputChange}
+                        />
+                        {errors.address && <p className="text-rose-600 text-md mt-1">{errors.address}</p>}
+                    </div>
+
+                    <div>
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Subjects"
+                            name="subjects"
+                            placeholder="Enter Subjects"
+                            value={formData.subjects}
+                            onChange={handleInputChange}
+                        />
+                        {errors.subjects && <p className="text-rose-600 text-md mt-1">{errors.subjects}</p>}
+                    </div>
                 </div>
 
-                {/* Action buttons */}
                 <div className="flex justify-end gap-4 mt-6">
                     <Button
                         label="Cancel"

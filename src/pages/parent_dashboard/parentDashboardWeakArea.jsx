@@ -3,30 +3,35 @@ import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
 import Calender from "../../components/atoms/calender";
 const ParentDashboardWeakArea = () => {
-    return (
-        <>
-            <div className="admin-dashboard m-6 dashboard z-1">
-                <div className="my-4">
-                    <div className="flex justify-between items-center ">
-                        <h2 className="font-bold text-3xl">Student Report</h2>
-                        <div className="flex justify-evenly items-center space-x-4"> {/* Added space-x-4 for spacing */}
-
-                            <Calender />
-                            <Button
-                                icon={Icons.downloadIcon}
-                            // onClick={handleDownload}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <hr />
-                <div>
-                    <div className="md:overflow-none overflow-x-auto mb-16">
-                        <WeakAreaTable />
-                    </div>
-                </div>
+  return (
+    <>
+      <div className="admin-dashboard m-6 dashboard z-1">
+        <div className="my-4">
+          <div className="flex justify-between md:items-center items-start md:flex-row flex-col">
+            <div>
+              <h2 className="font-bold md:text-3xl text-2xl">Student Report</h2>
             </div>
-        </>
-    )
-}
+            <div className="flex justify-evenly items-center md:">
+              <div>
+                <Calender />
+              </div>
+              <div>
+                <Button
+                  icon={Icons.downloadIcon}
+                  // onClick={handleDownload}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div>
+          <div className="md:overflow-none overflow-x-auto mb-16">
+            <WeakAreaTable />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 export default ParentDashboardWeakArea;

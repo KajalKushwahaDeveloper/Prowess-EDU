@@ -41,10 +41,10 @@ const LoginForm = () => {
     <>
       <div className="lg:h-screen flex items-center justify-center">
         <div className="bg-white p-8 md:p-0 w-full max-w-lg">
-          <h1 className="text_color text-5xl mb-5 justify-start">
+          <h1 className="text_color text-5xl mb-5 text-center md:justify-start">
             Welcome <span className="text-black">Back!</span>
           </h1>
-          <p className="text-xl mb-12 justify-start">Login to get started</p>
+          <p className="text-xl mb-12 text-center md:justify-start">Login to get started</p>
           {inputFields.map((inputFieldsData, index) => {
             return (
               <div key={index} className="mb-4">

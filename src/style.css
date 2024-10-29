@@ -84,11 +84,18 @@
 
 
 /* login screen  */
-@media screen and (min-width:768px){
+@media screen and (max-width:996px){
+  .login_screen{
+    margin-top: 4rem; 
+  }
   .login_bg_img img{
    background-color: white;
   }
   .school_name{
     color: black; 
   }
+  .login_logo{
+    height: 17rem;
+  }
+  
 }
