@@ -8,7 +8,7 @@ const StudentDashboardNewAssignmentsTable = () => {
 
     const columns = [
         { field: "id", header: "Id" },
-        { field: "subject", header: "Subject" },
+        { field: "subjectName", header: "Subject Name" },
         { field: "chapter", header: "Chapter" },
         { field: "questions", header: "Questions" },
         { field: "marks", header: "Marks" },

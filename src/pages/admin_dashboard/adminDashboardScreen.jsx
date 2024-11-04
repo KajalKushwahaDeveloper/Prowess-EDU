@@ -13,12 +13,12 @@ function AdminDashboard() {
 
   const cardDetails = [
     {
-      newJoiningName: "Total Teachers",
+      cardHeading: "Total Teachers",
       totalNumber: "30",
       cardStyle: { backgroundColor: "#EEDFF7" },
     },
     {
-      newJoiningName: "Total Students",
+      cardHeading: "Total Students",
       totalNumber: "550",
       cardStyle: { backgroundColor: "#DFEEF7" },
     },
@@ -47,7 +47,7 @@ function AdminDashboard() {
               <Card
                 key={index}
                 totalNumber={currentData.totalNumber}
-                newJoiningName={currentData.newJoiningName}
+                cardHeading={currentData.cardHeading}
                 cardStyle={currentData.cardStyle}
               />
             </>

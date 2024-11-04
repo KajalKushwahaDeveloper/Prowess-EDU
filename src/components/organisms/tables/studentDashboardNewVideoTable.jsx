@@ -3,7 +3,7 @@ import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState } from "react";
 
-const DashboardNewVideoTable = () => {
+const StudentDashboardNewVideoTable = () => {
     const [products, setProducts] = useState("");
 
     const columns = [
@@ -40,4 +40,4 @@ const DashboardNewVideoTable = () => {
     );
 };
 
-export default DashboardNewVideoTable;
+export default StudentDashboardNewVideoTable;

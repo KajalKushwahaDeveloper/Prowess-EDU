@@ -24,10 +24,16 @@ const TeachersTable = () => {
               icon={Icons.plusIcon}
             />
             <Button
-              label="Delete"
+              label="reload"
               // onClick={() => handleDelete(rowData)}
               backgroundColor="#004871"
               icon={Icons.reloadIcon}
+            />
+            <Button
+              label="delete"
+              // onClick={() => handleEdit(rowData)}
+              backgroundColor="#FF4D00"
+              icon={Icons.deleteIcon}
             />
           </div>
         );

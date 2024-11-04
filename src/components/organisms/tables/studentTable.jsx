@@ -30,6 +30,12 @@ const StudentsTable = () => {
               backgroundColor="#004871"
               icon={Icons.reloadIcon}
             />
+            <Button
+              label="delete"
+              // onClick={() => handleEdit(rowData)}
+              backgroundColor="#FF4D00"
+              icon={Icons.deleteIcon}
+            />
           </div>
         );
       },

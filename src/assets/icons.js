@@ -6,12 +6,14 @@ export const adminLinks = [
 ];
 
 export const studentLinks = [
-  { icon: "pi-video", name: "Video", path: "/student/video" },
+  { icon: "pi-home", name: "Dashboard", path: "/studentDashboard" },
+  { icon: "pi-video", name: "Video", path: "/studentDashboardVideos" },
   {
     icon: "pi-file-check",
     name: "Assignments & Tests",
-    path: "/student/assignments",
+    path: "/assignment",
   },
+  { icon: "pi-desktop", name: "Online Class", path: "/student/faq" },
   { icon: "pi-question-circle", name: "FAQ/Feedback", path: "/student/faq" },
 ];
 
@@ -41,9 +43,10 @@ export const parentLinks = [
 export const Icons = {
   plusIcon: "pi-plus",
   editIcon: "pi-pen-to-square",
-  viewIcon:"pi-eye",
+  viewIcon:"pi pi-eye",
   reloadIcon: "pi-refresh",
   downloadIcon: "pi-download",
   rightArrow: "pi-arrow-right",
   leftArrow: "pi-arrow-left",
+  videoIcon: "pi pi-play",
 };
