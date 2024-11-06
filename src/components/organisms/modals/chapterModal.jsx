@@ -1,7 +1,8 @@
 import Modal from "../../common/modal";
 import Card from "../../molecules/Card";
 import { Icons } from "../../../assets/icons";
-function ChapterModal({ visible, setVisible }) {
+
+const ChapterModal = ({ visible, setVisible }) => {
     const cardDetails = [
         {
             Topic: "Topic 1",
@@ -55,7 +56,7 @@ function ChapterModal({ visible, setVisible }) {
         >
             <div className="bg-white m-4">
                 <h1 className="font-medium text-2xl my-2">Chapter 1</h1>
-                <hr className="mb-8 border-gray-300" />
+                <hr className="mb-4 border-gray-300" />
                 <div className="flex flex-wrap items-center justify-center mb-8">
                     <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xsm:grid-cols-2 grid-cols-2 gap-4">
                         {cardDetails.map((currentData, index) => (

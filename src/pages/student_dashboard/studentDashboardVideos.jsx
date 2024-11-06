@@ -25,10 +25,10 @@ function StudentDashboardVideos() {
     };
 
     return (
-        <div className="admin-dashboard m-6 dashboard z-1">
+        <div className="admin-dashboard mx-6 mt-6 dashboard z-1">
             <div className="my-4">
                 <div className="flex justify-between md:items-center items-start md:flex-row flex-col">
-                    <h2 className="font-bold text-2xl md:text-3xl">Videos</h2>
+                    <h2 className="font-bold text-xl md:text-2xl">Videos</h2>
                     <div className="flex justify-evenly items-center space-x-4">
                         <Dropdown label="Teacher" />
                         <Calender />
@@ -37,8 +37,8 @@ function StudentDashboardVideos() {
             </div>
             <hr className="mb-6" />
             <div>
-                <h2 className="font-semiBold text-2xl md:text-3xl text-[#0069A4] mb-4">Hindi</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 lg:gap-6 md:gap-6 sm:gap-6">
+                <h2 className="font-semiBold text-xl md:text-2xl text-[#0069A4] mb-4">Hindi</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 lg:gap-4 md:gap-4 sm:gap-2">
                     {cardDetails.map((currentData, index) => (
                         <div key={index} onClick={() => handleCardClick(currentData.chapter)}>
                             <Card

@@ -13,8 +13,8 @@ export const studentLinks = [
     name: "Assignments & Tests",
     path: "/assignment",
   },
-  { icon: "pi-desktop", name: "Online Class", path: "/student/faq" },
-  { icon: "pi-question-circle", name: "FAQ/Feedback", path: "/student/faq" },
+  { icon: "pi-desktop", name: "Online Class", path: "/OnlineClass" },
+  { icon: "pi-question-circle", name: "FAQ/Feedback", path: "/faqFeedback" },
 ];
 
 export const teacherLinks = [
@@ -49,4 +49,6 @@ export const Icons = {
   rightArrow: "pi-arrow-right",
   leftArrow: "pi-arrow-left",
   videoIcon: "pi pi-play",
+  angleRight: "pi pi-angle-right",
+  angleDown:"pi pi-angle-down"
 };

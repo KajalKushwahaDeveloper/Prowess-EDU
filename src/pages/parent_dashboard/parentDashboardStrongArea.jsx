@@ -10,7 +10,7 @@ const ParentDashboardStrongArea = () => {
         <div className="my-4">
           <div className="flex justify-between md:items-center items-start md:flex-row flex-col">
             <div>
-              <h2 className="font-bold md:text-3xl text-2xl">Student Report</h2>
+              <h2 className="font-bold text-2xl">Strong Area</h2>
             </div>
             <div className="flex justify-evenly items-center md:">
               <div>

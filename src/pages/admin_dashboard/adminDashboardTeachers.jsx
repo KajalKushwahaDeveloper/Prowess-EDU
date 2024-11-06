@@ -27,7 +27,7 @@ function AdminDashboardTeachers() {
   return (
     <div className="admin-dashboard m-6 dashboard">
       <div className="my-4 flex items-center justify-between flex-col sm:flex-row">
-        <h1 className="text-black font-bold text-3xl mb-4">Teachers</h1>
+        <h1 className="text-black font-bold text-2xl mb-4">Teachers</h1>
         <Button
           icon={Icons.plusIcon}
           onClick={handleAddTeacher}
@@ -36,7 +36,7 @@ function AdminDashboardTeachers() {
       </div>
       <hr />
       <div className="mt-4">
-        <h1 className="text-black font-bold text-2xl mb-4">
+        <h1 className="text-black font-bold text-xl mb-4">
           Teacher list
           <hr />
         </h1>

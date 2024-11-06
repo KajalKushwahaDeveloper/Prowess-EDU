@@ -24,12 +24,12 @@ function DashboardSidebar({ links = [] }) {
             } md:translate-x-0 transition-transform duration-300 ease-in-out z-50`}
         >
           <div className="flex justify-end md:hidden p-4">
-            <button onClick={toggleSidebar} className="text-white text-2xl focus:outline-none">
+            <button onClick={toggleSidebar} className="text-black text-2xl focus:outline-none">
               <i className="pi pi-times"></i>
             </button>
           </div>
 
-          <nav className="flex flex-col h-screen justify-between text-white text-xl">
+          <nav className="flex flex-col h-screen justify-between text-white text-lg">
             {/* Render Links */}
             <div className="flex flex-col gap-3 mt-4">
               {links.map((link, index) => {

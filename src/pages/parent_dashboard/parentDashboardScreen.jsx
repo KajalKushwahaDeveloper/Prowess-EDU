@@ -10,17 +10,19 @@ function ParentDashboard() {
         <div className="admin-dashboard m-6 dashboard z-1">
             <div className="my-4">
                 <div className="flex justify-between md:items-center items-start md:flex-row flex-col">
-                    <div><h2 className="font-bold text-3xl md:text-2xl">Student Report</h2></div>
+                    <div>
+                        <h2 className="font-bold text-2xl">Student Report</h2>
+                    </div>
                     <div className="flex justify-evenly items-center space-x-4"> {/* Added space-x-4 for spacing */}
                         <div className="flex flex-col justify-evenly items-center"> {/* Add flex-col to ensure label is on top */}
-                            <Dropdown label="Teacher"/>
+                            <Dropdown label="Teacher" />
                         </div>
                         <div className="flex justify-around items-center">
-                        <Calender />
-                        <Button
-                            icon={Icons.downloadIcon}
-                        // onClick={handleDownload}
-                        />
+                            <Calender />
+                            <Button
+                                icon={Icons.downloadIcon}
+                            //  onClick={handleDownload}
+                            />
                         </div>
                     </div>
                 </div>

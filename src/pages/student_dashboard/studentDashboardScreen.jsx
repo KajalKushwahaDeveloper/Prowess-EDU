@@ -1,5 +1,3 @@
-import Button from "../../components/atoms/button";
-import { Icons } from "../../assets/icons";
 import Card from "../../components/molecules/Card";
 import StudentDashboardNewVideoTable from "../../components/organisms/tables/studentDashboardNewVideoTable";
 import StudentDashboardNewAssignmentsTable from "../../components/organisms/tables/studentDashboardNewAssignments";
@@ -22,19 +20,11 @@ function StudentDashboard() {
             cardStyle: { backgroundColor: "#B2DCF4" },
         },
     ];
-    const handleAddTeacher = () => {
-
-        setAddTeacherModalVisible(true);
-    };
-    const handleAddStudent = () => {
-
-        setAddStudentModalVisible(true);
-    };
 
     return (
         <div className="admin-dashboard m-6 dashboard z-1">
             <div className="my-4">
-                <h1 className="text-black font-bold text-3xl mb-4">Dashboard</h1>
+                <h1 className="text-black font-bold text-2xl mb-4">Dashboard</h1>
                 <hr />
             </div>
             {/* <div className="flex flex-row items-center justify-start gap-6 md:flex-col md:gap-0 md:mb-8"> */}
@@ -51,21 +41,21 @@ function StudentDashboard() {
                         </>
                     );
                 })}
-            
+
             </div>
             <div>
-                <h1 className="text-black font-bold text-2xl mb-4">
+                <h1 className="text-black font-bold text-xl mb-4">
                     New Video
-                    <hr />
+                    <hr className="mt-2" />
                 </h1>
                 <div className="md:overflow-none overflow-x-auto mb-16">
                     <StudentDashboardNewVideoTable />
                 </div>
             </div>
             <div>
-                <h1 className="text-black font-bold text-2xl mb-4">
+                <h1 className="text-black font-bold text-xl mb-4">
                     New Assignments
-                    <hr />
+                    <hr className="mt-2" />
                 </h1>
                 <div className="md:overflow-none overflow-x-auto mb-16">
                     <StudentDashboardNewAssignmentsTable />

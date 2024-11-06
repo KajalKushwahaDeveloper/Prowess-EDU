@@ -31,7 +31,7 @@ function AdminDashboardStudent() {
   return (
     <div className="admin-dashboard m-6 dashboard">
       <div className="my-4 flex items-center justify-between flex-col sm:flex-row">
-        <h1 className="text-black font-bold text-3xl mb-4">Students</h1>
+        <h1 className="text-black font-bold text-2xl mb-4">Students</h1>
         <div className="flex items-center justify-center">
           <Button
             icon={Icons.plusIcon}
@@ -44,7 +44,7 @@ function AdminDashboardStudent() {
       <hr />
 
       <div className="mt-4">
-        <h1 className="text-black font-bold text-2xl mb-4">
+        <h1 className="text-black font-bold text-xl mb-4">
           Student list
           <hr />
         </h1>

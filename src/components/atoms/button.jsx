@@ -19,7 +19,7 @@ const Button = ({ label, onClick, width, height, customClass, icon, backgroundCo
         >
           <div className="flex items-center justify-center gap-2 ml-2  mr-0.5">
             <span >{icon && <i className={`pi ${icon}`}></i>} </span>
-            <span className="">{label}</span>
+            <span className="text-lg">{label}</span>
           </div>
 
         </button>

@@ -35,7 +35,7 @@ const StudentDashboardNewVideoTable = () => {
         <Table
             data={products}
             columns={columns}
-            tableStyle={{ minWidth: "40rem", fontSize: "1.2rem" }}
+            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
         />
     );
 };

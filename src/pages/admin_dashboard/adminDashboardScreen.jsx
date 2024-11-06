@@ -36,7 +36,7 @@ function AdminDashboard() {
   return (
     <div className="admin-dashboard m-6 dashboard z-1">
       <div className="my-4">
-        <h1 className="text-black font-bold text-3xl mb-4">Dashboard</h1>
+        <h1 className="text-black font-bold text-2xl mb-4">Dashboard</h1>
         <hr />
       </div>
       {/* <div className="flex flex-row items-center justify-start gap-6 md:flex-col md:gap-0 md:mb-8"> */}
@@ -68,7 +68,7 @@ function AdminDashboard() {
         </div>
       </div>
       <div>
-        <h1 className="text-black font-bold text-2xl mb-4">
+        <h1 className="text-black font-bold text-xl mb-4">
           New joining (Teacher)
           <hr />
         </h1>
@@ -77,7 +77,7 @@ function AdminDashboard() {
         </div>
       </div>
       <div>
-        <h1 className="text-black font-bold text-2xl mb-4">
+        <h1 className="text-black font-bold text-xl mb-4">
           New joining (Student)
           <hr />
         </h1>
