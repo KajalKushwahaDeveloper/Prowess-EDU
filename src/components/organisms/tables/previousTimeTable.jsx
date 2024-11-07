@@ -3,15 +3,15 @@ import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState } from "react";
 
-const WeakAreaTable = () => {
+const PreviousTimeTable = () => {
     const [products, setProducts] = useState("");
 
     const columns = [
         { field: "id", header: "Id" },
-        { field: "subject", header: "Teacher Name" },
-        { field: "recommendation", header: "Subject" },
-        { field: "comments", header: "Class" },
-        { field: "comments", header: "Date" },
+        { field: "teacherName", header: "Teacher Name" },
+        { field: "subject", header: "Subject" },
+        { field: "class", header: "Class" },
+        { field: "date", header: "Date" },
         {
             field: "Action",
             header: "Action",
@@ -46,4 +46,4 @@ const WeakAreaTable = () => {
     );
 };
 
-export default WeakAreaTable;
+export default PreviousTimeTable;

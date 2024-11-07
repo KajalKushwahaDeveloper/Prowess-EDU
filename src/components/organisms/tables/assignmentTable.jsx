@@ -3,7 +3,7 @@ import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState } from "react";
 
-const WeakAreaTable = () => {
+const AssignmentTable = () => {
     const [products, setProducts] = useState("");
 
     const columns = [
@@ -51,4 +51,4 @@ const WeakAreaTable = () => {
     );
 };
 
-export default WeakAreaTable;
+export default AssignmentTable;

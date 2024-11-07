@@ -3,7 +3,7 @@ import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 
-function CreateOnlineClassModal({ visible, setVisible }) {
+function CreateTimeTableModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
         teacherName: "",
         subject: "",
@@ -91,4 +91,4 @@ function CreateOnlineClassModal({ visible, setVisible }) {
     );
 }
 
-export default CreateOnlineClassModal;
+export default CreateTimeTableModal;

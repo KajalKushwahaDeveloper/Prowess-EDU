@@ -18,15 +18,20 @@ export const studentLinks = [
 ];
 
 export const teacherLinks = [
-  { icon: "pi-home", name: "Dashboard", path: "/teacher/dashboard" },
-  { icon: "pi-user", name: "Students", path: "/teacher/students" },
-  { icon: "pi-video", name: "Video", path: "/teacher/video" },
+  { icon: "pi-home", name: "Dashboard", path: "/teacherDashboard" },
+  { icon: "pi-user", name: "Students", path: "/teacherDashboardStudents" },
+  { icon: "pi-video", name: "Video", path: "/teacherDashboardVideos" },
   {
     icon: "pi-file-check",
     name: "Assignments & Tests",
-    path: "/teacher/assignments",
+    path: "teacherDashboardAssignment",
   },
-  { icon: "pi-calendar-clock", name: "Timetable", path: "/teacher/timetable" },
+  {
+    icon: "pi-desktop",
+    name: "Online Classes",
+    path: "teacherDashboardOnlineClass",
+  },
+  { icon: "pi-calendar-clock", name: "Timetable", path: "/teacherDashboardTimeTable" },
 ];
 
 // Add parent links if necessary
@@ -42,7 +47,7 @@ export const parentLinks = [
 
 export const Icons = {
   plusIcon: "pi-plus",
-  editIcon: "pi-pen-to-square",
+  editIcon: "pi pi-pen-to-square",
   viewIcon:"pi pi-eye",
   reloadIcon: "pi-refresh",
   downloadIcon: "pi-download",

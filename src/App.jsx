@@ -15,6 +15,12 @@ import OnlineClass from './pages/student_dashboard/onlineClass';
 import FAQFeedback from './pages/student_dashboard/faqAndFeedback';
 import StudentFAQ from './components/common/studentFAQ';
 import StudentFeedback from './components/common/studentFeedback';
+import TeacherDashboard from './pages/teacher_dashboard/teacherDashboardScreen';
+import TeacherDashboardStudents from './pages/teacher_dashboard/teacherDashboardStudentReport';
+import TeacherDashboardVideos from './pages/teacher_dashboard/teachersVideo';
+import TeacherDashboardAssignment from './pages/teacher_dashboard/teacherDashboardAssignment';
+import TeacherDashboardOnlineClass from './pages/teacher_dashboard/teacherDashboardOnlineClass';
+import TeacherDashboardTimeTable from './pages/teacher_dashboard/teacherDashboardTimeTable';
 
 function App() {
   return (
@@ -79,8 +85,29 @@ function App() {
         </Route>
 
         {/*  Teacher Dashboard */}
+        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/teacherDashboard" element={<TeacherDashboard />} />
+        </Route>
 
+        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/teacherDashboardStudents" element={<TeacherDashboardStudents />} />
+        </Route>
 
+        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/teacherDashboardVideos" element={<TeacherDashboardVideos />} />
+        </Route>
+
+        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/teacherDashboardAssignment" element={<TeacherDashboardAssignment />} />
+        </Route>
+
+        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/teacherDashboardOnlineClass" element={< TeacherDashboardOnlineClass />} />
+        </Route>
+
+        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
+          <Route path="/teacherDashboardTimeTable" element={<TeacherDashboardTimeTable />} />
+        </Route>
 
         {/* Default route to redirect to login */}
         <Route path="*" element={<Navigate to="/login" />} />
