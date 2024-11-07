@@ -7,20 +7,22 @@ import "primeicons/primeicons.css";
 function Header({ isOpen, toggleSidebar }) {
   return (
     <div>
-      {/* <div className="flex justify-between items-center p-4 md:hidden">
-        <button
-          onClick={toggleSidebar}
-          className="text-black text-2xl focus:outline-none"
-        >
-          <i className={`pi ${isOpen ? "pi-times" : "pi-bars"}`}></i>
-        </button>
-      </div> */}
-     <div className="w-full h-[90px] bg-white flex flex-row justify-between shadow-lg shadow-zinc-200 fixed top-0 z-50">
-        <div className="sm:text-2xl md:text-4xl lg:text-4xl font-bold pt-5 pl-10">
-          <img src={logo} className="w-12" />
-        </div>
 
-        <div className="flex mr-10 mt-3">
+      <div className="w-full h-[90px] bg-white flex flex-row justify-between shadow-lg shadow-zinc-200 fixed top-0 z-50">
+        <div className="flex items-center justify-start">
+          <div className="flex justify-between items-center p-4 md:hidden">
+            <button
+              onClick={toggleSidebar}
+              className="text-black text-2xl focus:outline-none"
+            >
+              <i className={`pi ${isOpen ? "pi-times" : "pi-bars"}`}></i>
+            </button>
+          </div>
+          <div className=" pt-5 pl-4">
+            <img src={logo} className="w-12" />
+          </div>
+        </div>
+        <div className="flex mr-4 mt-3">
           <Link to="">
             <i className="pi pi-bell mx-5 pt-5 text-xl"></i>
           </Link>
