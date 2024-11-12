@@ -28,15 +28,8 @@ const StudentFeedback = () => {
   ];
 
   return (
-    <div className="w-full mx-auto p-6">
-      <div className="flex space-x-4">
-        <div className="text-xl font-regular text-[#004871]">FAQ</div>
-        <Link to="/feedback" className="text-xl font-regular text-gray-500">
-          Feedback
-        </Link>
-        {/* {/ Link to Feedback /} */}
-      </div>
-      <div className="space-y-4 mt-6 ">
+    <div className="w-full mx-auto pt-4">
+      <div className=" flex items-center justify-between gap-2  lg:flex-row">
         {faqs.map((faq, index) => (
           <div
             key={index}
@@ -66,7 +59,7 @@ const StudentFeedback = () => {
             placeholder="Enter your Query here..."
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6"> */}
           <div className="flex flex-row items-center justify-between">
             <div className="flex flex-col items-start justify-start gap-2">
               <h2 className="font-semibold">Select Teacher</h2>
@@ -78,7 +71,7 @@ const StudentFeedback = () => {
             </div>
           </div>
 
-        </div>
+        {/* </div> */}
       </div>
       <div className="mt-8 flex items-center justify-end">
         <Button label="Submit" backgroundColor="#00A943" />

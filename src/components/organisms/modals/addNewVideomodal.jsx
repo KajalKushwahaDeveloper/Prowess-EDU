@@ -5,12 +5,11 @@ import Modal from "../../common/modal";
 
 function AddNewVideoModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
-        class: "",
         subject: "",
-        chapter: "",
-        topicName: "",
-        date: "",
-        addLink: "",
+        chapter:"",
+        topicName:"",
+        class:"",
+        uploadVideo:"",
     });
 
     const handleInputChange = (e) => {
@@ -33,23 +32,15 @@ function AddNewVideoModal({ visible, setVisible }) {
         >
             <div className="bg-white m-4">
                 <h1 className="font-medium text-2xl my-2">Add new Video</h1>
-                <hr className="mb-8" />
+                <hr className="mb-8 border-gray-300" />
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Class"
-                        name="class"
-                        placeholder="Enter Class"
-                        value={formData.class}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
+                <InputFieldWithLabel
                         type="text"
                         labelText="Subject"
                         name="subject"
                         placeholder="Enter Subject"
-                        value={formData.subject}
+                        value={formData.subjects}
                         onChange={handleInputChange}
                     />
                     <InputFieldWithLabel
@@ -69,23 +60,23 @@ function AddNewVideoModal({ visible, setVisible }) {
                         onChange={handleInputChange}
                     />
                     <InputFieldWithLabel
-                        type="date"
-                        labelText="Date & time"
-                        name="date"
-                        placeholder="Enter Date & time"
-                        value={formData.date}
+                        type="text"
+                        labelText="Class"
+                        name="class"
+                        placeholder="Enter Class"
+                        value={formData.class}
                         onChange={handleInputChange}
                     />
                     <InputFieldWithLabel
-                        type="text"
-                        labelText="Add Link"
-                        name="addLink"
-                        placeholder="Enter Link"
-                        value={formData.addLink}
+                        type="file"
+                        labelText="Upload video"
+                        name="uploadvideo"
+                        placeholder="Enter Upload video"
+                        value={formData.uploadVideo}
                         onChange={handleInputChange}
                     />
-
-
+                  
+                  
                 </div>
 
                 {/* Action buttons */}

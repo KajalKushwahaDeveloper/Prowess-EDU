@@ -5,11 +5,12 @@ import Modal from "../../common/modal";
 
 function CreateOnlineClassModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
+        class: "",
         subject: "",
-        chapter:"",
-        topicName:"",
-        class:"",
-        uploadVideo:"",
+        chapter: "",
+        topicName: "",
+        date: "",
+        addLink: "",
     });
 
     const handleInputChange = (e) => {
@@ -31,16 +32,24 @@ function CreateOnlineClassModal({ visible, setVisible }) {
             className="rounded-lg"
         >
             <div className="bg-white m-4">
-                <h1 className="font-medium text-2xl my-2">Add new Video</h1>
-                <hr className="mb-8 border-gray-300" />
+                <h1 className="font-medium text-2xl my-2">Create online class</h1>
+                <hr className="mb-8" />
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-                <InputFieldWithLabel
+                    <InputFieldWithLabel
+                        type="text"
+                        labelText="Class"
+                        name="class"
+                        placeholder="Enter Class"
+                        value={formData.class}
+                        onChange={handleInputChange}
+                    />
+                    <InputFieldWithLabel
                         type="text"
                         labelText="Subject"
                         name="subject"
                         placeholder="Enter Subject"
-                        value={formData.subjects}
+                        value={formData.subject}
                         onChange={handleInputChange}
                     />
                     <InputFieldWithLabel
@@ -60,23 +69,23 @@ function CreateOnlineClassModal({ visible, setVisible }) {
                         onChange={handleInputChange}
                     />
                     <InputFieldWithLabel
-                        type="text"
-                        labelText="Class"
-                        name="class"
-                        placeholder="Enter Class"
-                        value={formData.class}
+                        type="date"
+                        labelText="Date & time"
+                        name="date"
+                        placeholder="Enter Date & time"
+                        value={formData.date}
                         onChange={handleInputChange}
                     />
                     <InputFieldWithLabel
-                        type="file"
-                        labelText="Upload video"
-                        name="uploadvideo"
-                        placeholder="Enter Upload video"
-                        value={formData.uploadVideo}
+                        type="text"
+                        labelText="Add Link"
+                        name="addLink"
+                        placeholder="Enter Link"
+                        value={formData.addLink}
                         onChange={handleInputChange}
                     />
-                  
-                  
+
+
                 </div>
 
                 {/* Action buttons */}
@@ -98,3 +107,4 @@ function CreateOnlineClassModal({ visible, setVisible }) {
 }
 
 export default CreateOnlineClassModal;
+

@@ -2,12 +2,9 @@ import { useState } from "react";
 import Dropdown from "../../components/molecules/dropdown";
 import Calender from "../../components/atoms/calender";
 import Card from "../../components/molecules/Card";
-import CompletedClassesTable from "../../components/organisms/tables/completedClasses";
-import { Icons } from "../../assets/icons";
-import JoinClassModal from "../../components/organisms/modals/joinClassModal";
 import CreateOnlineClassModal from "../../components/organisms/modals/createOnlineClassModal";
 import PreviousClassesTable from "../../components/organisms/tables/previousClassesTable";
-
+import { Icons } from "../../assets/icons";
 
 const TeacherDashboardOnlineClass = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);

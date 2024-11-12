@@ -30,19 +30,10 @@ const StudentFAQ = () => {
   ];
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-6 bg-gray-50">
-      {/* Header Tabs */}
-      <div className="flex space-x-6 border-b-2 pb-4">
-        <Link to="/studentFaq" className="text-xl font-semibold text-blue-900">
-          FAQ
-        </Link>
-        <Link to="/studentFeedback" className="text-xl font-semibold text-gray-500">
-          Feedback
-        </Link>
-      </div>
-
+    <div className="w-full mx-auto pt-4 bg-gray-50">
+  
       {/* FAQ Section */}
-      <div className="space-y-4 mt-6">
+      <div className="space-y-4">
         {faqs.map((faq, index) => (
           <div
             key={index}

@@ -1,8 +1,6 @@
 import { useState } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
-import StudentsTable from "../../components/organisms/tables/studentTable";
-import Modal from "../../components/common/modal";
 import AddNewTeacherModal from "../../components/organisms/modals/addNewStudentModal";
 import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
 import TeacherDashboardStudentReportTable from "../../components/organisms/tables/teacherDashboardStudentReportTable";
@@ -45,7 +43,7 @@ const TeacherDashboardStudents = () => {
 
       <div className="mt-4">
         <h1 className="text-black font-bold text-xl mb-4">
-          Student list
+          Students Report
           <hr />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-16">

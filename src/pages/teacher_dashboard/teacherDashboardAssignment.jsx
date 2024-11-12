@@ -1,21 +1,20 @@
 import { useState } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
-import StudentsTable from "../../components/organisms/tables/studentTable";
-import Modal from "../../components/common/modal";
-import AddNewTeacherModal from "../../components/organisms/modals/addNewStudentModal";
 import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
-import TeacherDashboardStudentReportTable from "../../components/organisms/tables/teacherDashboardStudentReportTable";
-import TodayTopicVideoTable from "../../components/organisms/tables/todaysTopicVideo";
-import AddNewVideoModal from "../../components/organisms/modals/addNewVideomodal";
+import AddNewAssignmentModal from "../../components/organisms/modals/addNewAssignmentModal";
+import AssignmentTable from "../../components/organisms/tables/assignmentTable";
+import TestTable from "../../components/organisms/tables/testTable";
 
 const TeacherDashboardAssignment = () => {
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeTab, setActiveTab] = useState("Assignment"); // State to manage active tab
+
   const pageSize = 10; // Define how many students to show per page
   const studentsData = []; // Replace this with your actual data array
 
-  const handleAddStudent = () => {
+  const handleCreateAssignment = () => {
     setVisible(true);
   };
 
@@ -33,27 +32,50 @@ const TeacherDashboardAssignment = () => {
 
   return (
     <div className="admin-dashboard m-6 dashboard">
-      <div className="my-4 flex items-start md:items-center justify-between flex-col sm:flex-row">
+      <div className="my-8 flex items-start md:items-center justify-between flex-col sm:flex-row border-b-2 pb-2">
         <h1 className="text-black font-bold text-2xl mb-4">Assignment & Test</h1>
         <div className="flex items-center justify-center">
-          <Button
-            icon={Icons.plusIcon}
-            onClick={handleAddStudent}
-            label="Create Assignment"
-          />
-        </div>
-      </div>
-      <hr />
+          {
+            activeTab === "Test"
+              ? <Button
+                icon={Icons.plusIcon}
+                onClick={handleAddStudent}
+                label="Create Test"
+              />
+              : <Button
+                icon={Icons.plusIcon}
+                onClick={handleCreateAssignment}
+                label="Create Assignment"
+              />
+          }
 
-      <div className="mt-4">
-        <h1 className="text-black font-bold text-xl mb-4">
-        Assignment
-          <hr />
-        </h1>
-        <div className="md:overflow-none overflow-x-auto mb-16">
-          <TodayTopicVideoTable students={paginatedStudents} />
         </div>
       </div>
+
+      {/* Tab Header */}
+      <div className="w-full mx-auto p-2 ">
+        <div className="flex space-x-6 border-b-2 pb-2">
+          <button
+            onClick={() => setActiveTab("Assignment")}
+            className={`text-xl font-semibold ${activeTab === "Assignment" ? "text-[#004871]  border-[#004871]" : "text-gray-500"}`}
+          >
+            Assignment
+          </button>
+          <button
+            onClick={() => setActiveTab("Test")}
+            className={`text-xl font-semibold ${activeTab === "Test" ? "text-[#004871]  border-[#004871]" : "text-gray-500"}`}
+          >
+            Test
+          </button>
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <div className="w-full mx-auto p-6 bg-gray-50">
+        {activeTab === "Assignment" && <AssignmentTable />}
+        {activeTab === "Test" && <TestTable />}
+      </div>
+
 
       {/* Pagination Component */}
       <div className="flex items-center justify-center">
@@ -63,7 +85,8 @@ const TeacherDashboardAssignment = () => {
           onPageChange={handlePageChange}
         />
       </div>
-      <AddNewVideoModal visible={visible} setVisible={setVisible} />
+      <AddNewAssignmentModal visible={visible} setVisible={setVisible} />
+
     </div>
   );
 }

@@ -1,11 +1,7 @@
 import { useState } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
-import StudentsTable from "../../components/organisms/tables/studentTable";
-import Modal from "../../components/common/modal";
-import AddNewTeacherModal from "../../components/organisms/modals/addNewStudentModal";
 import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
-import TeacherDashboardStudentReportTable from "../../components/organisms/tables/teacherDashboardStudentReportTable";
 import TodayTopicVideoTable from "../../components/organisms/tables/todaysTopicVideo";
 import AddNewVideoModal from "../../components/organisms/modals/addNewVideomodal";
 

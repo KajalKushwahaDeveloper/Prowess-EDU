@@ -49,6 +49,7 @@ export const Icons = {
   plusIcon: "pi-plus",
   editIcon: "pi pi-pen-to-square",
   viewIcon:"pi pi-eye",
+  deleteIcon:"pi pi-trash",
   reloadIcon: "pi-refresh",
   downloadIcon: "pi-download",
   rightArrow: "pi-arrow-right",
