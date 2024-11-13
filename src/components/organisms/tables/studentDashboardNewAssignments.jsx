@@ -2,9 +2,10 @@ import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState } from "react";
+import { data } from "./data";
 
 const StudentDashboardNewAssignmentsTable = () => {
-    const [products, setProducts] = useState("");
+    const [products, setProducts] = useState(data);
 
     const columns = [
         { field: "id", header: "Id" },
@@ -19,7 +20,7 @@ const StudentDashboardNewAssignmentsTable = () => {
                 return (
                     <div className="flex space-x-2">
                         <Button
-                            label="view"
+                            // label="view"
                             // onClick={() => handleEdit(rowData)}
                             backgroundColor="#00A943"
                             icon={Icons.viewIcon}

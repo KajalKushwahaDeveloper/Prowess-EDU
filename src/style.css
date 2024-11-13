@@ -69,6 +69,39 @@
   margin-top: 7rem ;
 }
 
+/* page not found */
+.notfound-container {
+  text-align: center;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  p {
+    font-size: 1.25rem;
+    margin-bottom: 30px;
+  }
+  a {
+    font-size: 1rem;
+    color: #fff;
+    text-decoration: none;
+    background: #007bff;
+    text-decoration: none;
+    padding: 1rem;
+    border-radius: .5rem;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  img{
+      width: 20rem;
+  }
+}
+
 /* dashborad content */
 @media screen and (min-width: 768px) {
   .dashboard{
@@ -76,13 +109,6 @@
   }
 
 }
-
-/* @media screen and (max-width: 768px) {
-  .content{
-    margin-top: 7rem ;
-  }
-} */
-
 
 /* login screen  */
 @media screen and (max-width:996px){

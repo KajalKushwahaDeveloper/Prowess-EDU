@@ -30,9 +30,10 @@ const TeacherDashboardOnlineClass = () => {
                     </div>
                 </div>
             </div>
-            <hr className="mb-6" />
-            <div>
+            <hr className="mb-6"/>
+            <div className="mt-8">
                 <h2 className="font-bold text-xl  mb-4">Upcoming Classes</h2>
+                <hr />
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 lg:gap-6 md:gap-6 sm:gap-6">
                     {cardDetails.map((currentData, index) => (
                         <div key={index} onClick={() => handleCardClick(currentData.chapter)}>
@@ -49,9 +50,10 @@ const TeacherDashboardOnlineClass = () => {
                     ))}
                 </div>
             </div>
-            <hr className="my-6" />
+          
             <div>
-                <h2 className="font-bold text-xl text-xl  mb-8">Previous Classes</h2>
+                <h2 className="font-bold text-xl text-xl my-4">Previous Classes</h2>
+                <hr className="mb-8" />
                 <PreviousClassesTable />
             </div>
 

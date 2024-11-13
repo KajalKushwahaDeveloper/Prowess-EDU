@@ -27,7 +27,7 @@ function ParentDashboard() {
                     </div>
                 </div>
             </div>
-            <hr />
+            <hr className="mb-4"/>
             <div>
                 <div className="md:overflow-none overflow-x-auto mb-16">
                     <ParentDashboardStudentReportTable />

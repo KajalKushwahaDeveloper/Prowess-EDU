@@ -23,13 +23,13 @@ const TestTable = () => {
                     <div className="flex space-x-2">
                             <div className="flex space-x-2">
                         <Button
-                            label="edit"
+                            // label="edit"
                             // onClick={() => handleEdit(rowData)}
                             backgroundColor="#FF8A00"
                             icon={Icons.editIcon}
                         />
                         <Button
-                            label="delete"
+                            // label="delete"
                             // onClick={() => handleEdit(rowData)}
                             backgroundColor="#FF4D00"
                             icon={Icons.deleteIcon}

@@ -1,60 +1,61 @@
 // DashboardLinks.js
 export const adminLinks = [
-  { icon: "pi-home", name: "Dashboard", path: "/adminDashboard" },
-  { icon: "pi-user", name: "Teachers", path: "/teachers" },
-  { icon: "pi-users", name: "Students", path: "/students" },
+  { icon: "pi-home", name: "Dashboard", path: "/admin" },
+  { icon: "pi-user", name: "Teachers", path: "/admin/teachers" },
+  { icon: "pi-users", name: "Students", path: "/admin/students" },
 ];
 
 export const studentLinks = [
-  { icon: "pi-home", name: "Dashboard", path: "/studentDashboard" },
-  { icon: "pi-video", name: "Video", path: "/studentDashboardVideos" },
+  { icon: "pi-home", name: "Dashboard", path: "/student" },
+  { icon: "pi-video", name: "Video", path: "/student/studentDashboardVideos" },
   {
     icon: "pi-file-check",
     name: "Assignments & Tests",
-    path: "/assignment",
+    path: "/student/assignment",
   },
-  { icon: "pi-desktop", name: "Online Class", path: "/OnlineClass" },
-  { icon: "pi-question-circle", name: "FAQ/Feedback", path: "/faqFeedback" },
+  { icon: "pi-desktop", name: "Online Class", path: "/student/OnlineClass" },
+  { icon: "pi-question-circle", name: "FAQ/Feedback", path: "/student/faqFeedback" },
 ];
 
 export const teacherLinks = [
-  { icon: "pi-home", name: "Dashboard", path: "/teacherDashboard" },
-  { icon: "pi-user", name: "Students", path: "/teacherDashboardStudents" },
-  { icon: "pi-video", name: "Video", path: "/teacherDashboardVideos" },
+  { icon: "pi-home", name: "Dashboard", path: "/teacher" },
+  { icon: "pi-user", name: "Students", path: "/teacher/teacherDashboardStudents" },
+  { icon: "pi-video", name: "Video", path: "/teacher/teacherDashboardVideos" },
   {
     icon: "pi-file-check",
     name: "Assignments & Tests",
-    path: "teacherDashboardAssignment",
+    path: "/teacher/teacherDashboardAssignment",
   },
   {
     icon: "pi-desktop",
     name: "Online Classes",
-    path: "teacherDashboardOnlineClass",
+    path: "/teacher/teacherDashboardOnlineClass",
   },
-  { icon: "pi-calendar-clock", name: "Timetable", path: "/teacherDashboardTimeTable" },
+  { icon: "pi-calendar-clock", name: "Timetable", path: "/teacher/teacherDashboardTimeTable" },
 ];
 
 // Add parent links if necessary
 export const parentLinks = [
-  { icon: "pi-chart-line", name: "Student Reports", path: "/parentdashboard" },
+  { icon: "pi-chart-line", name: "Student Reports", path: "/parent" },
   {
     icon: "pi-user",
     name: "Weak Area",
-    path: "/WeakArea",
+    path: "/parent/WeakArea",
   },
-  { icon: "pi-check-circle", name: "Strong Area", path: "/strongArea" },
+  { icon: "pi-check-circle", name: "Strong Area", path: "/parent/strongArea" },
 ];
 
 export const Icons = {
-  plusIcon: "pi-plus",
+  plusIcon: "pi pi-plus",
   editIcon: "pi pi-pen-to-square",
   viewIcon:"pi pi-eye",
   deleteIcon:"pi pi-trash",
   reloadIcon: "pi-refresh",
   downloadIcon: "pi-download",
-  rightArrow: "pi-arrow-right",
-  leftArrow: "pi-arrow-left",
+  // rightArrow: "pi-arrow-right",
+  leftArrow: "pi pi-arrow-left",
   videoIcon: "pi pi-play",
   angleRight: "pi pi-angle-right",
-  angleDown:"pi pi-angle-down"
+  angleDown:"pi pi-angle-down",
+  rightArrow:"pi pi-arrow-right",
 };

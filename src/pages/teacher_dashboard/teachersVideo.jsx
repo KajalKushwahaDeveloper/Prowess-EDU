@@ -29,8 +29,8 @@ const TeacherDashboardVideos = () => {
 
   return (
     <div className="admin-dashboard m-6 dashboard">
-      <div className="my-8 flex items-start md:items-center justify-between flex-col sm:flex-row border-b-2 pb-2">
-        <h1 className="text-black font-bold text-2xl mb-4">Videos</h1>
+      <div className="my-4 flex items-start md:items-center justify-between flex-col sm:flex-row pb-2">
+        <h1 className="text-black font-bold text-2xl mb-2">Videos</h1>
         <div className="flex items-center justify-center">
           <Button
             icon={Icons.plusIcon}
@@ -41,10 +41,10 @@ const TeacherDashboardVideos = () => {
       </div>
       <hr />
 
-      <div className="mt-4">
+      <div className="mt-8">
         <h1 className="text-black font-bold text-xl mb-4">
         Todays topic Video
-          <hr />
+          <hr className="mt-2" />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-16">
           <TodayTopicVideoTable students={paginatedStudents} />

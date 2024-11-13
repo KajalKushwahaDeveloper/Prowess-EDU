@@ -21,7 +21,7 @@ const PreviousClassesTable = () => {
                 return (
                     <div className="flex space-x-2">
                         <Button
-                            label="view"
+                            // label="view"
                             // onClick={() => handleEdit(rowData)}
                             backgroundColor="#00A943"
                             icon={Icons.viewIcon}

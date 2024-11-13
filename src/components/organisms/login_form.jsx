@@ -11,7 +11,7 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
   const handleLogin = () => {
-    navigate('/adminDashboard');  // Navigate to the admin dashboard route
+    navigate('/admin');  // Navigate to the admin dashboard route
   };
   // Array to store input field formData
   const inputFields = [

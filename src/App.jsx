@@ -21,6 +21,7 @@ import TeacherDashboardVideos from './pages/teacher_dashboard/teachersVideo';
 import TeacherDashboardAssignment from './pages/teacher_dashboard/teacherDashboardAssignment';
 import TeacherDashboardOnlineClass from './pages/teacher_dashboard/teacherDashboardOnlineClass';
 import TeacherDashboardTimeTable from './pages/teacher_dashboard/teacherDashboardTimeTable';
+import NotFound from './pages/pageNotFound';
 
 function App() {
   return (
@@ -30,87 +31,52 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         {/*  Admin Dashboard */}
-        <Route element={<ProtectedRoute role="admin"></ProtectedRoute>}>
-          <Route path="/adminDashboard" element={<AdminDashboard />} />
-        </Route>
+        <Route path="/admin" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>}>
+          {/* Index route for /admin */}
+          <Route index element={<AdminDashboard />} />
 
-        <Route element={<ProtectedRoute role="student"></ProtectedRoute>}>
-          <Route path="/students" element={<AdminDashboardStudent />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role="teacher"></ProtectedRoute>}>
-          <Route path="/teachers" element={<AdminDashboardTeachers />} />
+          {/* Nested routes */}
+          <Route path="students" element={<AdminDashboardStudent />} />
+          <Route path="teachers" element={<AdminDashboardTeachers />} />
         </Route>
 
         {/* Parent Dashboard */}
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/parentdashboard" element={<ParentDashboard />} />
+        <Route path="/parent" element={<ProtectedRoute role="parent"><ParentDashboard /></ProtectedRoute>}>
+          {/* Index route for /teacher */}
+          <Route index element={<ParentDashboard />} />
+          {/* Nested routes */}
+          <Route path="strongArea" element={<ParentDashboardStrongArea />} />
+          <Route path="weakArea" element={<ParentDashboardWeakArea />} />
         </Route>
 
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/strongArea" element={<ParentDashboardStrongArea />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/weakArea" element={<ParentDashboardWeakArea />} />
-        </Route>
 
         {/*  Student Dashboard */}
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/studentDashboard" element={<StudentDashboard />} />
+        <Route path="/student" element={<ProtectedRoute role="student"><StudentDashboard /></ProtectedRoute>}>
+          {/* Index route for /teacher */}
+          <Route index element={<StudentDashboard />} />
+          {/* Nested routes */}
+          <Route path="studentDashboardVideos" element={<StudentDashboardVideos />} />
+          <Route path="assignment" element={<AssignmentAndTest />} />
+          <Route path="onlineClass" element={<OnlineClass />} />
+          <Route path="faqFeedback" element={<FAQFeedback />} />
+          <Route path="studentFaq" element={<StudentFAQ />} />
+          <Route path="studentFeedback" element={<StudentFeedback />} />
         </Route>
 
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/studentDashboardVideos" element={<StudentDashboardVideos />} />
+        {/* Teacher Dashboard */}
+        <Route path="/teacher" element={<ProtectedRoute role="teacher"><TeacherDashboard /></ProtectedRoute>}>
+          <Route index element={<TeacherDashboard />} />
+          {/* Nested routes */}
+          <Route path="teacherDashboardStudents" element={<TeacherDashboardStudents />} />
+          <Route path="teacherDashboardVideos" element={<TeacherDashboardVideos />} />
+          <Route path="teacherDashboardAssignment" element={<TeacherDashboardAssignment />} />
+          <Route path="teacherDashboardOnlineClass" element={<TeacherDashboardOnlineClass />} />
+          <Route path="teacherDashboardTimeTable" element={<TeacherDashboardTimeTable />} />
         </Route>
 
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/assignment" element={<AssignmentAndTest />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/onlineClass" element={<OnlineClass />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/faqFeedback" element={<FAQFeedback />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/studentFaq" element={<StudentFAQ />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/studentFeedback" element={<StudentFeedback />} />
-        </Route>
-
-        {/*  Teacher Dashboard */}
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/teacherDashboard" element={<TeacherDashboard />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/teacherDashboardStudents" element={<TeacherDashboardStudents />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/teacherDashboardVideos" element={<TeacherDashboardVideos />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/teacherDashboardAssignment" element={<TeacherDashboardAssignment />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/teacherDashboardOnlineClass" element={< TeacherDashboardOnlineClass />} />
-        </Route>
-
-        <Route element={<ProtectedRoute role=""></ProtectedRoute>}>
-          <Route path="/teacherDashboardTimeTable" element={<TeacherDashboardTimeTable />} />
-        </Route>
 
         {/* Default route to redirect to login */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </Router>
   );

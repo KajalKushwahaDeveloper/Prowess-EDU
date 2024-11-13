@@ -20,12 +20,12 @@ const ParentDashboardStudentReportTable = () => {
                 return (
                     <div className="flex space-x-2">
                         <Button
-                            label="view"
+                            // label="view"
                             // onClick={() => handleEdit(rowData)}
-                              backgroundColor="#00A943"
+                            backgroundColor="#00A943"
                             icon={Icons.viewIcon}
                         />
-                     
+
                     </div>
                 );
             },
@@ -36,7 +36,7 @@ const ParentDashboardStudentReportTable = () => {
         <Table
             data={products}
             columns={columns}
-            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
+            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
         />
     );
 };

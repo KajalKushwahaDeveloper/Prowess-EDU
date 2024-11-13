@@ -20,13 +20,13 @@ const TeacherDashboardStudentReportTable = () => {
                 return (
                     <div className="flex space-x-2">
                         <Button
-                            label="view"
+                            // label="view"
                             // onClick={() => handleEdit(rowData)}
                             backgroundColor="#00A943"
                             icon={Icons.viewIcon}
                         />
                         <Button
-                            label="edit"
+                            // label="edit"
                             // onClick={() => handleEdit(rowData)}
                             backgroundColor="#FF8A00"
                             icon={Icons.editIcon}
