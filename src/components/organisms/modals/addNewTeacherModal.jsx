@@ -18,7 +18,7 @@ function AddNewTeacherModal({ visible, setVisible }) {
     subjects: "",
   });
   const [errors, setErrors] = useState({});
-console.log("teachererr:", errors );
+  console.log("teachererr:", errors);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -87,7 +87,7 @@ console.log("teachererr:", errors );
             )}
           </div>
 
-            <div className="relative">
+          <div className="relative">
             <InputFieldWithLabel
               type="text"
               labelText="Phone"
@@ -101,7 +101,7 @@ console.log("teachererr:", errors );
             )}
           </div>
 
-            <div className="relative">
+          <div className="relative">
             <InputFieldWithLabel
               type="text"
               labelText="Qualification"
@@ -115,7 +115,7 @@ console.log("teachererr:", errors );
             )}
           </div>
 
-            <div className="relative">
+          <div className="relative">
             <InputFieldWithLabel
               type="date"
               labelText="Date of Birth"
@@ -129,7 +129,7 @@ console.log("teachererr:", errors );
             )}
           </div>
 
-            <div className="relative">
+          <div className="relative">
             <InputFieldWithLabel
               type="text"
               labelText="Gender"
@@ -143,7 +143,7 @@ console.log("teachererr:", errors );
             )}
           </div>
 
-            <div className="relative">
+          <div className="relative">
             <InputFieldWithLabel
               type="text"
               labelText="Address"
@@ -157,7 +157,7 @@ console.log("teachererr:", errors );
             )}
           </div>
 
-            <div className="relative">
+          <div className="relative">
             <InputFieldWithLabel
               type="text"
               labelText="Classes You Can Teach"
@@ -171,7 +171,7 @@ console.log("teachererr:", errors );
             )}
           </div>
 
-            <div className="relative">
+          <div className="relative">
             <InputFieldWithLabel
               type="text"
               labelText="Experience"
@@ -185,7 +185,7 @@ console.log("teachererr:", errors );
             )}
           </div>
 
-            <div className="relative">
+          <div className="relative">
             <InputFieldWithLabel
               type="text"
               labelText="Subjects"

@@ -36,3 +36,37 @@ export const addTeacherSchema = Yup.object().shape({
     experience: Yup.string().required("Experience is required"),
     subjects: Yup.string().required("Subjects are required"),
 });
+export const addNewVideoSchema = Yup.object().shape({
+    subject: Yup.string().required("Subject is required"),
+    chapter: Yup.string().required("Chapter is required"),
+    topicName: Yup.string().required("Topic Name is required"),
+    class: Yup.string().required("Class is required"),
+    uploadVideo: Yup.mixed().required("Video upload is required"),
+});
+
+export const addNewAssignmentSchema = Yup.object().shape({
+    subject: Yup.string().required("Subject is required"),
+    chapter: Yup.string().required("Chapter is required"),
+    topicName: Yup.string().required("Topic name is required"),
+    class: Yup.string().required("Class is required"),
+    selectStudents: Yup.mixed().required("Please select a file"),
+    type: Yup.string().required("Type is required"),
+    level: Yup.string().required("Level is required"),
+    uploadAssignment: Yup.string().required("Assignment upload is required"),
+});
+export const createOnlineClassSchema = Yup.object().shape({
+    class: Yup.string().required("Class is required"),
+    subject: Yup.string().required("Subject is required"),
+    chapter: Yup.string().required("Chapter is required"),
+    topicName: Yup.string().required("Topic name is required"),
+    date: Yup.string().required("Please select a date"),
+    addLink: Yup.string().required("Link is required"),
+});
+export const createTimeTableSchema = Yup.object().shape({
+    teacherName: Yup.string().required("Teacher name is required"),
+    subject: Yup.string().required("Subject is required"),
+    class: Yup.string().required("Class is required"),
+    date: Yup.string().required("Please select a date"),
+});
+
+

@@ -2,6 +2,7 @@ import { useState } from "react";
 import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
+import { createOnlineClassSchema } from "../../common/validationSchema";
 
 function CreateOnlineClassModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
@@ -12,16 +13,27 @@ function CreateOnlineClassModal({ visible, setVisible }) {
         date: "",
         addLink: "",
     });
+    const [errors, setErrors] = useState({});
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleAdd = () => {
-        // Handle adding student logic
-        console.log("Student Data: ", formData);
-    };
+    const handleAdd = async () => {
+        try {
+            await createOnlineClassSchema.validate(formData, { abortEarly: false });
+            setErrors({});
+            // Handle adding video logic
+            console.log("Video Data: ", formData);
+        } catch (err) {
+            const validationErrors = {};
+            err.inner.forEach((error) => {
+                validationErrors[error.path] = error.message;
+            });
+            setErrors(validationErrors);
+        }
+    }
 
     return (
         <Modal
@@ -36,6 +48,8 @@ function CreateOnlineClassModal({ visible, setVisible }) {
                 <hr className="mb-8" />
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+                    
+                     <div className="relative">
                     <InputFieldWithLabel
                         type="text"
                         labelText="Class"
@@ -44,6 +58,11 @@ function CreateOnlineClassModal({ visible, setVisible }) {
                         value={formData.class}
                         onChange={handleInputChange}
                     />
+                     {errors.class && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.class}</p>
+                        )}
+                    </div>
+                     <div className="relative">
                     <InputFieldWithLabel
                         type="text"
                         labelText="Subject"
@@ -52,6 +71,11 @@ function CreateOnlineClassModal({ visible, setVisible }) {
                         value={formData.subject}
                         onChange={handleInputChange}
                     />
+                     {errors.subject && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.subject}</p>
+                        )}
+                    </div>
+                     <div className="relative">
                     <InputFieldWithLabel
                         type="text"
                         labelText="Chapter"
@@ -60,14 +84,24 @@ function CreateOnlineClassModal({ visible, setVisible }) {
                         value={formData.chapter}
                         onChange={handleInputChange}
                     />
+                     {errors.chapter && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.chapter}</p>
+                        )}
+                    </div>
+                     <div className="relative">
                     <InputFieldWithLabel
                         type="text"
                         labelText="Topic Name"
                         name="topicName"
                         placeholder="Enter Topic Name"
-                        value={formData.parentName}
+                        value={formData.topicName}
                         onChange={handleInputChange}
                     />
+                     {errors.topicName && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.topicName}</p>
+                        )}
+                    </div>
+                     <div className="relative">
                     <InputFieldWithLabel
                         type="date"
                         labelText="Date & time"
@@ -76,6 +110,11 @@ function CreateOnlineClassModal({ visible, setVisible }) {
                         value={formData.date}
                         onChange={handleInputChange}
                     />
+                     {errors.date && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.date}</p>
+                        )}
+                    </div>
+                     <div className="relative">
                     <InputFieldWithLabel
                         type="text"
                         labelText="Add Link"
@@ -84,6 +123,10 @@ function CreateOnlineClassModal({ visible, setVisible }) {
                         value={formData.addLink}
                         onChange={handleInputChange}
                     />
+                     {errors.addLink && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.addLink}</p>
+                        )}
+                    </div>
 
 
                 </div>

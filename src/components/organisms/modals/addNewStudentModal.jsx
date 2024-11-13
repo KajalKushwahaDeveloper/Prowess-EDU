@@ -17,9 +17,9 @@ function AddNewStudentModal({ visible, setVisible }) {
         address: "",
         subjects: ""
     });
-    
+
     const [errors, setErrors] = useState({});
-console.log("errors:", errors);
+    console.log("errors:", errors);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -57,7 +57,7 @@ console.log("errors:", errors);
                 <hr className="mb-8 border-gray-300" />
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-                    <div>
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="text"
                             labelText="Student Name"
@@ -66,10 +66,10 @@ console.log("errors:", errors);
                             value={formData.studentName}
                             onChange={handleInputChange}
                         />
-                        {errors.studentName && <p className="text-rose-600 text-md mt-1">{errors.studentName}</p>}
+                        {errors.studentName && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.studentName}</p>}
                     </div>
-                    
-                    <div>
+
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="text"
                             labelText="Parent Name"
@@ -78,10 +78,10 @@ console.log("errors:", errors);
                             value={formData.parentName}
                             onChange={handleInputChange}
                         />
-                        {errors.parentName && <p className="text-rose-600 text-md mt-1">{errors.parentName}</p>}
+                        {errors.parentName && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.parentName}</p>}
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="text"
                             labelText="Student/Parent Phone"
@@ -90,10 +90,10 @@ console.log("errors:", errors);
                             value={formData.phone}
                             onChange={handleInputChange}
                         />
-                        {errors.phone && <p className="text-rose-600 text-md mt-1">{errors.phone}</p>}
+                        {errors.phone && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.phone}</p>}
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="email"
                             labelText="Student/Parent Email"
@@ -102,10 +102,10 @@ console.log("errors:", errors);
                             value={formData.email}
                             onChange={handleInputChange}
                         />
-                        {errors.email && <p className="text-rose-600 text-md mt-1">{errors.email}</p>}
+                        {errors.email && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.email}</p>}
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="date"
                             labelText="Date of Birth"
@@ -113,10 +113,10 @@ console.log("errors:", errors);
                             value={formData.dob}
                             onChange={handleInputChange}
                         />
-                        {errors.dob && <p className="text-rose-600 text-md mt-1">{errors.dob}</p>}
+                        {errors.dob && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.dob}</p>}
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="select"
                             labelText="Gender"
@@ -125,10 +125,10 @@ console.log("errors:", errors);
                             value={formData.gender}
                             onChange={handleInputChange}
                         />
-                        {errors.gender && <p className="text-rose-600 text-md mt-1">{errors.gender}</p>}
+                        {errors.gender && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.gender}</p>}
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="text"
                             labelText="Section"
@@ -137,10 +137,10 @@ console.log("errors:", errors);
                             value={formData.section}
                             onChange={handleInputChange}
                         />
-                        {errors.section && <p className="text-rose-600 text-md mt-1">{errors.section}</p>}
+                        {errors.section && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.section}</p>}
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="text"
                             labelText="Class"
@@ -149,10 +149,10 @@ console.log("errors:", errors);
                             value={formData.class}
                             onChange={handleInputChange}
                         />
-                        {errors.class && <p className="text-rose-600 text-md mt-1">{errors.class}</p>}
+                        {errors.class && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.class}</p>}
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="text"
                             labelText="Address"
@@ -161,10 +161,10 @@ console.log("errors:", errors);
                             value={formData.address}
                             onChange={handleInputChange}
                         />
-                        {errors.address && <p className="text-rose-600 text-md mt-1">{errors.address}</p>}
+                        {errors.address && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.address}</p>}
                     </div>
 
-                    <div>
+                    <div className="relative">
                         <InputFieldWithLabel
                             type="text"
                             labelText="Subjects"
@@ -173,7 +173,7 @@ console.log("errors:", errors);
                             value={formData.subjects}
                             onChange={handleInputChange}
                         />
-                        {errors.subjects && <p className="text-rose-600 text-md mt-1">{errors.subjects}</p>}
+                        {errors.subjects && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.subjects}</p>}
                     </div>
                 </div>
 

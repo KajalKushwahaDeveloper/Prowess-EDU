@@ -3,6 +3,7 @@ import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 import { Icons } from "../../../assets/icons";
+import { addNewAssignmentSchema } from "../../common/validationSchema";
 
 const AddNewAssignmentModal = ({ visible, setVisible }) => {
 
@@ -26,17 +27,27 @@ const AddNewAssignmentModal = ({ visible, setVisible }) => {
         level: "",
         uploadAssignment: "",
     });
+    const [errors, setErrors] = useState({});
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleAdd = () => {
-        // Handle adding student logic
-        console.log("Student Data: ", formData);
-    };
-
+    const handleAdd = async () => {
+        try {
+            await addNewAssignmentSchema.validate(formData, { abortEarly: false });
+            setErrors({});
+            // Handle adding video logic
+            console.log("Video Data: ", formData);
+        } catch (err) {
+            const validationErrors = {};
+            err.inner.forEach((error) => {
+                validationErrors[error.path] = error.message;
+            });
+            setErrors(validationErrors);
+        }
+    }
     return (
         <Modal
             visible={visible}
@@ -50,70 +61,110 @@ const AddNewAssignmentModal = ({ visible, setVisible }) => {
                 <hr className="mb-8 border-gray-300" />
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Subject"
-                        name="subject"
-                        placeholder="Enter Subject"
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Chapter"
-                        name="chapter"
-                        placeholder="Enter Student Chapter"
-                        value={formData.chapter}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Topic Name"
-                        name="topicName"
-                        placeholder="Enter Topic Name"
-                        value={formData.parentName}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Class"
-                        name="class"
-                        placeholder="Assign to class"
-                        value={formData.class}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="file"
-                        labelText="Select Students"
-                        name="selectStudents"
-                        placeholder="Select Students"
-                        value={formData.selectStudents}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Select Type"
-                        name="type"
-                        placeholder="Select Type"
-                        value={formData.type}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Select Level"
-                        name="level"
-                        placeholder="Select Level"
-                        value={formData.level}
-                        onChange={handleInputChange}
-                    />
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Upload Assignment"
-                        name="uploadAssignment"
-                        placeholder="Upload Assignment"
-                        value={formData.uploadAssignment}
-                        onChange={handleInputChange}
-                    />
+                    <div className="relative">
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Subject"
+                            name="subject"
+                            placeholder="Enter Subject"
+                            value={formData.subject}
+                            onChange={handleInputChange}
+                        />
+                        {errors.subject && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.subject}</p>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Chapter"
+                            name="chapter"
+                            placeholder="Enter Student Chapter"
+                            value={formData.chapter}
+                            onChange={handleInputChange}
+                        />
+                        {errors.chapter && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.chapter}</p>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Topic Name"
+                            name="topicName"
+                            placeholder="Enter Topic Name"
+                            value={formData.parentName}
+                            onChange={handleInputChange}
+                        />
+                        {errors.parentName && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.parentName}</p>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Class"
+                            name="class"
+                            placeholder="Assign to class"
+                            value={formData.class}
+                            onChange={handleInputChange}
+                        />
+                        {errors.class && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.class}</p>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <InputFieldWithLabel
+                            type="file"
+                            labelText="Select Students"
+                            name="selectStudents"
+                            placeholder="Select Students"
+                            value={formData.selectStudents}
+                            onChange={handleInputChange}
+                        />
+                        {errors.selectStudents && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.selectStudents}</p>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Select Type"
+                            name="type"
+                            placeholder="Select Type"
+                            value={formData.type}
+                            onChange={handleInputChange}
+                        />
+                        {errors.type && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.type}</p>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Select Level"
+                            name="level"
+                            placeholder="Select Level"
+                            value={formData.level}
+                            onChange={handleInputChange}
+                        />
+                        {errors.level && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.level}</p>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Upload Assignment"
+                            name="uploadAssignment"
+                            placeholder="Upload Assignment"
+                            value={formData.uploadAssignment}
+                            onChange={handleInputChange}
+                        />
+                        {errors.uploadAssignment && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.uploadAssignment}</p>
+                        )}
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
@@ -122,17 +173,17 @@ const AddNewAssignmentModal = ({ visible, setVisible }) => {
                             <h2 className="font-semibold">{currentData.questionNumber}</h2>
                             <div className="border shadow-lg p-4 rounded-lg flex items-center justify-between gap-1">
                                 <p className="">{currentData.question}</p>
-                              <div className="flex items-center justify-between gap-1">
-                              <Button icon={Icons.editIcon} backgroundColor="#FF8A00" />
-                              <Button icon={Icons.deleteIcon} backgroundColor="#FF4D00" />
-                              </div>
+                                <div className="flex items-center justify-between gap-1">
+                                    <Button icon={Icons.editIcon} backgroundColor="#FF8A00" />
+                                    <Button icon={Icons.deleteIcon} backgroundColor="#FF4D00" />
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
                 <div className="flex items-center justify-start  text-lg text-semibold gap-0">
                     <Button
-                        icon={Icons.plusIcon } // Use custom CSS class
+                        icon={Icons.plusIcon} // Use custom CSS class
                         className="text-[#0069A4]"
                         backgroundColor="#ffffff"
                         iconColor="#0069A4"

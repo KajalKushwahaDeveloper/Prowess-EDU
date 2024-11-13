@@ -2,6 +2,7 @@ import { useState } from "react";
 import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
+import { createTimeTableSchema } from "../../common/validationSchema";
 
 function CreateTimeTableModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
@@ -10,16 +11,27 @@ function CreateTimeTableModal({ visible, setVisible }) {
         class: "",
         date: "",
     });
+    const [errors, setErrors] = useState({});
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleAdd = () => {
-        // Handle adding student logic
-        console.log("Student Data: ", formData);
-    };
+    const handleAdd = async () => {
+        try {
+            await createTimeTableSchema.validate(formData, { abortEarly: false });
+            setErrors({});
+            // Handle adding video logic
+            console.log("Video Data: ", formData);
+        } catch (err) {
+            const validationErrors = {};
+            err.inner.forEach((error) => {
+                validationErrors[error.path] = error.message;
+            });
+            setErrors(validationErrors);
+        }
+    }
 
     return (
         <Modal
@@ -34,6 +46,7 @@ function CreateTimeTableModal({ visible, setVisible }) {
                 <hr className="mb-8 border-gray-300" />
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+                    <div className="relative">
                     <InputFieldWithLabel
                         type="text"
                         labelText="Teacher Name"
@@ -42,6 +55,11 @@ function CreateTimeTableModal({ visible, setVisible }) {
                         value={formData.teacherName}
                         onChange={handleInputChange}
                     />
+                     {errors.teacherName && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.teacherName}</p>
+                        )}
+                    </div>
+                    <div className="relative">
                     <InputFieldWithLabel
                         type="text"
                         labelText="Class"
@@ -50,6 +68,11 @@ function CreateTimeTableModal({ visible, setVisible }) {
                         value={formData.class}
                         onChange={handleInputChange}
                     />
+                     {errors.class && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.class}</p>
+                        )}
+                    </div>
+                    <div className="relative">
                     <InputFieldWithLabel
                         type="text"
                         labelText="Subject"
@@ -58,6 +81,11 @@ function CreateTimeTableModal({ visible, setVisible }) {
                         value={formData.subject}
                         onChange={handleInputChange}
                     />
+                     {errors.subject && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.subject}</p>
+                        )}
+                    </div>
+                    <div className="relative">
                     <InputFieldWithLabel
                         type="date"
                         labelText="Date & time"
@@ -66,11 +94,10 @@ function CreateTimeTableModal({ visible, setVisible }) {
                         value={formData.date}
                         onChange={handleInputChange}
                     />
-
-
-
-
-
+                     {errors.date && (
+                            <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.date}</p>
+                        )}
+                    </div>
                 </div>
 
                 {/* Action buttons */}

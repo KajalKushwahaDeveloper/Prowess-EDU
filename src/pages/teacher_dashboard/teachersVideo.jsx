@@ -29,7 +29,7 @@ const TeacherDashboardVideos = () => {
 
   return (
     <div className="admin-dashboard m-6 dashboard">
-      <div className="my-4 flex items-center justify-between flex-col sm:flex-row">
+      <div className="my-8 flex items-start md:items-center justify-between flex-col sm:flex-row border-b-2 pb-2">
         <h1 className="text-black font-bold text-2xl mb-4">Videos</h1>
         <div className="flex items-center justify-center">
           <Button

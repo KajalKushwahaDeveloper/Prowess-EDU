@@ -33,6 +33,7 @@ function DashboardSidebar({ links = [] }) {
               <Link
                 key={index}
                 to={link.path}
+                onClick={() => setIsOpen(false)} 
                 className="hover:bg-[#0069A4] hover:text-white duration-300 py-3 "
               >
                 <i className={`pi ${link.icon} mx-3`}></i>{link.name}
@@ -42,7 +43,7 @@ function DashboardSidebar({ links = [] }) {
 
           {/* Logout */}
           <div className="hover:bg-[#0069A4] hover:text-white duration-300 py-3">
-            <Link to="/logout">
+            <Link to="/logout" >
               <i className="pi pi-sign-out mx-5"></i>Log out
             </Link>
           </div>
