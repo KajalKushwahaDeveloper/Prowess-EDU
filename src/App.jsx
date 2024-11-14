@@ -22,6 +22,7 @@ import TeacherDashboardAssignment from './pages/teacher_dashboard/teacherDashboa
 import TeacherDashboardOnlineClass from './pages/teacher_dashboard/teacherDashboardOnlineClass';
 import TeacherDashboardTimeTable from './pages/teacher_dashboard/teacherDashboardTimeTable';
 import NotFound from './pages/pageNotFound';
+import AdminDashboardParent from './pages/admin_dashboard/adminDashboardParent';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           {/* Nested routes */}
           <Route path="students" element={<AdminDashboardStudent />} />
           <Route path="teachers" element={<AdminDashboardTeachers />} />
+          <Route path="parent" element={<AdminDashboardParent />} />
         </Route>
 
         {/* Parent Dashboard */}

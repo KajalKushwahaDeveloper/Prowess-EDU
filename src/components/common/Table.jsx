@@ -21,8 +21,8 @@ const Table = ({ data = [], columns = [] }) => {
             field={col.field}
             header={col.header}
             body={col.body}
-            headerClassName="p-2 text-center bg-gray-200" // Centers header text
-            className="p-2 text-center" // Centers body text
+            headerClassName="p-2  bg-gray-200" // Centers header text
+            className="p-2 " // Centers body text
           />
         ))}
       </DataTable>

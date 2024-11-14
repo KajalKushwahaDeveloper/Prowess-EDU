@@ -6,17 +6,16 @@ import { addTeacherSchema } from "../../common/validationSchema"; // Ensure this
 
 function AddNewTeacherModal({ visible, setVisible }) {
   const [formData, setFormData] = useState({
-    teacherName: "",
-    email: "",
-    phone: "",
-    qualification: "",
-    dob: null,
-    gender: "",
-    address: "",
-    classYouCanTeach: "",
-    experience: "",
-    subjects: "",
+  name: "",
+  phone: "",
+  email: "",
+  gender: "",
+  childName: "",
+  childClass: "",
+  childSection: "",
+  address: ""
   });
+
   const [errors, setErrors] = useState({});
   console.log("teachererr:", errors);
 
@@ -29,7 +28,7 @@ function AddNewTeacherModal({ visible, setVisible }) {
     console.log("Add button clicked"); // Debugging
     try {
       // Validate the form data
-      await addTeacherSchema.validate(formData, { abortEarly: false });
+      await addParentSchema.validate(formData, { abortEarly: false });
       console.log("Teacher Data: ", formData); // For debugging
       setErrors({}); // Clear previous errors if validation passes
       // Here, you would typically call a function to add the teacher
@@ -62,14 +61,28 @@ function AddNewTeacherModal({ visible, setVisible }) {
           <div className="relative">
             <InputFieldWithLabel
               type="text"
-              labelText="Teacher Name"
-              name="teacherName"
-              placeholder="Enter Teacher Name"
-              value={formData.teacherName}
+              labelText="Name"
+              name="name"
+              placeholder="Enter Name"
+              value={formData.name}
               onChange={handleInputChange}
             />
-            {errors.teacherName && (
-              <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.teacherName}</p>
+            {errors.name && (
+              <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.name}</p>
+            )}
+          </div>
+
+          <div className="relative">
+            <InputFieldWithLabel
+              type="number"
+              labelText="Phone"
+              name="phone"
+              placeholder="Enter Phone"
+              value={formData.phone}
+              onChange={handleInputChange}
+            />
+            {errors.phone && (
+              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.phone}</p>
             )}
           </div>
 
@@ -90,51 +103,9 @@ function AddNewTeacherModal({ visible, setVisible }) {
           <div className="relative">
             <InputFieldWithLabel
               type="text"
-              labelText="Phone"
-              name="phone"
-              placeholder="Enter Phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-            />
-            {errors.phone && (
-              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.phone}</p>
-            )}
-          </div>
-
-          <div className="relative">
-            <InputFieldWithLabel
-              type="text"
-              labelText="Qualification"
-              name="qualification"
-              placeholder="Enter Qualification"
-              value={formData.qualification}
-              onChange={handleInputChange}
-            />
-            {errors.qualification && (
-              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.qualification}</p>
-            )}
-          </div>
-
-          <div className="relative">
-            <InputFieldWithLabel
-              type="date"
-              labelText="Date of Birth"
-              name="dob"
-              placeholder="Select Date of Birth"
-              value={formData.dob}
-              onChange={handleInputChange}
-            />
-            {errors.dob && (
-              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.dob}</p>
-            )}
-          </div>
-
-          <div className="relative">
-            <InputFieldWithLabel
-              type="text"
               labelText="Gender"
               name="gender"
-              placeholder="Select Gender"
+              placeholder="Enter Gender"
               value={formData.gender}
               onChange={handleInputChange}
             />
@@ -148,56 +119,57 @@ function AddNewTeacherModal({ visible, setVisible }) {
               type="text"
               labelText="Address"
               name="address"
-              placeholder="Enter Address"
+              placeholder="Address"
               value={formData.address}
               onChange={handleInputChange}
             />
             {errors.address && (
-              <p className="text-rose-600 text-md absolute absolute left-0 " style={{ bottom: '-22px' }}>{errors.address}</p>
+              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.address}</p>
             )}
           </div>
 
           <div className="relative">
             <InputFieldWithLabel
               type="text"
-              labelText="Classes You Can Teach"
-              name="classYouCanTeach"
-              placeholder="Enter Classes"
-              value={formData.classYouCanTeach}
+              labelText="Child name"
+              name="childName"
+              placeholder="Enter Your Child name"
+              value={formData.childName}
               onChange={handleInputChange}
             />
-            {errors.classYouCanTeach && (
-              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.classYouCanTeach}</p>
+            {errors.childName && (
+              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.childName}</p>
             )}
           </div>
 
           <div className="relative">
             <InputFieldWithLabel
               type="text"
-              labelText="Experience"
-              name="experience"
-              placeholder="Enter Experience"
-              value={formData.experience}
+              labelText="Child Class"
+              name="childClass"
+              placeholder="Enter Child class"
+              value={formData.childClass}
               onChange={handleInputChange}
             />
-            {errors.experience && (
-              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.experience}</p>
+            {errors.childClass && (
+              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.childClass}</p>
             )}
           </div>
 
           <div className="relative">
             <InputFieldWithLabel
               type="text"
-              labelText="Subjects"
-              name="subjects"
-              placeholder="Enter Subjects"
-              value={formData.subjects}
+              labelText="Child Section"
+              name="childSection"
+              placeholder="Enter Child Section"
+              value={formData.childSection}
               onChange={handleInputChange}
             />
-            {errors.subjects && (
-              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.subjects}</p>
+            {errors.childSection && (
+              <p className="text-rose-600 text-md absolute absolute left-0 " style={{ bottom: '-22px' }}>{errors.childSection}</p>
             )}
           </div>
+
         </div>
 
         {/* Action Buttons */}
