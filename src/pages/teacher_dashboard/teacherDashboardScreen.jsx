@@ -1,6 +1,4 @@
 import Card from "../../components/molecules/Card";
-import StudentDashboardNewVideoTable from "../../components/organisms/tables/studentDashboardNewVideoTable";
-import StudentDashboardNewAssignmentsTable from "../../components/organisms/tables/studentDashboardNewAssignments";
 import TeacherDashboardNewAssignmentsTable from "../../components/organisms/tables/teacherDashboardNewAssignments";
 import TeacherDashboardNewVideoTable from "../../components/organisms/tables/teacherDashboardNewVideoTable";
 
@@ -50,7 +48,7 @@ function TeacherDashboard() {
                     New Video
                     <hr className="mt-2" />
                 </h1>
-                <div className="md:overflow-none overflow-x-auto mb-16">
+                <div className="md:overflow-none overflow-x-auto mb-8">
                     <TeacherDashboardNewVideoTable/>
                 </div>
             </div>
@@ -59,7 +57,7 @@ function TeacherDashboard() {
                     New Assignments
                     <hr className="mt-2" />
                 </h1>
-                <div className="md:overflow-none overflow-x-auto mb-16">
+                <div className="md:overflow-none overflow-x-auto mb-8">
                     <TeacherDashboardNewAssignmentsTable/>
                 </div>
             </div>

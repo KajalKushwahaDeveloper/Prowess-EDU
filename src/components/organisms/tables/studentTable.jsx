@@ -3,9 +3,14 @@ import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState } from "react";
 import { data } from "./data";
+import ViewAll from "../../common/viewAllFunctionality"
 
 const StudentsTable = () => {
   const [products, setProducts] = useState(data);
+  const [showAll, setShowAll] = useState(false);
+
+  // Show only the first 2 items if `showAll` is false, otherwise show all
+  const displayedData = showAll ? products : products.slice(0, 2);
 
   const columns = [
     { field: "id", header: "Id" },
@@ -20,20 +25,14 @@ const StudentsTable = () => {
         return (
           <div className="flex space-x-2">
             <Button
-              // label="Edit"
-              // onClick={() => handleEdit(rowData)}
               backgroundColor="#FF8A00"
               icon={Icons.editIcon}
             />
             <Button
-              // label="reload"
-              // onClick={() => handleDelete(rowData)}
               backgroundColor="#004871"
               icon={Icons.reloadIcon}
             />
             <Button
-              // label="delete"
-              // onClick={() => handleEdit(rowData)}
               backgroundColor="#FF4D00"
               icon={Icons.deleteIcon}
             />
@@ -46,10 +45,11 @@ const StudentsTable = () => {
   return (
     <>
       <Table
-        data={products}
+        data={displayedData}
         columns={columns}
-        tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
+        tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
       />
+    <ViewAll showAll={showAll} setShowAll={setShowAll}/>
     </>
   );
 };

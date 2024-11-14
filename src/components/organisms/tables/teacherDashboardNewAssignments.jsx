@@ -2,13 +2,16 @@ import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState } from "react";
+import { data } from "./data";
+import ViewAll from "../../common/viewAllFunctionality";
 
 const TeacherDashboardNewAssignmentsTable = () => {
-    const [products, setProducts] = useState("");
+    const [products, setProducts] = useState(data);
+    const [showAll, setShowAll] = useState(false);
 
     const columns = [
         { field: "id", header: "Id" },
-        { field: "subject", header: "Subject" },
+        { field: "subjectName", header: "Subject Name" },
         { field: "chapter", header: "Chapter" },
         { field: "questions", header: "Questions" },
         { field: "marks", header: "Marks" },
@@ -36,13 +39,18 @@ const TeacherDashboardNewAssignmentsTable = () => {
             },
         },
     ];
+    const displayedData = showAll ? products : products.slice(0,2)
 
     return (
+        <>
         <Table
-            data={products}
+            data={displayedData}
             columns={columns}
-            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
+            ta
+            bleStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
         />
+          <ViewAll showAll={showAll} setShowAll={setShowAll}/>
+    </>
     );
 };
 

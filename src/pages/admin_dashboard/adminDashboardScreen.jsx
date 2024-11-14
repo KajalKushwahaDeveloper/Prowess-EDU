@@ -72,7 +72,7 @@ function AdminDashboard() {
           New joining (Teacher)
           <hr />
         </h1>
-        <div className="md:overflow-none overflow-x-auto mb-16">
+        <div className="md:overflow-none overflow-x-auto mb-8">
           <TeachersTable />
         </div>
       </div>
@@ -81,7 +81,7 @@ function AdminDashboard() {
           New joining (Student)
           <hr />
         </h1>
-        <div className="md:overflow-none overflow-x-auto mb-16">
+        <div className="md:overflow-none overflow-x-auto mb-8">
           <StudentsTable />
         </div>
       </div>

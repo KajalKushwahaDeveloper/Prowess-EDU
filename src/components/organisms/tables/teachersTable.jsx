@@ -2,9 +2,11 @@ import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState } from "react";
 import { data } from "./data";
+import ViewAll from "../../common/viewAllFunctionality"
 
 const TeachersTable = () => {
-  const [products, setProducts] = useState( data );
+  const [products] = useState( data );
+  const [showAll, setShowAll] = useState(false);
 
   const columns = [
     { field: "id", header: "Id" },
@@ -39,13 +41,17 @@ const TeachersTable = () => {
         )
     },
 ];
+const displayData = showAll ? products : products.slice(0,2)
 
 return (
+    <>
     <Table
-        data={products}
+        data={displayData}
         columns={columns}
         tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
     />
+     <ViewAll showAll={showAll} setShowAll={setShowAll}/>
+    </>
 );
 };
 

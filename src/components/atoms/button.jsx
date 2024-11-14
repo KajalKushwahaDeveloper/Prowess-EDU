@@ -18,8 +18,8 @@ const Button = ({ label, onClick, width, height, customClass, icon, backgroundCo
           className={`font-medium ${customClass} flex items-center justify-center hover:opacity-90`} // Applied flex here
         >
           <div className="flex items-center justify-center gap-2 ml-3  ">
-            <span >{icon && <i className={`pi ${icon}`}  style={{ color: iconColor || "#FFFFFF" }}></i>} </span>
-            <span className="text-lg">{label}</span>
+            <span >{icon && <i className={`pi ${icon}`}  style={{ color: iconColor || "#FFFFFF", fontSize:"1rem" }}></i>} </span>
+            <span className="text-lg text-md">{label}</span>
           </div>
 
         </button>

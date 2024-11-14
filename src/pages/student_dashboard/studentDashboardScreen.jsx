@@ -48,7 +48,7 @@ function StudentDashboard() {
                     New Video
                     <hr className="mt-2" />
                 </h1>
-                <div className="md:overflow-none overflow-x-auto mb-16">
+                <div className="md:overflow-none overflow-x-auto mb-8">
                     <StudentDashboardNewVideoTable />
                 </div>
             </div>
@@ -57,7 +57,7 @@ function StudentDashboard() {
                     New Assignments
                     <hr className="mt-2" />
                 </h1>
-                <div className="md:overflow-none overflow-x-auto mb-16">
+                <div className="md:overflow-none overflow-x-auto mb-8">
                     <StudentDashboardNewAssignmentsTable />
                 </div>
             </div>
