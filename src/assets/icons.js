@@ -53,7 +53,6 @@ export const Icons = {
   deleteIcon:"pi pi-trash",
   reloadIcon: "pi-refresh",
   downloadIcon: "pi-download",
-  // rightArrow: "pi-arrow-right",
   leftArrow: "pi pi-arrow-left",
   videoIcon: "pi pi-play",
   angleRight: "pi pi-angle-right",

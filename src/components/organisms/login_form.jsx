@@ -16,7 +16,7 @@ const LoginForm = () => {
   // Array to store input field formData
   const inputFields = [
     {
-      labelText:"Email",
+      labelText: "Email",
       label: "Email",
       name: "Email",
       placeholder: "Enter your Email",
@@ -26,10 +26,10 @@ const LoginForm = () => {
       width: "100%",
     },
     {
-      labelText:"Password",
+      labelText: "Password",
       label: "Password",
       name: "password",
-      placeholder: "Enter your passwordasdasd",
+      placeholder: "Enter your password",
       type: "password",
       value: formData.password,
       maxLength: 30,
@@ -41,7 +41,7 @@ const LoginForm = () => {
     <>
       <div className="lg:h-screen flex items-center justify-center">
         <div className="bg-white p-8 md:p-0 w-full max-w-lg">
-          <h1 className="text_color text-5xl mb-5 text-center md:justify-start">
+          <h1 className="text_color text-4xl md:text-5xl mb-5 text-center md:justify-start">
             Welcome <span className="text-black">Back!</span>
           </h1>
           <p className="text-xl mb-12 text-center md:justify-start">Login to get started</p>
@@ -49,7 +49,7 @@ const LoginForm = () => {
             return (
               <div key={index} className="mb-4">
                 <InputFieldWithLabel
-                 labelText={inputFieldsData.labelText}
+                  labelText={inputFieldsData.labelText}
                   input_Lable={inputFieldsData.input_Lable}
                   input_Lable_For={inputFieldsData.input_Lable_For}
                   placeholder={inputFieldsData.placeholder}
@@ -68,16 +68,21 @@ const LoginForm = () => {
             );
           })}
 
-          <div className="flex items-center justify-start mt-6 mb-10">
-            <input
-              type="checkbox"
-              id="remember"
-              name="remember"
-              className="form-checkbox h-5 w-5 text-blue-600"
-            />
-            <label htmlFor="remember" className="ml-2">
-              Remember Me
-            </label>
+          <div className="flex items-center justify-between mt-6 mb-10">
+            <div className="flex items-center justify-start">
+              <input
+                type="checkbox"
+                id="remember"
+                name="remember"
+                className="form-checkbox h-5 w-5 text-blue-600"
+              />
+              <label htmlFor="remember" className="ml-2">
+                Remember Me
+              </label>
+            </div>
+            <div className="text-[#004871]">
+              <p>Forgot password?</p>
+            </div>
           </div>
           <div className="w-full">
             <Button label="Login" onClick={handleLogin} width="100%" backgroundColor="#004871" />

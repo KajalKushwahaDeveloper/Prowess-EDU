@@ -23,13 +23,14 @@ import TeacherDashboardOnlineClass from './pages/teacher_dashboard/teacherDashbo
 import TeacherDashboardTimeTable from './pages/teacher_dashboard/teacherDashboardTimeTable';
 import NotFound from './pages/pageNotFound';
 import AdminDashboardParent from './pages/admin_dashboard/adminDashboardParent';
+import ParentLogin from './pages/parent_dashboard/parentLoginScreen';
 
 function App() {
   return (
     // <StudentFAQ />
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
 
         {/*  Admin Dashboard */}
         <Route path="/admin" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>}>
@@ -43,10 +44,12 @@ function App() {
         </Route>
 
         {/* Parent Dashboard */}
-        <Route path="/parent" element={<ProtectedRoute role="parent"><ParentDashboard /></ProtectedRoute>}>
+        <Route path="/parent" element={<ProtectedRoute role="parent"><ParentLogin /></ProtectedRoute>}>
           {/* Index route for /teacher */}
-          <Route index element={<ParentDashboard />} />
+          <Route index element={<ParentLogin/>} />
           {/* Nested routes */}
+          <Route path="dashboard" element={<ParentDashboard />} />
+
           <Route path="strongArea" element={<ParentDashboardStrongArea />} />
           <Route path="weakArea" element={<ParentDashboardWeakArea />} />
         </Route>

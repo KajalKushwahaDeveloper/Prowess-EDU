@@ -10,6 +10,7 @@
   box-sizing: border-box;
   font-family: "poppins", Courier, monospace !important;
 }
+
 .bg_color {
   background: #004871;
 }
@@ -18,7 +19,7 @@
 .input-container input {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    border: 1px solid #004871;
+  border: 1px solid #004871;
   outline: none;
   padding: 0 10px;
   border-radius: 6px;
@@ -27,14 +28,16 @@
 .input-container input:focus {
   outline: none;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; /* Ensure shadow remains consistent */
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  /* Ensure shadow remains consistent */
 }
+
 /* prime Icon */
 .pi {
   font-family: "primeicons" !important;
-  font-size: 1.3rem ;
+  font-size: 1.3rem;
   line-height: inherit;
-}   
+}
 
 /* accordion */
 .custom-accordion-container .p-accordion-header {
@@ -65,8 +68,8 @@
   color: #000;
 }
 
-.content{
-  margin-top: 7rem ;
+.content {
+  margin-top: 7rem;
 }
 
 /* page not found */
@@ -77,14 +80,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   h1 {
     font-size: 2.5rem;
     margin-bottom: 20px;
   }
+
   p {
     font-size: 1.25rem;
     margin-bottom: 30px;
   }
+
   a {
     font-size: 1rem;
     color: #fff;
@@ -93,36 +99,50 @@
     text-decoration: none;
     padding: 1rem;
     border-radius: .5rem;
+
     &:hover {
       text-decoration: none;
     }
   }
-  img{
-      width: 20rem;
+
+  img {
+    width: 20rem;
   }
+}
+
+.login-form {
+  height: 95vh;
 }
 
 /* dashborad content */
 @media screen and (min-width: 768px) {
-  .dashboard{
+  .dashboard {
     margin-left: 17rem;
   }
 
 }
 
 /* login screen  */
-@media screen and (max-width:996px){
-  .login_screen{
-    margin-top: 4rem; 
+@media screen and (max-width:996px) {
+  .login_screen {
+    margin-top: 1rem;
+    margin-bottom: 2rem; 
   }
-  .login_bg_img img{
-   background-color: white;
+
+  .login-form {
+    height: 65vh;
   }
-  .school_name{
-    color: black; 
+
+  .login_bg_img img {
+    background-color: white;
   }
-  .login_logo{
+
+  .school_name {
+    color: black;
+  }
+
+  .login_logo {
     height: 17rem;
   }
-  
+
 }
