@@ -1,15 +1,28 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import Header from "./Header";  // Import your Header component
+import { Link, useNavigate } from "react-router-dom";
+import Header from "./Header";
+import { useDispatch , useSelector} from "react-redux";
+import { logout } from "../../features/auth/authReducer"; // Import the logout action
 
 function DashboardSidebar({ links = [] }) {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Toggle sidebar function
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+  const handleLogout = () => {
+    // Clear localStorage or sessionStorage if storing tokens
+    localStorage.removeItem("authToken");
 
+    // Optionally dispatch a Redux action to clear user state
+    dispatch(logout);
+
+    // Redirect to the login page
+    navigate("/");
+  };
   return (
     <div>
       {/* Pass isOpen and toggleSidebar to Header */}
@@ -42,8 +55,8 @@ function DashboardSidebar({ links = [] }) {
           </div>
 
           {/* Logout */}
-          <div className="hover:bg-[#0069A4] hover:text-white duration-300 py-3">
-            <Link to="/logout" >
+          <div className="hover:bg-[#0069A4] hover:text-white duration-300 py-3" onClick={handleLogout}>
+            <Link >
               <i className="pi pi-sign-out mx-5"></i>Log out
             </Link>
           </div>
