@@ -24,7 +24,7 @@ const LoginForm = () => {
   // Monitor the `data` property for navigation
   useEffect(() => {
     if (data?.status === 200) {
-    localStorage.setItem("token",data?.data?.token)
+      localStorage.setItem("token", data?.data?.token)
       navigate("/admin");
     }
   }, [data, navigate]); // Dependency array ensures this runs when `data` changes
@@ -95,6 +95,22 @@ const LoginForm = () => {
 
         {loading && <p className="text-blue-600 text-center mb-4">Loading...</p>}
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        <div className="flex items-center justify-between mt-6 mb-10">
+          <div className="flex items-center justify-start">
+            <input
+              type="checkbox"
+              id="remember"
+              name="remember"
+              className="form-checkbox h-5 w-5 text-blue-600"
+            />
+            <label htmlFor="remember" className="ml-2">
+              Remember Me
+            </label>
+          </div>
+          <div className="text-[#004871]">
+            <p>Forgot password?</p>
+          </div>
+        </div>
 
         <div className="w-full">
           <Button label="Login" onClick={handleLogin} width="100%" backgroundColor="#004871" />

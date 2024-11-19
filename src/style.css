@@ -32,6 +32,37 @@
   /* Ensure shadow remains consistent */
 }
 
+/* dropdown */
+.input-container select {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border: 1px solid #004871;
+  outline: none;
+  padding:  10px;
+  border-radius: 6px;
+}
+
+.input-container select:focus {
+  outline: none;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+/* class dropdown */
+.class-container {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border: 1px solid #004871;
+  outline: none;
+  padding:  10px;
+  border-radius: 6px;
+}
+
+.class-container:focus {
+  outline: none;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
 /* prime Icon */
 .pi {
   font-family: "primeicons" !important;
@@ -126,7 +157,7 @@
 @media screen and (max-width:996px) {
   .login_screen {
     margin-top: 1rem;
-    margin-bottom: 2rem; 
+    margin-bottom: 2rem;
   }
 
   .login-form {

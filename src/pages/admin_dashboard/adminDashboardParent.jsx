@@ -2,8 +2,7 @@ import { useState } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
 import ParentTable from "../../components/organisms/tables/parentTable";
-import Modal from "../../components/common/modal";
-import AddNewTeacherModal from "../../components/organisms/modals/addNewTeacherModal";
+import AddNewParentModal from "../../components/organisms/modals/addNewParentModal";
 import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
 
 function AdminDashboardParent() {
@@ -52,7 +51,7 @@ function AdminDashboardParent() {
           onPageChange={handlePageChange}
         />
       </div>
-      <AddNewTeacherModal visible={visible} setVisible={setVisible} />
+      <AddNewParentModal visible={visible} setVisible={setVisible} />
     </div>
   );
 }

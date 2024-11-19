@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { ADD_TEACHER } from "../../constants/apiConfig";
+import { BASE_URL } from "../../constants/apiConfig";
 
 // Common actions for all roles
 export const getItem = createAsyncThunk(
@@ -16,21 +17,46 @@ export const getItem = createAsyncThunk(
     }
 )
 
-
 export const addItem = createAsyncThunk(
     "dashboard/addItem",
-    async ({ role, payload }, { rejectWithValue }) => {
-        // const { data } = useSelector((state) => state.auth);
-        // const role = data?.data?.user?.type === 4 
-        // console.log("loginData:", data);
+    async ({ role, payload }, { rejectWithValue, getState }) => {
+        localStorage.getItem("token")
         try {
-            const response = await axios.post();
+
+            const token = localStorage.getItem("token"); // Replace with appropriate method
+            if (!token) {
+                return rejectWithValue("Unauthorized - Missing Token");
+            }
+
+            let apiEndpoint;
+            switch (role) {
+                case "teacher":
+                    apiEndpoint = "/addTeacher";
+                    break;
+                case "student":
+                    apiEndpoint = "/addStudent";
+                    break;
+                case "parent":
+                    apiEndpoint = "/addParent";
+                    break;
+                default:
+                    return rejectWithValue("Invalid role provided");
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            const response = await axios.post(`${BASE_URL}${apiEndpoint}`, payload, config);
             return response?.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Add failed");
         }
     }
 );
+
 
 export const editItem = createAsyncThunk(
     "dashboard/editItem",

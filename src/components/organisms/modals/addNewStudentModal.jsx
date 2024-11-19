@@ -3,46 +3,52 @@ import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 import { addStudentSchema } from "../../common/validationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem } from "../../../features/dashboardSharedApi/sharedReducer";
+import SubjectsDropdown from "../../molecules/subjectsDropdown";
 
 function AddNewStudentModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
-        studentName: "",
+        name: "",
         parentName: "",
-        phone: "",
+        parentPhone: "",
         email: "",
         dob: "",
         gender: "",
         section: "",
         class: "",
         address: "",
-        subjects: ""
+        subjects: []
     });
 
     const [errors, setErrors] = useState({});
     console.log("errors:", errors);
 
+    const dispatch = useDispatch();
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
     const handleAdd = async () => {
-        console.log("Add button clicked"); // Debugging
         try {
-            // Validate the form data
-            await addStudentSchema.validate(formData, { abortEarly: false });
-            console.log("Student Data: ", formData); // For debugging
-            setErrors({}); // Clear previous errors if validation passes
-        } catch (validationErrors) {
-            // Collect validation errors and set them in the state
-            const formattedErrors = {};
-            validationErrors.inner.forEach((error) => {
-                formattedErrors[error.path] = error.message;
-            });
-            console.log("Validation errors:", formattedErrors); // For debugging
-            setErrors(formattedErrors);
+          // Dispatch the addItem action with role and payload
+          await addStudentSchema.validate(formData, { abortEarly: false });
+          console.log("Teacher Data: ", formData);
+          await dispatch(addItem({ role: "teacher", payload: formData })).unwrap();
+          // Validate the form data
+          setErrors({}); // Clear previous errors if validation passes
+          setVisible(false); // Optionally close the modal on success
+        } catch (error) {
+          const formattedErrors = {};
+          error?.inner?.forEach((error) => {
+            formattedErrors[error.path] = error.message;
+          });
+          console.log("Validation errors:", formattedErrors); // For debugging
+          setErrors(formattedErrors);
+          console.log("Validation or API errors:", error);
         }
-    };
+      };
 
     return (
         <Modal
@@ -52,7 +58,7 @@ function AddNewStudentModal({ visible, setVisible }) {
             onHide={() => setVisible(false)}
             className="rounded-lg"
         >
-            <div className="bg-white m-4">
+            <div className="bg-white lg:m-0 m-4">
                 <h1 className="font-medium text-2xl my-2">Add new Student</h1>
                 <hr className="mb-8 border-gray-300" />
 
