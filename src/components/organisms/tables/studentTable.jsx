@@ -2,24 +2,34 @@ import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState, useEffect } from "react";
-import { getItem } from "../../../features/dashboardSharedApi/sharedReducer";
+import { getItem, deleteItem } from "../../../features/dashboardSharedApi/sharedReducer";
 import ViewAll from "../../common/viewAllFunctionality"
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const StudentsTable = () => {
   const dispatch = useDispatch();
   const [showAll, setShowAll] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("student");
   
-  const { data, loading, error } = useSelector((state) => state.sharedApi);
-  const tableData = data?.students;
+  const {  studentData, loading, error, shouldReloadStudentData } = useSelector((state) => state.sharedApi);
+  const tableData = studentData?.students;
 
   useEffect(() => {
-      if (selectedRole) {
-          dispatch(getItem({ role: selectedRole }));
-      }
-  }, [dispatch, selectedRole]);
+          dispatch(getItem({ role: "student" }));
+  }, [dispatch, shouldReloadStudentData]);
   
+  const handleDelete = (rowData) => {
+    try {
+      dispatch(deleteItem({ role: "student", id: rowData.id }));
+      toast.success("Student delete successfully! ");
+    } catch (error) {
+      console.log("error:", error);
+      toast.error(error || "Failed to delete student. Please fix errors.");
+    }
+  };
+
   const columns = [
     { field: "id", header: "Id" },
     { field: "name", header: "Teacher name" },
@@ -29,7 +39,7 @@ const StudentsTable = () => {
     {
       field: "Action",
       header: "Action",
-      body: () => {
+      body: (rowData) => {
         return (
           <div className="flex space-x-2">
             <Button
@@ -43,6 +53,7 @@ const StudentsTable = () => {
             <Button
               backgroundColor="#FF4D00"
               icon={Icons.deleteIcon}
+              onClick={() => handleDelete(rowData)}
               />
           </div>
         );
@@ -53,6 +64,7 @@ const StudentsTable = () => {
   const displayedData = showAll ? tableData : tableData?.slice(0, 2);
   return (
     <>
+     <ToastContainer />
       <Table
         data={displayedData}
         columns={columns}

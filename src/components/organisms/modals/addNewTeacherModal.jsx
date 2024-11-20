@@ -9,7 +9,9 @@ import GenderDropdown from "../../molecules/genderDropdown";
 import ClassDropdown from "../../molecules/classDropdown";
 import SubjectsDropdown from "../../molecules/subjectsDropdown";
 import { FaSpinner } from "react-icons/fa";
-import { toast } from "react-toastify"; // Import toast
+import { toast } from "react-toastify"; 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 function AddNewTeacherModal({ visible, setVisible }) {
@@ -31,7 +33,7 @@ function AddNewTeacherModal({ visible, setVisible }) {
   const dispatch = useDispatch();
   console.log("formData:", formData);
 
-  const { loading, error } = useSelector((state) => state.sharedApi);
+  const { data, loading, error } = useSelector((state) => state.sharedApi);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -52,7 +54,19 @@ function AddNewTeacherModal({ visible, setVisible }) {
       await dispatch(addItem({ role: "teacher", payload: formData })).unwrap();
       // Validate the form data
       setErrors({});
-      toast.success("Teacher added successfully! "); // Clear previous errors if validation passes
+      toast.success(data?.data?.message || "Teacher added successfully! "); // Clear previous errors if validation passes
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        qualification: "",
+        dob: null,
+        gender: "",
+        address: "",
+        classYouCanTeach: [],
+        experience: "",
+        subjects: [],
+      });
       setVisible(false); // Optionally close the modal on success
     } catch (error) {
       const formattedErrors = {};
@@ -61,7 +75,7 @@ function AddNewTeacherModal({ visible, setVisible }) {
       });
       console.log("Validation errors:", formattedErrors); // For debugging
       setErrors(formattedErrors);
-      toast.error("Failed to add teacher. Please fix errors."); 
+      toast.error(error || "Failed to add teacher. Please fix errors."); 
       console.log("Validation or API errors:", error);
     }
   };
@@ -69,6 +83,8 @@ function AddNewTeacherModal({ visible, setVisible }) {
   console.log("Form Data Classes:", formData.subjects);
   
   return (
+    <>
+    <ToastContainer />
     <Modal
       visible={visible}
       setVisible={setVisible}
@@ -76,6 +92,7 @@ function AddNewTeacherModal({ visible, setVisible }) {
       onHide={() => setVisible(false)}
       className="rounded-lg"
     >
+      
       <div className="bg-white lg:m-0 m-4">
         <h1 className="font-medium text-2xl my-2">Add New Teacher</h1>
         <hr className="mb-8 border-gray-300" />
@@ -246,6 +263,7 @@ function AddNewTeacherModal({ visible, setVisible }) {
         </div>
       </div>
     </Modal>
+    </>
   );
 }
 

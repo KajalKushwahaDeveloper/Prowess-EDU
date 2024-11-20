@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/auth/authReducer.js";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -23,16 +26,20 @@ const LoginForm = () => {
   console.log("Redux data:", data?.data?.user?.type);
   console.log("Redux error:", error);
 
-  // Monitor the `data` property for navigation
   useEffect(() => {
     if (data?.status === 200) {
-      localStorage.setItem("token", data?.data?.token)
-      toast.success(data?.data?.message || "Login successful!");
-      navigate("/admin");
-    }else if (error) {
+      localStorage.setItem("token", data?.data?.token);
+      toast.success(data?.data?.message || "Login successful!", { autoClose: 1000 });
+  
+      // Navigate after toast
+      setTimeout(() => {
+        navigate("/admin");
+      }, 1000); // Delay of 1 second
+    } else if (error) {
       toast.error(error || "Login failed. Please try again.");
     }
-  }, [data, navigate]); // Dependency array ensures this runs when `data` changes
+  }, [data, error, navigate]);
+  
 
   const handleLogin = () => {
     const { email, password } = formData;
@@ -73,6 +80,7 @@ const LoginForm = () => {
 
   return (
     <div className="lg:h-screen flex items-center justify-center">
+    <ToastContainer />
       <div className="bg-white p-8 md:p-0 w-full max-w-lg">
         <h1 className="text_color text-4xl md:text-5xl mb-5 text-center md:justify-start">
           Welcome <span className="text-black">Back!</span>

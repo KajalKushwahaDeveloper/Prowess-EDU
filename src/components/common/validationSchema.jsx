@@ -1,9 +1,9 @@
 import * as Yup from "yup";
 
 export const addStudentSchema = Yup.object().shape({
-    studentName: Yup.string().required("Student name is required"),
+    name: Yup.string().required("Student name is required"),
     parentName: Yup.string().required("Parent name is required"),
-    phone: Yup.string()
+    parentPhone: Yup.string()
         .required("Phone number is required")
         .matches(/^[0-9]+$/, "Phone number must be digits")
         .min(10, "Phone number must be at least 10 digits"),

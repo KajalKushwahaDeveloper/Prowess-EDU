@@ -1,7 +1,10 @@
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState, useEffect } from "react";
-import { getItem } from "../../../features/dashboardSharedApi/sharedReducer";
+import { getItem ,deleteItem} from "../../../features/dashboardSharedApi/sharedReducer";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import ViewAll from "../../common/viewAllFunctionality"
 import { useDispatch, useSelector } from "react-redux";
@@ -9,18 +12,25 @@ import { useDispatch, useSelector } from "react-redux";
 const TeachersTable = () => {
     const dispatch = useDispatch();
     const [showAll, setShowAll] = useState(false);
-    const [selectedRole, setSelectedRole] = useState("teacher");
     
-    const { data, loading, error } = useSelector((state) => state.sharedApi);
-    const tableData = data?.teachers;
+    const { data, teacherData, loading, error, shouldReloadTeacherData } = useSelector((state) => state.sharedApi);
+    const tableData = teacherData?.teachers;
     console.log("Redux Data:", data);
-    console.log("Selected Role:", selectedRole);
 
     useEffect(() => {
-        if (selectedRole) {
-            dispatch(getItem({ role: selectedRole }));
-        }
-    }, [dispatch, selectedRole]);
+            dispatch(getItem({ role: "teacher" }));
+    }, [dispatch, shouldReloadTeacherData]);
+
+
+  const handleDelete = async(rowData) => {
+    try {
+      await dispatch(deleteItem({ role: "teacher", id: rowData.id }));
+      toast.success( "Teacher delete successfully! ");
+    } catch (error) {
+      console.log("error:", error);
+      toast.error(error || "Failed to delete teacher. Please fix errors.");
+    }
+  };
 
     const columns = [
         { field: "id", header: "Id" },
@@ -46,7 +56,7 @@ const TeachersTable = () => {
                         className="p-button-rounded p-button-info p-1"
                     />
                     <Button
-                        // onClick={() => handleDelete(rowData)}
+                        onClick={() => handleDelete(rowData)}
                         backgroundColor="#FF4D00"
                         icon="pi pi-trash"
                         className="p-button-rounded p-button-danger p-1"
@@ -63,6 +73,7 @@ const TeachersTable = () => {
 
     return (
         <>
+         <ToastContainer />
             <Table
                 data={displayData}
                 columns={columns}
