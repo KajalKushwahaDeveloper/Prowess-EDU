@@ -6,6 +6,9 @@ import { addStudentSchema } from "../../common/validationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../../features/dashboardSharedApi/sharedReducer";
 import SubjectsDropdown from "../../molecules/subjectsDropdown";
+import GenderDropdown from "../../molecules/genderDropdown";
+import { FaSpinner } from "react-icons/fa";
+import { toast } from "react-toastify"; // Import toast
 
 function AddNewStudentModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
@@ -22,9 +25,12 @@ function AddNewStudentModal({ visible, setVisible }) {
     });
 
     const [errors, setErrors] = useState({});
+    const [selectedSubjects, setSelectedSubjects] = useState([]);
     console.log("errors:", errors);
 
     const dispatch = useDispatch();
+    const { loading, error } = useSelector((state) => state.sharedApi);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -32,23 +38,25 @@ function AddNewStudentModal({ visible, setVisible }) {
 
     const handleAdd = async () => {
         try {
-          // Dispatch the addItem action with role and payload
-          await addStudentSchema.validate(formData, { abortEarly: false });
-          console.log("Teacher Data: ", formData);
-          await dispatch(addItem({ role: "teacher", payload: formData })).unwrap();
-          // Validate the form data
-          setErrors({}); // Clear previous errors if validation passes
-          setVisible(false); // Optionally close the modal on success
-        } catch (error) {
-          const formattedErrors = {};
-          error?.inner?.forEach((error) => {
-            formattedErrors[error.path] = error.message;
-          });
-          console.log("Validation errors:", formattedErrors); // For debugging
-          setErrors(formattedErrors);
-          console.log("Validation or API errors:", error);
+            // Dispatch the addItem action with role and payload
+            await addStudentSchema.validate(formData, { abortEarly: false });
+            console.log("student Data: ", formData);
+            await dispatch(addItem({ role: "teacher", payload: formData })).unwrap();
+            // Validate the form data
+            setErrors({}); // Clear previous errors if validation passes
+            toast.success("Student added successfully! "); // Clear previous errors if validation passes
+            setVisible(false); // Optionally close the modal on success
+          } catch (error) {
+            const formattedErrors = {};
+            error?.inner?.forEach((error) => {
+              formattedErrors[error.path] = error.message;
+            });
+            console.log("Validation errors:", formattedErrors); // For debugging
+            setErrors(formattedErrors);
+            toast.error("Failed to add student. Please fix errors."); 
+            console.log("Validation or API errors:", error);
         }
-      };
+    };
 
     return (
         <Modal
@@ -67,12 +75,12 @@ function AddNewStudentModal({ visible, setVisible }) {
                         <InputFieldWithLabel
                             type="text"
                             labelText="Student Name"
-                            name="studentName"
+                            name="name"
                             placeholder="Enter Student Name"
-                            value={formData.studentName}
+                            value={formData.name}
                             onChange={handleInputChange}
                         />
-                        {errors.studentName && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.studentName}</p>}
+                        {errors.name && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.name}</p>}
                     </div>
 
                     <div className="relative">
@@ -91,12 +99,12 @@ function AddNewStudentModal({ visible, setVisible }) {
                         <InputFieldWithLabel
                             type="text"
                             labelText="Student/Parent Phone"
-                            name="phone"
+                            name="parentPhone"
                             placeholder="Enter Phone Number"
-                            value={formData.phone}
+                            value={formData.parentPhone}
                             onChange={handleInputChange}
                         />
-                        {errors.phone && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.phone}</p>}
+                        {errors.parentPhone && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.parentPhone}</p>}
                     </div>
 
                     <div className="relative">
@@ -123,15 +131,16 @@ function AddNewStudentModal({ visible, setVisible }) {
                     </div>
 
                     <div className="relative">
-                        <InputFieldWithLabel
-                            type="select"
-                            labelText="Gender"
+                        <GenderDropdown
+                            label="Gender"
                             name="gender"
-                            options={["Male", "Female", "Other"]}
                             value={formData.gender}
                             onChange={handleInputChange}
+                            error={errors.gender}
                         />
-                        {errors.gender && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.gender}</p>}
+                        {errors.gender && (
+                            <p className="text-rose-600 text-sm absolute left-0 " style={{ bottom: '-20px' }}>{errors.gender}</p>
+                        )}
                     </div>
 
                     <div className="relative">
@@ -171,15 +180,18 @@ function AddNewStudentModal({ visible, setVisible }) {
                     </div>
 
                     <div className="relative">
-                        <InputFieldWithLabel
-                            type="text"
-                            labelText="Subjects"
+                        <SubjectsDropdown
+                            label="Subjects"
                             name="subjects"
-                            placeholder="Enter Subjects"
-                            value={formData.subjects}
-                            onChange={handleInputChange}
+                            selectedValues={formData.subjects}
+                            onChange={(newSelectedSubjects) => {
+                                setSelectedSubjects(newSelectedSubjects); // Update local state
+                                setFormData({ ...formData, subjects: newSelectedSubjects });
+                            }}
                         />
-                        {errors.subjects && <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors.subjects}</p>}
+                        {errors.subjects && (
+                            <p className="text-rose-600 text-sm absolute left-0 " style={{ bottom: '-20px' }}>{errors.subjects}</p>
+                        )}
                     </div>
                 </div>
 
@@ -190,7 +202,11 @@ function AddNewStudentModal({ visible, setVisible }) {
                         onClick={() => setVisible(false)}
                     />
                     <Button
-                        label="Add"
+                         label={loading ? (
+                            <FaSpinner className="animate-spin text-white mx-auto" />
+                          ) : (
+                            "Add"
+                          )}
                         backgroundColor="#00A943"
                         onClick={handleAdd}
                     />

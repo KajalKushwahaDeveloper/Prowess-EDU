@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { ADD_TEACHER } from "../../constants/apiConfig";
+import { ADD_TEACHER , GET_PARENT} from "../../constants/apiConfig";
 import { BASE_URL } from "../../constants/apiConfig";
 
 // Common actions for all roles
@@ -9,13 +9,44 @@ export const getItem = createAsyncThunk(
     "dashboard/getItem",
     async ({ role }, { rejectWithValue }) => {
         try {
-            const response = await axios.get(GET);
-            return response?.data
+            console.log("Role:", role);
+
+            const token = localStorage.getItem("token"); // Fetch token from storage
+            if (!token) {
+                return rejectWithValue("Unauthorized - Missing Token");
+            }
+
+            let apiEndpoint;
+            switch (role) {
+                case "teacher":
+                    apiEndpoint = "/getTeachers"; // Update endpoint for GET
+                    break;
+                case "student":
+                    apiEndpoint = "/getStudents"; // Update endpoint for GET
+                    break;
+                case "parent":
+                    apiEndpoint = "/getParents"; // Update endpoint for GET
+                    break;
+                default:
+                    return rejectWithValue("Invalid role provided");
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+
+            // Use axios.get for GET API
+            const response = await axios.get(`${BASE_URL}${apiEndpoint}`, config);
+            console.log("API Response:", response?.data);
+            return response?.data?.data; // Return the response data
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message);
+            console.error("API Error:", error.response || error.message || error);
+            return rejectWithValue(error.response?.data?.message || "Get failed");
         }
     }
-)
+);
 
 export const addItem = createAsyncThunk(
     "dashboard/addItem",
@@ -94,14 +125,14 @@ const sharedReducer = createSlice({
         builder
             // Get Items
             .addCase(getItem.pending, (state) => {
-                state.loading = true,
-                    state.error = null;
+                state.loading = true;
+                state.error = null;
             })
-            .addCase(getItem.fulfilled, (state) => {
+            .addCase(getItem.fulfilled, (state, action) => {  // action is now correctly passed
                 state.loading = false;
-                state.data = action.payload;
+                state.data = action.payload;  // action.payload contains the response data
             })
-            .addCase(getItem.rejected, (state) => {
+            .addCase(getItem.rejected, (state, action) => {  // action is passed here as well
                 state.loading = false;
                 state.error = action.payload;
             })
@@ -112,7 +143,7 @@ const sharedReducer = createSlice({
             })
             .addCase(addItem.fulfilled, (state, action) => {
                 state.loading = false;
-                state.data.push(action.payload);
+                state.data = action.payload;
             })
             .addCase(addItem.rejected, (state, action) => {
                 state.loading = false;
@@ -132,7 +163,7 @@ const sharedReducer = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
-            // delete Items
+            // Delete Items
             .addCase(deleteItem.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -149,3 +180,4 @@ const sharedReducer = createSlice({
 });
 
 export default sharedReducer.reducer;
+

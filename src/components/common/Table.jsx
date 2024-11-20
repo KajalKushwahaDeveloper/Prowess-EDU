@@ -8,7 +8,7 @@ const Table = ({ data = [], columns = [] }) => {
         value={data}
         responsiveLayout="scroll"
         style={{
-          fontSize: "1rem",
+          fontSize: "0.9rem",
           backgroundColor: "white",
           borderRadius: "8px",
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",

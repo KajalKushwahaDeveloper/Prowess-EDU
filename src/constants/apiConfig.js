@@ -14,7 +14,7 @@ export const ADD_STUDENT = BASE_URL + "/addStudent";
 export const EDIT_STUDENT = (id) => `${BASE_URL}/editStudent/${id}`;
 export const DELETE_STUDENT = (id) => `${BASE_URL}/deleteStudent/${id}`;
 // PARENT DASHBOARD
-export const LOGIN_PARENT = BASE_URL + "/teacherLogin";
+export const LOGIN_PARENT = BASE_URL + "/parentLogin";
 export const GET_PARENT = BASE_URL + "/getParents";
 export const ADD_PARENT = BASE_URL + "/addParent";
 export const EDIT_PARENT = (id) => `${BASE_URL}/editParent/${id}`;

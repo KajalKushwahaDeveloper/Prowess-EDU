@@ -14,10 +14,7 @@ export const addStudentSchema = Yup.object().shape({
         .required("Date of Birth is required"),
     gender: Yup.string().required("Gender is required"),
     section: Yup.string().required("Section is required"),
-    class: Yup.array()
-        .of(Yup.string().required("Each class must be valid"))
-        .min(1, "Please select at least one class")
-        .required("Classes you can teach are required"),
+    class: Yup.string().required("Classes you can teach are required"),
     address: Yup.string().required("Address is required"),
     subjects: Yup.array()
     .of(Yup.string().required("Each subject must be valid"))
@@ -49,6 +46,16 @@ export const addTeacherSchema = Yup.object().shape({
     .required("Subjects are required"),
 });
 
+export const addParentSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    phone: Yup.string().required("Phone number is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    gender: Yup.string().required("Gender is required"),
+    childName: Yup.string().required("Child Name is required"),
+    childClass: Yup.string().required("Classes you can teach are required"),
+    childSection: Yup.string().required("Child Section is required"),
+    address: Yup.string().required("Address is required"),
+});
 export const addNewVideoSchema = Yup.object().shape({
     subject: Yup.string().required("Subject is required"),
     chapter: Yup.string().required("Chapter is required"),
@@ -93,16 +100,3 @@ export const createTimeTableSchema = Yup.object().shape({
     date: Yup.string().required("Please select a date"),
 });
 
-export const addParentSchema = Yup.object().shape({
-    name: Yup.string().required("Name is required"),
-    phone: Yup.string().required("Phone number is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    gender: Yup.string().required("Gender is required"),
-    childName: Yup.string().required("Child Name is required"),
-    childClass: Yup.array()
-        .of(Yup.string().required("Each class must be valid"))
-        .min(1, "Please select at least one class")
-        .required("Classes you can teach are required"),
-    childSection: Yup.string().required("Child Section is required"),
-    address: Yup.string().required("Address is required"),
-});

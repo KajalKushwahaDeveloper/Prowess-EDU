@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ADMIN_LOGIN, LOGIN_PARENT } from "../../constants/apiConfig";
+import { ADMIN_LOGIN, LOGIN_STUDENT } from "../../constants/apiConfig";
 
-export const login = createAsyncThunk(
-  'auth/login', //action type
+export const studentLogin = createAsyncThunk(
+  'studentAuth/studentLogin', //action type
   async (payload, { rejectWithValue }) => {
     try {
       // Make API request
       const response = await axios.post(
-        ADMIN_LOGIN,
+        LOGIN_STUDENT,
         payload
       );
       console.log("response:", response?.data);
@@ -24,8 +24,8 @@ export const login = createAsyncThunk(
   }
 );
 
-const authReducer = createSlice({
-  name: 'auth',
+const studentAuthReducer = createSlice({
+  name: 'studentAuth',
   initialState: {
     data: null,
     loading: false,
@@ -39,15 +39,15 @@ const authReducer = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(login.pending, (state) => {
+      .addCase(studentLogin.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(studentLogin.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload; // Ensure this stores the API response
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(studentLogin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload; // Store error message if the API call fails
       });
@@ -55,6 +55,6 @@ const authReducer = createSlice({
   }
 });
 
-export const { logout } = authReducer.actions;
+export const { logout } = studentAuthReducer.actions;
 
-export default authReducer.reducer;
+export default studentAuthReducer.reducer;

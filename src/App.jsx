@@ -44,11 +44,11 @@ function App() {
         </Route>
 
         {/* Parent Dashboard */}
-        <Route path="/parent" element={<ProtectedRoute role="parent"><ParentLogin /></ProtectedRoute>}>
+        <Route path="/parent" element={<ProtectedRoute role="parent"><ParentDashboard /></ProtectedRoute>}>
           {/* Index route for /teacher */}
-          <Route index element={<ParentLogin/>} />
+          <Route index element={<ParentDashboard/>} />
           {/* Nested routes */}
-          <Route path="dashboard" element={<ParentDashboard />} />
+          {/* <Route path="dashboard" element={<ParentDashboard />} /> */}
 
           <Route path="strongArea" element={<ParentDashboardStrongArea />} />
           <Route path="weakArea" element={<ParentDashboardWeakArea />} />

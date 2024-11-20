@@ -5,6 +5,10 @@ import Modal from "../../common/modal";
 import { addParentSchema } from "../../common/validationSchema"; 
 import { useDispatch, useSelector } from "react-redux";
 import { addItem } from "../../../features/dashboardSharedApi/sharedReducer";
+import GenderDropdown from "../../molecules/genderDropdown";
+import { FaSpinner } from "react-icons/fa";
+import { toast } from "react-toastify"; // Import toast
+
 
 function AddNewParentModal({ visible, setVisible }) {
   const [formData, setFormData] = useState({
@@ -20,7 +24,8 @@ function AddNewParentModal({ visible, setVisible }) {
 
   const [errors, setErrors] = useState({});
   console.log("teachererr:", errors);
-
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.sharedApi);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -31,9 +36,10 @@ function AddNewParentModal({ visible, setVisible }) {
       // Dispatch the addItem action with role and payload
       await addParentSchema.validate(formData, { abortEarly: false });
       console.log("Teacher Data: ", formData);
-      await dispatch(addItem({ role: "teacher", payload: formData })).unwrap();
+      await dispatch(addItem({ role: "parent", payload: formData })).unwrap();
       // Validate the form data
       setErrors({}); // Clear previous errors if validation passes
+      toast.success("Teacher added successfully! "); // Clear previous errors if validation passes
       setVisible(false); // Optionally close the modal on success
     } catch (error) {
       const formattedErrors = {};
@@ -42,6 +48,7 @@ function AddNewParentModal({ visible, setVisible }) {
       });
       console.log("Validation errors:", formattedErrors); // For debugging
       setErrors(formattedErrors);
+      toast.error("Failed to add parent. Please fix errors."); 
       console.log("Validation or API errors:", error);
     }
   };
@@ -102,16 +109,15 @@ function AddNewParentModal({ visible, setVisible }) {
           </div>
 
           <div className="relative">
-            <InputFieldWithLabel
-              type="text"
-              labelText="Gender"
+            <GenderDropdown
+              label="Gender"
               name="gender"
-              placeholder="Enter Gender"
               value={formData.gender}
               onChange={handleInputChange}
+              error={errors.gender}
             />
             {errors.gender && (
-              <p className="text-rose-600 text-md absolute left-0 " style={{ bottom: '-22px' }}>{errors.gender}</p>
+              <p className="text-rose-600 text-sm absolute left-0 " style={{ bottom: '-20px' }}>{errors.gender}</p>
             )}
           </div>
 
@@ -181,7 +187,11 @@ function AddNewParentModal({ visible, setVisible }) {
             onClick={() => setVisible(false)}
           />
           <Button
-            label="Add"
+           label={loading ? (
+            <FaSpinner className="animate-spin text-white mx-auto" />
+          ) : (
+            "Add"
+          )}
             backgroundColor="#00A943"
             onClick={handleAdd}
           />

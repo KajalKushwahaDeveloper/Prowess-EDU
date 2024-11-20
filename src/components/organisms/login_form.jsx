@@ -4,6 +4,8 @@ import Button from "../atoms/button.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/auth/authReducer.js";
+import { FaSpinner } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -25,7 +27,10 @@ const LoginForm = () => {
   useEffect(() => {
     if (data?.status === 200) {
       localStorage.setItem("token", data?.data?.token)
+      toast.success(data?.data?.message || "Login successful!");
       navigate("/admin");
+    }else if (error) {
+      toast.error(error || "Login failed. Please try again.");
     }
   }, [data, navigate]); // Dependency array ensures this runs when `data` changes
 
@@ -93,8 +98,6 @@ const LoginForm = () => {
           </div>
         ))}
 
-        {loading && <p className="text-blue-600 text-center mb-4">Loading...</p>}
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <div className="flex items-center justify-between mt-6 mb-10">
           <div className="flex items-center justify-start">
             <input
@@ -113,7 +116,13 @@ const LoginForm = () => {
         </div>
 
         <div className="w-full">
-          <Button label="Login" onClick={handleLogin} width="100%" backgroundColor="#004871" />
+          <Button  label={
+              loading ? (
+                <FaSpinner className="animate-spin text-white mx-auto" />
+              ) : (
+                "Login"
+              )
+            } onClick={handleLogin} width="100%" backgroundColor="#004871" />
         </div>
       </div>
     </div>

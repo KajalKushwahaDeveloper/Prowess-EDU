@@ -1,12 +1,23 @@
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
-import { useState } from "react";
-import { data } from "./data";
+import { useState, useEffect } from "react";
+import { getItem } from "../../../features/dashboardSharedApi/sharedReducer";
 import ViewAll from "../../common/viewAllFunctionality"
+import { useDispatch, useSelector } from "react-redux";
 
 const ParentTable = () => {
-  const [products] = useState( data );
-  const [showAll, setShowAll] = useState(false);
+    const dispatch = useDispatch();
+    const [showAll, setShowAll] = useState(false);
+    const [selectedRole, setSelectedRole] = useState("parent");
+    
+    const { data, loading, error } = useSelector((state) => state.sharedApi);
+    const tableData = data?.parents;
+  
+    useEffect(() => {
+        if (selectedRole) {
+            dispatch(getItem({ role: selectedRole }));
+        }
+    }, [dispatch, selectedRole]);
 
   const columns = [
 
@@ -46,7 +57,7 @@ const ParentTable = () => {
         )
     },
 ];
-const displayData = showAll ? products : products.slice(0,2)
+const displayData = showAll ? tableData : tableData?.slice(0,2)
 
 return (
     <>

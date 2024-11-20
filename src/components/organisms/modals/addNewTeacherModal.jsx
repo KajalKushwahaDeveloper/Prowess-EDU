@@ -8,6 +8,9 @@ import { addItem } from "../../../features/dashboardSharedApi/sharedReducer";
 import GenderDropdown from "../../molecules/genderDropdown";
 import ClassDropdown from "../../molecules/classDropdown";
 import SubjectsDropdown from "../../molecules/subjectsDropdown";
+import { FaSpinner } from "react-icons/fa";
+import { toast } from "react-toastify"; // Import toast
+
 
 function AddNewTeacherModal({ visible, setVisible }) {
   const [formData, setFormData] = useState({
@@ -48,7 +51,8 @@ function AddNewTeacherModal({ visible, setVisible }) {
       console.log("Teacher Data: ", formData);
       await dispatch(addItem({ role: "teacher", payload: formData })).unwrap();
       // Validate the form data
-      setErrors({}); // Clear previous errors if validation passes
+      setErrors({});
+      toast.success("Teacher added successfully! "); // Clear previous errors if validation passes
       setVisible(false); // Optionally close the modal on success
     } catch (error) {
       const formattedErrors = {};
@@ -57,6 +61,7 @@ function AddNewTeacherModal({ visible, setVisible }) {
       });
       console.log("Validation errors:", formattedErrors); // For debugging
       setErrors(formattedErrors);
+      toast.error("Failed to add teacher. Please fix errors."); 
       console.log("Validation or API errors:", error);
     }
   };
@@ -230,7 +235,11 @@ function AddNewTeacherModal({ visible, setVisible }) {
             onClick={() => setVisible(false)}
           />
           <Button
-            label="Add"
+            label={loading ? (
+              <FaSpinner className="animate-spin text-white mx-auto" />
+            ) : (
+              "Add"
+            )}
             backgroundColor="#00A943"
             onClick={handleAdd}
           />
