@@ -73,7 +73,7 @@ function AddNewParentModal({ visible, setVisible }) {
         onHide={() => setVisible(false)}
         className="rounded-lg"
       >
-        <div className="bg-white">
+        <div className="bg-white lg:m-0 m-4">
           <h1 className="font-medium text-2xl my-2">Add New Parent</h1>
           <hr className="mb-8 border-gray-300" />
 
