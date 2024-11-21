@@ -14,7 +14,7 @@ export const addStudentSchema = Yup.object().shape({
         .required("Date of Birth is required"),
     gender: Yup.string().required("Gender is required"),
     section: Yup.string().required("Section is required"),
-    class: Yup.string().required("Classes you can teach are required"),
+    Class: Yup.string().required("Classes you can teach are required"),
     address: Yup.string().required("Address is required"),
     subjects: Yup.array()
     .of(Yup.string().required("Each subject must be valid"))
@@ -35,7 +35,8 @@ export const addTeacherSchema = Yup.object().shape({
         .required("Date of Birth is required"),
     gender: Yup.string().required("Gender is required"),
     address: Yup.string().required("Address is required"),
-    classYouCanTeach: Yup.array()
+    classesCanTeach
+: Yup.array()
         .of(Yup.string().required("Each class must be valid"))
         .min(1, "Please select at least one class")
         .required("Classes you can teach are required"),

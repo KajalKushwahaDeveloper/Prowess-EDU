@@ -9,6 +9,8 @@ import Pagination from "../../components/common/pagination"; // Import the reusa
 function AdminDashboardTeachers() {
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalMode, setModalMode] = useState("add"); // "add" or "edit"
+  const [currentStudent, setCurrentStudent] = useState(null); // For editing
   const pageSize = 10; // Define how many students to show per page
   const studentsData = [];
 
@@ -41,7 +43,7 @@ function AdminDashboardTeachers() {
           <hr className="mb-2"/>
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-16">
-          <TeachersTable />
+          <TeachersTable students={paginatedStudents} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
         </div>
       </div>
       {/* Pagination Component */}
@@ -52,7 +54,7 @@ function AdminDashboardTeachers() {
           onPageChange={handlePageChange}
         />
       </div>
-      <AddNewTeacherModal visible={visible} setVisible={setVisible} />
+      <AddNewTeacherModal visible={visible} setVisible={setVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
     </div>
   );
 }

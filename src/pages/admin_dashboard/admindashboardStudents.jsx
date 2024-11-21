@@ -3,12 +3,15 @@ import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
 import StudentsTable from "../../components/organisms/tables/studentTable";
 import Modal from "../../components/common/modal";
-import AddNewTeacherModal from "../../components/organisms/modals/addNewStudentModal";
+import AddNewStudentModal from "../../components/organisms/modals/addNewStudentModal";
 import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
 
 function AdminDashboardStudent() {
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalMode, setModalMode] = useState("add"); // "add" or "edit"
+  const [currentStudent, setCurrentStudent] = useState(null); // For editing
+
   const pageSize = 10; // Define how many students to show per page
   const studentsData = []; // Replace this with your actual data array
 
@@ -25,8 +28,6 @@ function AdminDashboardStudent() {
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
-
-  const headingName = "Add New Student";
 
   return (
     <div className="admin-dashboard m-6 dashboard">
@@ -49,7 +50,7 @@ function AdminDashboardStudent() {
           <hr />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-16">
-          <StudentsTable students={paginatedStudents} />
+          <StudentsTable students={paginatedStudents} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
         </div>
       </div>
 
@@ -61,7 +62,7 @@ function AdminDashboardStudent() {
           onPageChange={handlePageChange}
         />
       </div>
-      <AddNewTeacherModal visible={visible} setVisible={setVisible} />
+      <AddNewStudentModal visible={visible} setVisible={setVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
     </div>
   );
 }

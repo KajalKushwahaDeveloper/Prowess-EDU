@@ -4,7 +4,7 @@ import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 import { addStudentSchema } from "../../common/validationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../../../features/dashboardSharedApi/sharedReducer";
+import { addItem ,editItem} from "../../../features/dashboardSharedApi/sharedReducer";
 import SubjectsDropdown from "../../molecules/subjectsDropdown";
 import GenderDropdown from "../../molecules/genderDropdown";
 import { FaSpinner } from "react-icons/fa";
@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 // import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
-function AddNewStudentModal({ visible, setVisible }) {
+function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = {}}) {
   const [formData, setFormData] = useState({
     name: "",
     parentName: "",
@@ -21,13 +21,15 @@ function AddNewStudentModal({ visible, setVisible }) {
     dob: "",
     gender: "",
     section: "",
-    class: "",
+    Class: "",
     address: "",
     subjects: [],
+    ...initialData,
   });
-
+console.log("formdata:::", formData)
   const [errors, setErrors] = useState({});
   const [selectedSubjects, setSelectedSubjects] = useState([]);
+
   console.log("errors:", errors);
 
   const dispatch = useDispatch();
@@ -43,11 +45,16 @@ function AddNewStudentModal({ visible, setVisible }) {
       // Dispatch the addItem action with role and payload
       await addStudentSchema.validate(formData, { abortEarly: false });
       console.log("student Data: ", formData);
-      await dispatch(addItem({ role: "teacher", payload: formData })).unwrap();
-      // Validate the form data
       setErrors({}); // Clear previous errors if validation passes
-      toast.success(data?.data?.message || "Teacher added successfully! "); // Clear previous errors if validation passes
-      toast.success("Student added successfully! "); // Clear previous errors if validation passes
+   
+      if (mode === "add") {
+        await dispatch(addItem({ role: "student", payload: formData })).unwrap();
+        toast.success(data?.data?.message || "Student added successfully!");
+      } else if (mode === "edit") {
+        await dispatch(editItem({ role: "student", id: initialData.id, payload: formData })).unwrap();
+        toast.success(data?.data?.message || "Student updated successfully!");
+      }
+       // Validate the form data
       setFormData({
         name: "",
         parentName: "",
@@ -56,17 +63,19 @@ function AddNewStudentModal({ visible, setVisible }) {
         dob: "",
         gender: "",
         section: "",
-        class: "",
+        Class: "",
         address: "",
         subjects: [],
       });
-      setVisible(false); // Optionally close the modal on success
+      setVisible(false);
+      // setModalMode("add")
+      // setCurrentStudent(null)// Optionally close the modal on success
     } catch (error) {
       const formattedErrors = {};
       error?.inner?.forEach((error) => {
         formattedErrors[error.path] = error.message;
       });
-      console.log("Validation errors:", formattedErrors); // For debugging
+      console.log("Validation errors:", formattedErrors);
       setErrors(formattedErrors);
       toast.error(error || "Failed to add student. Please fix errors.");
       console.log("Validation or API errors:", error);
@@ -84,7 +93,7 @@ function AddNewStudentModal({ visible, setVisible }) {
         className="rounded-lg"
       >
         <div className="bg-white lg:m-0 m-4">
-          <h1 className="font-medium text-2xl my-2">Add new Student</h1>
+          <h1 className="font-medium text-2xl my-2">{mode === "add" ? "Add New Student" : "Edit Student"}</h1>
           <hr className="mb-8 border-gray-300" />
 
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
@@ -225,15 +234,15 @@ function AddNewStudentModal({ visible, setVisible }) {
                 labelText="Class"
                 name="class"
                 placeholder="Enter Class"
-                value={formData.class}
+                value={formData.Class}
                 onChange={handleInputChange}
               />
-              {errors.class && (
+              {errors.Class && (
                 <p
                   className="text-rose-600 text-md  absolute left-0 "
                   style={{ bottom: "-22px" }}
                 >
-                  {errors.class}
+                  {errors.Class}
                 </p>
               )}
             </div>
@@ -288,8 +297,10 @@ function AddNewStudentModal({ visible, setVisible }) {
               label={
                 loading ? (
                   <FaSpinner className="animate-spin text-white mx-auto" />
-                ) : (
+                ) : mode === "add" ? (
                   "Add"
+                ) : (
+                  "Update"
                 )
               }
               backgroundColor="#00A943"

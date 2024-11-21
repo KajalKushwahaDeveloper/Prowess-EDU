@@ -8,10 +8,12 @@ import Pagination from "../../components/common/pagination"; // Import the reusa
 function AdminDashboardParent() {
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalMode, setModalMode] = useState("add"); // "add" or "edit"
+  const [currentStudent, setCurrentStudent] = useState(null); // For editing
   const pageSize = 10; // Define how many students to show per page
   const studentsData = [];
 
-  const handleAddTeacher = () => {
+  const handleAddParent = () => {
     setVisible(true);
   };
   const handlePageChange = (newPage) => {
@@ -29,7 +31,7 @@ function AdminDashboardParent() {
         <h1 className="text-black font-bold text-2xl mb-4">Parent</h1>
         <Button
           icon={Icons.plusIcon}
-          onClick={handleAddTeacher}
+          onClick={handleAddParent}
           label="Add new Parent"
         />
       </div>
@@ -40,7 +42,7 @@ function AdminDashboardParent() {
           <hr className="mb-2"/>
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-16">
-          <ParentTable />
+          <ParentTable modalMode={modalMode} setModalMode={setModalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
         </div>
       </div>
       {/* Pagination Component */}
@@ -51,7 +53,7 @@ function AdminDashboardParent() {
           onPageChange={handlePageChange}
         />
       </div>
-      <AddNewParentModal visible={visible} setVisible={setVisible} />
+      <AddNewParentModal visible={visible} setVisible={setVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
     </div>
   );
 }

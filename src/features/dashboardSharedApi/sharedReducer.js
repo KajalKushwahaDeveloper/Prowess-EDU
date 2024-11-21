@@ -93,7 +93,32 @@ export const editItem = createAsyncThunk(
     "dashboard/editItem",
     async ({ role, id, payload }, { rejectWithValue }) => {
         try {
-            const response = await axios.put(`/api/${role}/edit/${id}`, payload);
+            const token = localStorage.getItem("token"); // Replace with appropriate method
+            if (!token) {
+                return rejectWithValue("Unauthorized - Missing Token");
+            }
+
+            let apiEndpoint;
+            switch (role) {
+                case "teacher":
+                    apiEndpoint = "/editTeacher";
+                    break;
+                case "student":
+                    apiEndpoint = "/editStudent";
+                    break;
+                case "parent":
+                    apiEndpoint = "/editParent";
+                    break;
+                default:
+                    return rejectWithValue("Invalid role provided");
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+            const response = await axios.put(`${BASE_URL}${apiEndpoint}/${id}`,  payload, config);
             return { role, data: response?.data }
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Edit failed");

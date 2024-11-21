@@ -8,12 +8,16 @@ import {
 import ViewAll from "../../common/viewAllFunctionality";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import AddNewParentModal from "../modals/addNewParentModal";
+import { Icons } from "../../../assets/icons";
 // import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
-const ParentTable = () => {
+const ParentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
   const dispatch = useDispatch();
   const [showAll, setShowAll] = useState(false);
+  const [visible, setVisible] = useState(false);
+
 
   const { parentData, loading, error, shouldReloadParentData } = useSelector(
     (state) => state.sharedApi
@@ -33,6 +37,12 @@ const ParentTable = () => {
       toast.error(error || "Failed to delete parent. Please fix errors.");
     }
   };
+  const handleEdit = (rowData) => {
+    console.log("edit button click")
+    setVisible(true)
+    setModalMode("edit")
+    setCurrentStudent(rowData)
+  }
   const handleReload = () => {
     // Dispatch an action to trigger data reload
     dispatch(getItem({ role: "parent" }));
@@ -54,23 +64,21 @@ const ParentTable = () => {
       body: (rowData) => (
         <div className="flex justify-center space-x-2">
           <Button
-            // onClick={() => handleEdit(rowData)}
-            backgroundColor="#FF8A00"
-            icon="pi pi-pencil" // Use PrimeIcons for consistency
-            className="p-button-rounded p-button-warning p-1"
-          />
-          <Button
-            onClick={handleReload}
-            backgroundColor="#004871"
-            icon="pi pi-refresh"
-            className="p-button-rounded p-button-info p-1"
-          />
-          <Button
-            onClick={() => handleDelete(rowData)}
-            backgroundColor="#FF4D00"
-            icon="pi pi-trash"
-            className="p-button-rounded p-button-danger p-1"
-          />
+              backgroundColor="#FF8A00"
+              icon={Icons.editIcon}
+              onClick={() => handleEdit(rowData)}
+            // onClick={() => setVisible(true)}
+            />
+            <Button
+              backgroundColor="#004871"
+              icon={Icons.reloadIcon}
+              onClick={handleReload}
+            />
+            <Button
+              backgroundColor="#FF4D00"
+              icon={Icons.deleteIcon}
+              onClick={() => handleDelete(rowData)}
+            />
         </div>
       ),
     },
@@ -86,6 +94,17 @@ const ParentTable = () => {
         tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
       />
       <ViewAll showAll={showAll} setShowAll={setShowAll} />
+      {
+        visible && (
+          <AddNewParentModal
+            visible={visible}
+            setVisible={setVisible}
+            mode={modalMode}
+            initialData={currentStudent}
+            onHide={() => setVisible(false)}
+          />
+        )
+      }
     </>
   );
 };

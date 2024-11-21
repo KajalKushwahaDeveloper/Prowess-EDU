@@ -4,14 +4,14 @@ import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 import { addParentSchema } from "../../common/validationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../../../features/dashboardSharedApi/sharedReducer";
+import { addItem,editItem } from "../../../features/dashboardSharedApi/sharedReducer";
 import GenderDropdown from "../../molecules/genderDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 // import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
-function AddNewParentModal({ visible, setVisible }) {
+function AddNewParentModal({ visible, setVisible, mode = "add", initialData = {} }) {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -21,12 +21,15 @@ function AddNewParentModal({ visible, setVisible }) {
     childClass: "",
     childSection: "",
     address: "",
+    ...initialData,
   });
 
   const [errors, setErrors] = useState({});
   console.log("teachererr:", errors);
+
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.sharedApi);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -36,11 +39,15 @@ function AddNewParentModal({ visible, setVisible }) {
     try {
       // Dispatch the addItem action with role and payload
       await addParentSchema.validate(formData, { abortEarly: false });
-      console.log("Parent Data: ", formData);
-      await dispatch(addItem({ role: "parent", payload: formData })).unwrap();
-      // Validate the form data
       setErrors({}); // Clear previous errors if validation passes
-      toast.success(data?.data?.message || "Parent added successfully! "); // Clear previous errors if validation passes
+      if (mode === "add") {
+        await dispatch(addItem({ role: "parent", payload: formData })).unwrap();
+        toast.success(data?.data?.message || "Parent added successfully!");
+      } else if (mode === "edit") {
+        await dispatch(editItem({ role: "parent", id: initialData.id, payload: formData })).unwrap();
+        toast.success(data?.data?.message || "Parent updated successfully!");
+      }
+      // Validate the form data
       setFormData({
         name: "",
         phone: "",
@@ -51,13 +58,14 @@ function AddNewParentModal({ visible, setVisible }) {
         childSection: "",
         address: "",
       });
-      setVisible(false); // Optionally close the modal on success
+      setVisible(false);
+      // setCurrentStudent(null)
     } catch (error) {
       const formattedErrors = {};
       error?.inner?.forEach((error) => {
         formattedErrors[error.path] = error.message;
       });
-      console.log("Validation errors:", formattedErrors); // For debugging
+      console.log("Validation errors:", formattedErrors); 
       setErrors(formattedErrors);
       toast.error(error || "Failed to add parent. Please fix errors.");
       console.log("Validation or API errors:", error);
@@ -74,7 +82,7 @@ function AddNewParentModal({ visible, setVisible }) {
         className="rounded-lg"
       >
         <div className="bg-white lg:m-0 m-4">
-          <h1 className="font-medium text-2xl my-2">Add New Parent</h1>
+          <h1 className="font-medium text-2xl my-2">{mode === "add" ? "Add New Parent" : "Edit Parent"}</h1>
           <hr className="mb-8 border-gray-300" />
 
           {/* Form fields */}
@@ -242,8 +250,10 @@ function AddNewParentModal({ visible, setVisible }) {
               label={
                 loading ? (
                   <FaSpinner className="animate-spin text-white mx-auto" />
-                ) : (
+                ) : mode === "add" ? (
                   "Add"
+                ) : (
+                  "Update"
                 )
               }
               backgroundColor="#00A943"

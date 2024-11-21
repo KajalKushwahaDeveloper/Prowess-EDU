@@ -6,16 +6,20 @@ import { getItem, deleteItem } from "../../../features/dashboardSharedApi/shared
 import ViewAll from "../../common/viewAllFunctionality"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import AddNewStudentModal from "../modals/addNewStudentModal";
 // import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 
-const StudentsTable = () => {
+const StudentsTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
   const dispatch = useDispatch();
   const [showAll, setShowAll] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const { studentData, loading, error, shouldReloadStudentData } = useSelector((state) => state.sharedApi);
   const tableData = studentData?.students || [];
 
+  console.log("currentStudent:", currentStudent);
+  
   useEffect(() => {
     dispatch(getItem({ role: "student" }));
   }, [dispatch, shouldReloadStudentData]);
@@ -29,6 +33,12 @@ const StudentsTable = () => {
       toast.error(error || "Failed to delete student. Please fix errors.");
     }
   };
+  const handleEdit = (rowData) => {
+    console.log("edit button click")
+    setVisible(true)
+    setModalMode("edit")
+    setCurrentStudent(rowData)
+  }
   const handleReload = () => {
     // Dispatch an action to trigger data reload
     dispatch(getItem({ role: "student" }));
@@ -38,8 +48,8 @@ const StudentsTable = () => {
     { field: "id", header: "Id" },
     { field: "name", header: "Teacher name" },
     { field: "email", header: "Email" },
-    { field: "phone", header: "Phone nu." },
-    { field: "class", header: "Class" },
+    { field: "parentPhone", header: "Phone nu." },
+    { field: "Class", header: "Class" },
     {
       field: "Action",
       header: "Action",
@@ -49,6 +59,8 @@ const StudentsTable = () => {
             <Button
               backgroundColor="#FF8A00"
               icon={Icons.editIcon}
+              onClick={() => handleEdit(rowData)}
+            // onClick={() => setVisible(true)}
             />
             <Button
               backgroundColor="#004871"
@@ -76,6 +88,18 @@ const StudentsTable = () => {
         tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
       />
       <ViewAll showAll={showAll} setShowAll={setShowAll} />
+
+      {
+        visible && (
+          <AddNewStudentModal
+            visible={visible}
+            setVisible={setVisible}
+            mode={modalMode}
+            initialData={currentStudent}
+            onHide={() => setVisible(false)}
+          />
+        )
+      }
     </>
   );
 };

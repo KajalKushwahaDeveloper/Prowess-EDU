@@ -1,42 +1,48 @@
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState, useEffect } from "react";
-import { getItem ,deleteItem} from "../../../features/dashboardSharedApi/sharedReducer";
+import { getItem, deleteItem } from "../../../features/dashboardSharedApi/sharedReducer";
 import { toast } from "react-toastify";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-
+import AddNewTeacherModal from "../modals/addNewTeacherModal";
 import ViewAll from "../../common/viewAllFunctionality"
 import { useDispatch, useSelector } from "react-redux";
+import { Icons } from "../../../assets/icons";
 
-const TeachersTable = () => {
+const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
     const dispatch = useDispatch();
     const [showAll, setShowAll] = useState(false);
-    
+    const [visible, setVisible] = useState(false);
+
     const { data, teacherData, loading, error, shouldReloadTeacherData } = useSelector((state) => state.sharedApi);
     const tableData = teacherData?.teachers;
     console.log("Redux Data:", data);
 
     useEffect(() => {
-            dispatch(getItem({ role: "teacher" }));
+        dispatch(getItem({ role: "teacher" }));
     }, [dispatch, shouldReloadTeacherData]);
 
-
-  const handleDelete = async (rowData) => {
-    try {
-      await dispatch(deleteItem({ role: "teacher", id: rowData.id }));
-      toast.success( "Teacher delete successfully! ");
-    } catch (error) {
-      console.log("error:", error);
-      toast.error(error || "Failed to delete teacher. Please fix errors.");
+    const handleEdit = (rowData) => {
+        console.log("edit button click")
+        setVisible(true)
+        setModalMode("edit")
+        setCurrentStudent(rowData)
     }
-  };
 
-  const handleReload = () => {
-    // Dispatch an action to trigger data reload
-    dispatch(getItem({ role: "teacher" }));
-    toast.info("Data reloaded successfully!");
-  };
+    const handleDelete = async (rowData) => {
+        try {
+            await dispatch(deleteItem({ role: "teacher", id: rowData.id }));
+            toast.success("Teacher delete successfully! ");
+        } catch (error) {
+            console.log("error:", error);
+            toast.error(error || "Failed to delete teacher. Please fix errors.");
+        }
+    };
+
+    const handleReload = () => {
+        // Dispatch an action to trigger data reload
+        dispatch(getItem({ role: "teacher" }));
+        toast.info("Data reloaded successfully!");
+    };
 
     const columns = [
         { field: "id", header: "Id" },
@@ -50,22 +56,19 @@ const TeachersTable = () => {
             body: (rowData) => (
                 <div className="flex justify-center space-x-2">
                     <Button
-                        // onClick={() => handleEdit(rowData)}
                         backgroundColor="#FF8A00"
-                        icon="pi pi-pencil" // Use PrimeIcons for consistency
-                        className="p-button-rounded p-button-warning p-1"
+                        icon={Icons.editIcon}
+                        onClick={() => handleEdit(rowData)}
                     />
                     <Button
-                        onClick={handleReload}
                         backgroundColor="#004871"
-                        icon="pi pi-refresh"
-                        className="p-button-rounded p-button-info p-1"
+                        icon={Icons.reloadIcon}
+                        onClick={handleReload}
                     />
                     <Button
-                        onClick={() => handleDelete(rowData)}
                         backgroundColor="#FF4D00"
-                        icon="pi pi-trash"
-                        className="p-button-rounded p-button-danger p-1"
+                        icon={Icons.deleteIcon}
+                        onClick={() => handleDelete(rowData)}
                     />
                 </div>
             )
@@ -79,13 +82,25 @@ const TeachersTable = () => {
 
     return (
         <>
-         {/* <ToastContainer /> */}
+            {/* <ToastContainer /> */}
             <Table
                 data={displayData}
                 columns={columns}
                 tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
             />
             <ViewAll showAll={showAll} setShowAll={setShowAll} />
+
+            {
+                visible && (
+                    <AddNewTeacherModal 
+                    visible={visible}
+                    setVisible={setVisible}
+                    mode={modalMode}
+                    initialData={currentStudent}
+                    onHide={() => setVisible(false)}
+                    />
+                )
+            }
         </>
     );
 };
