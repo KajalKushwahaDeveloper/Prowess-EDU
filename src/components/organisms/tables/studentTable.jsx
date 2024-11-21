@@ -6,20 +6,20 @@ import { getItem, deleteItem } from "../../../features/dashboardSharedApi/shared
 import ViewAll from "../../common/viewAllFunctionality"
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const StudentsTable = () => {
   const dispatch = useDispatch();
   const [showAll, setShowAll] = useState(false);
-  
-  const {  studentData, loading, error, shouldReloadStudentData } = useSelector((state) => state.sharedApi);
-  const tableData = studentData?.students;
+
+  const { studentData, loading, error, shouldReloadStudentData } = useSelector((state) => state.sharedApi);
+  const tableData = studentData?.students || [];
 
   useEffect(() => {
-          dispatch(getItem({ role: "student" }));
+    dispatch(getItem({ role: "student" }));
   }, [dispatch, shouldReloadStudentData]);
-  
+
   const handleDelete = (rowData) => {
     try {
       dispatch(deleteItem({ role: "student", id: rowData.id }));
@@ -29,7 +29,11 @@ const StudentsTable = () => {
       toast.error(error || "Failed to delete student. Please fix errors.");
     }
   };
-
+  const handleReload = () => {
+    // Dispatch an action to trigger data reload
+    dispatch(getItem({ role: "student" }));
+    toast.info("Data reloaded successfully!");
+  };
   const columns = [
     { field: "id", header: "Id" },
     { field: "name", header: "Teacher name" },
@@ -45,32 +49,33 @@ const StudentsTable = () => {
             <Button
               backgroundColor="#FF8A00"
               icon={Icons.editIcon}
-              />
+            />
             <Button
               backgroundColor="#004871"
               icon={Icons.reloadIcon}
-              />
+              onClick={handleReload}
+            />
             <Button
               backgroundColor="#FF4D00"
               icon={Icons.deleteIcon}
               onClick={() => handleDelete(rowData)}
-              />
+            />
           </div>
         );
       },
     },
   ];
-  
+
   const displayedData = showAll ? tableData : tableData?.slice(0, 2);
   return (
     <>
-     <ToastContainer />
+      {/* <ToastContainer /> */}
       <Table
         data={displayedData}
         columns={columns}
         tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
       />
-    <ViewAll showAll={showAll} setShowAll={setShowAll}/>
+      <ViewAll showAll={showAll} setShowAll={setShowAll} />
     </>
   );
 };

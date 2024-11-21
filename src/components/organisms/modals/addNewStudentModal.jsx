@@ -9,8 +9,8 @@ import SubjectsDropdown from "../../molecules/subjectsDropdown";
 import GenderDropdown from "../../molecules/genderDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 function AddNewStudentModal({ visible, setVisible }) {
   const [formData, setFormData] = useState({
@@ -75,7 +75,7 @@ function AddNewStudentModal({ visible, setVisible }) {
 
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <Modal
         visible={visible}
         setVisible={setVisible}

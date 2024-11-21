@@ -3,8 +3,8 @@ import Table from "../../common/Table";
 import { useState, useEffect } from "react";
 import { getItem ,deleteItem} from "../../../features/dashboardSharedApi/sharedReducer";
 import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 import ViewAll from "../../common/viewAllFunctionality"
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,7 @@ const TeachersTable = () => {
     }, [dispatch, shouldReloadTeacherData]);
 
 
-  const handleDelete = async(rowData) => {
+  const handleDelete = async (rowData) => {
     try {
       await dispatch(deleteItem({ role: "teacher", id: rowData.id }));
       toast.success( "Teacher delete successfully! ");
@@ -30,6 +30,12 @@ const TeachersTable = () => {
       console.log("error:", error);
       toast.error(error || "Failed to delete teacher. Please fix errors.");
     }
+  };
+
+  const handleReload = () => {
+    // Dispatch an action to trigger data reload
+    dispatch(getItem({ role: "teacher" }));
+    toast.info("Data reloaded successfully!");
   };
 
     const columns = [
@@ -50,7 +56,7 @@ const TeachersTable = () => {
                         className="p-button-rounded p-button-warning p-1"
                     />
                     <Button
-                        // onClick={() => handleReload(rowData)}
+                        onClick={handleReload}
                         backgroundColor="#004871"
                         icon="pi pi-refresh"
                         className="p-button-rounded p-button-info p-1"
@@ -73,7 +79,7 @@ const TeachersTable = () => {
 
     return (
         <>
-         <ToastContainer />
+         {/* <ToastContainer /> */}
             <Table
                 data={displayData}
                 columns={columns}

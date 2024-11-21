@@ -10,8 +10,8 @@ import ClassDropdown from "../../molecules/classDropdown";
 import SubjectsDropdown from "../../molecules/subjectsDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify"; 
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 
 function AddNewTeacherModal({ visible, setVisible }) {
@@ -84,7 +84,7 @@ function AddNewTeacherModal({ visible, setVisible }) {
   
   return (
     <>
-    <ToastContainer />
+    {/* <ToastContainer /> */}
     <Modal
       visible={visible}
       setVisible={setVisible}

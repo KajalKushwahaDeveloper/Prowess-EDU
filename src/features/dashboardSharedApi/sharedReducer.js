@@ -180,9 +180,13 @@ const sharedReducer = createSlice({
                 state.data = action.payload;
                 const { role, data } = action.payload;
 
-                if (role === "teacher") state.shouldReloadTeacherData = !state.shouldReloadTeacherData;
-                if (role === "student") state.shouldReloadStudentData = !state.shouldReloadStudentData;
-                if (role === "parent") state.shouldReloadParentData = !state.shouldReloadParentData;
+                if (role === "teacher") {
+                    state.shouldReloadTeacherData = !state.shouldReloadTeacherData;
+                } else if (role === "student") {
+                    state.shouldReloadStudentData = !state.shouldReloadStudentData;
+                } else if (role === "parent") {
+                    state.shouldReloadParentData = !state.shouldReloadParentData;
+                }
             })
             .addCase(addItem.rejected, (state, action) => {
                 state.loading = false;
@@ -199,9 +203,13 @@ const sharedReducer = createSlice({
                 // if (index !== -1) state.data[index] = action.payload;
                 const { role, data } = action.payload;
 
-                if (role === "teacher") state.shouldReloadTeacherData = !state.shouldReloadTeacherData;
-                if (role === "student") state.shouldReloadStudentData = !state.shouldReloadStudentData;
-                if (role === "parent") state.shouldReloadParentData = !state.shouldReloadParentData;
+                if (role === "teacher") {
+                    state.shouldReloadTeacherData = !state.shouldReloadTeacherData;
+                } else if (role === "student") {
+                    state.shouldReloadStudentData = !state.shouldReloadStudentData;
+                } else if (role === "parent") {
+                    state.shouldReloadParentData = !state.shouldReloadParentData;
+                }
             })
             .addCase(editItem.rejected, (state, action) => {
                 state.loading = false;

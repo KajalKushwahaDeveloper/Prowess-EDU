@@ -8,8 +8,8 @@ import {
 import ViewAll from "../../common/viewAllFunctionality";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const ParentTable = () => {
   const dispatch = useDispatch();
@@ -33,7 +33,11 @@ const ParentTable = () => {
       toast.error(error || "Failed to delete parent. Please fix errors.");
     }
   };
-
+  const handleReload = () => {
+    // Dispatch an action to trigger data reload
+    dispatch(getItem({ role: "parent" }));
+    toast.info("Data reloaded successfully!");
+  };
   const columns = [
     { field: "id", header: "Id" },
     { field: "name", header: "Name" },
@@ -56,7 +60,7 @@ const ParentTable = () => {
             className="p-button-rounded p-button-warning p-1"
           />
           <Button
-            // onClick={() => handleReload(rowData)}
+            onClick={handleReload}
             backgroundColor="#004871"
             icon="pi pi-refresh"
             className="p-button-rounded p-button-info p-1"
@@ -75,7 +79,7 @@ const ParentTable = () => {
 
   return (
     <>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
       <Table
         data={displayData}
         columns={columns}
