@@ -22,10 +22,6 @@ const LoginForm = () => {
   // Select Redux state
   const { data, loading, error } = useSelector((state) => state.auth);
 
-  // Debugging logs
-  console.log("Redux data:", data?.data?.user?.type);
-  console.log("Redux error:", error);
-
   useEffect(() => {
     if (data?.status === 200) {
       localStorage.setItem("token", data?.data?.token);
@@ -43,10 +39,10 @@ const LoginForm = () => {
 
   const handleLogin = () => {
     const { email, password } = formData;
-    console.log("Credentials:", email, password);
 
     if (!email || !password) {
-      alert("Please fill in all fields");
+      // alert("Please fill in all fields");
+      toast.warning("Please fill in all fields");
       return;
     }
 
@@ -126,7 +122,7 @@ const LoginForm = () => {
         <div className="w-full">
           <Button  label={
               loading ? (
-                <FaSpinner className="animate-spin text-white mx-auto" />
+                <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
               ) : (
                 "Login"
               )

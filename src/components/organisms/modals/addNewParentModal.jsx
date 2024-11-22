@@ -25,7 +25,6 @@ function AddNewParentModal({ visible, setVisible, mode = "add", initialData = {}
   });
 
   const [errors, setErrors] = useState({});
-  console.log("teachererr:", errors);
 
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.sharedApi);
@@ -249,7 +248,7 @@ function AddNewParentModal({ visible, setVisible, mode = "add", initialData = {}
             <Button
               label={
                 loading ? (
-                  <FaSpinner className="animate-spin text-white mx-auto" />
+                  <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
                 ) : mode === "add" ? (
                   "Add"
                 ) : (

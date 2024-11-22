@@ -9,8 +9,6 @@ import SubjectsDropdown from "../../molecules/subjectsDropdown";
 import GenderDropdown from "../../molecules/genderDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = {}}) {
   const [formData, setFormData] = useState({
@@ -18,7 +16,7 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
     parentName: "",
     parentPhone: "",
     email: "",
-    dob: "",
+    dob: null,
     gender: "",
     section: "",
     Class: "",
@@ -26,32 +24,36 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
     subjects: [],
     ...initialData,
   });
-console.log("formdata:::", formData)
   const [errors, setErrors] = useState({});
   const [selectedSubjects, setSelectedSubjects] = useState([]);
 
-  console.log("errors:", errors);
 
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.sharedApi);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === "dob") {
+      // Format the date as DD-MM-YYYY
+      const formattedDate = value.split("-").reverse().join("-");
+      setFormData({ ...formData, [name]: formattedDate });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
+
 
   const handleAdd = async () => {
     try {
       // Dispatch the addItem action with role and payload
       await addStudentSchema.validate(formData, { abortEarly: false });
-      console.log("student Data: ", formData);
       setErrors({}); // Clear previous errors if validation passes
    
       if (mode === "add") {
         await dispatch(addItem({ role: "student", payload: formData })).unwrap();
         toast.success(data?.data?.message || "Student added successfully!");
       } else if (mode === "edit") {
-        await dispatch(editItem({ role: "student", id: initialData.id, payload: formData })).unwrap();
+        await dispatch(editItem({ role: "student", id: initialData?.id, payload: formData })).unwrap();
         toast.success(data?.data?.message || "Student updated successfully!");
       }
        // Validate the form data
@@ -60,7 +62,7 @@ console.log("formdata:::", formData)
         parentName: "",
         parentPhone: "",
         email: "",
-        dob: "",
+        dob: null,
         gender: "",
         section: "",
         Class: "",
@@ -178,7 +180,7 @@ console.log("formdata:::", formData)
                 type="date"
                 labelText="Date of Birth"
                 name="dob"
-                value={formData.dob}
+                value={formData?.dob?.split("-").reverse().join("-")}
                 onChange={handleInputChange}
               />
               {errors.dob && (
@@ -232,7 +234,7 @@ console.log("formdata:::", formData)
               <InputFieldWithLabel
                 type="text"
                 labelText="Class"
-                name="class"
+                name="Class"
                 placeholder="Enter Class"
                 value={formData.Class}
                 onChange={handleInputChange}
@@ -296,7 +298,7 @@ console.log("formdata:::", formData)
             <Button
               label={
                 loading ? (
-                  <FaSpinner className="animate-spin text-white mx-auto" />
+                  <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
                 ) : mode === "add" ? (
                   "Add"
                 ) : (

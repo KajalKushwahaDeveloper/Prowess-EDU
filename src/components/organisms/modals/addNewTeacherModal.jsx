@@ -10,8 +10,6 @@ import ClassDropdown from "../../molecules/classDropdown";
 import SubjectsDropdown from "../../molecules/subjectsDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 
 function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {} }) {
@@ -32,7 +30,6 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const dispatch = useDispatch();
-  console.log("formData:", formData);
 
   const { data, loading, error } = useSelector((state) => state.sharedApi);
 
@@ -51,13 +48,12 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
     try {
       // Dispatch the addItem action with role and payload
       await addTeacherSchema.validate(formData, { abortEarly: false });
-      console.log("Teacher Data: ", formData);
       setErrors({});
       if (mode === "add") {
         await dispatch(addItem({ role: "teacher", payload: formData })).unwrap();
         toast.success(data?.data?.message || "Teacher added successfully!");
       } else if (mode === "edit") {
-        await dispatch(editItem({ role: "teacher", id: initialData.id, payload: formData })).unwrap();
+        await dispatch(editItem({ role: "teacher", id: initialData?.id, payload: formData })).unwrap();
         toast.success(data?.data?.message || "Teacher updated successfully!");
       }
       // Validate the form data
@@ -85,12 +81,9 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
       console.log("Validation or API errors:", error);
     }
   };
-  console.log("Selected subjects:", selectedSubjects);
-  console.log("Form Data Classes:", formData.subjects);
 
   return (
     <>
-      {/* <ToastContainer /> */}
       <Modal
         visible={visible}
         setVisible={setVisible}
@@ -100,7 +93,7 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
       >
 
         <div className="bg-white lg:m-0 m-4">
-          <h1 className="font-medium text-2xl my-2">{mode === "add" ? "Add New Parent" : "Edit Parent"}</h1>
+          <h1 className="font-medium text-2xl my-2">{mode === "add" ? "Add New Teacher" : "Edit Teacher"}</h1>
           <hr className="mb-8 border-gray-300" />
 
           {/* Form fields */}
@@ -265,7 +258,7 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
             />
             <Button
               label={loading ? (
-                <FaSpinner className="animate-spin text-white mx-auto" />
+                <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
               ) : mode === "add" ? (
                 "Add"
               ) : (

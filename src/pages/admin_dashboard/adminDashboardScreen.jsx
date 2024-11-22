@@ -10,6 +10,11 @@ import AddNewStudentModal from "../../components/organisms/modals/addNewStudentM
 function AdminDashboard() {
   const [addTeacherModalVisible, setAddTeacherModalVisible] = useState(false);
   const [addStudentModalVisible, setAddStudentModalVisible] = useState(false);
+  const [modalMode, setModalMode] = useState("add"); // "add" or "edit"
+  const [currentTeacher, setCurrentTeacher] = useState(null); // For editing
+  const [currentStudent, setCurrentStudent] = useState(null); // For editing
+
+  console.log("currentStudent:", currentStudent);
 
   const cardDetails = [
     {
@@ -73,7 +78,7 @@ function AdminDashboard() {
           <hr />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-8">
-          <TeachersTable />
+          <TeachersTable modalMode={modalMode} setModalMode={setModalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
         </div>
       </div>
       <div>
@@ -82,12 +87,12 @@ function AdminDashboard() {
           <hr />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-8">
-          <StudentsTable />
+          <StudentsTable modalMode={modalMode} setModalMode={setModalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
         </div>
       </div>
-      <AddNewTeacherModal visible={addTeacherModalVisible} setVisible={setAddTeacherModalVisible} />
-      <AddNewStudentModal visible={addStudentModalVisible} setVisible={setAddStudentModalVisible} />
+      <AddNewTeacherModal visible={addTeacherModalVisible} setVisible={setAddTeacherModalVisible} setModalMode={setModalMode} mode={modalMode} initialData={currentStudent} setCurrentStudent={setCurrentStudent} />
 
+      <AddNewStudentModal visible={addStudentModalVisible} setVisible={setAddStudentModalVisible} setModalMode={setModalMode} mode={modalMode} initialData={currentStudent} setCurrentStudent={setCurrentStudent} />
     </div>
   );
 }
