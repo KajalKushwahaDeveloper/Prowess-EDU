@@ -14,12 +14,9 @@ function DashboardSidebar({ links = [] }) {
     setIsOpen(!isOpen);
   };
   const handleLogout = () => {
+    dispatch(logout());
     // Clear localStorage or sessionStorage if storing tokens
-    localStorage.removeItem("authToken");
-
-    // Optionally dispatch a Redux action to clear user state
-    dispatch(logout);
-
+    localStorage.removeItem("token");
     // Redirect to the login page
     navigate("/");
   };
@@ -33,11 +30,6 @@ function DashboardSidebar({ links = [] }) {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform duration-300 ease-in-out z-50`}
       >
-        {/* <div className="flex justify-end md:hidden p-4">
-          <button onClick={toggleSidebar} className="text-black text-2xl focus:outline-none">
-            <i className="pi pi-times"></i>
-          </button>
-        </div> */}
 
         <nav className="flex flex-col h-screen justify-between text-white text-lg">
           {/* Render Links */}

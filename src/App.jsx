@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/loginScreen';
+import Login from './pages/admin_dashboard/loginScreen';
 import AdminDashboard from './pages/admin_dashboard/adminDashboardScreen';
 import AdminDashboardTeachers from "../src/pages/admin_dashboard/adminDashboardTeachers";
 import AdminDashboardStudent from "../src/pages/admin_dashboard/admindashboardStudents"
@@ -23,7 +23,7 @@ import TeacherDashboardOnlineClass from './pages/teacher_dashboard/teacherDashbo
 import TeacherDashboardTimeTable from './pages/teacher_dashboard/teacherDashboardTimeTable';
 import NotFound from './pages/pageNotFound';
 import AdminDashboardParent from './pages/admin_dashboard/adminDashboardParent';
-import ParentLogin from './pages/parent_dashboard/parentLoginScreen';
+import ParentLoginScreen from './pages/parent_dashboard/parentLoginScreen';
 
 function App() {
   return (
@@ -31,12 +31,14 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/parentLogin" element={<ParentLoginScreen />} />
+        <Route path="/StudentLogin" element={<ParentLoginScreen />} />
+        <Route path="/teacherLogin" element={<ParentLoginScreen />} />
 
         {/*  Admin Dashboard */}
-        <Route path="/admin" element={<ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>}>
+        <Route path="/admin" element={<ProtectedRoute userRole="admin"><AdminDashboard /></ProtectedRoute>}>
           {/* Index route for /admin */}
           <Route index element={<AdminDashboard />} />
-
           {/* Nested routes */}
           <Route path="students" element={<AdminDashboardStudent />} />
           <Route path="teachers" element={<AdminDashboardTeachers />} />
@@ -44,19 +46,16 @@ function App() {
         </Route>
 
         {/* Parent Dashboard */}
-        <Route path="/parent" element={<ProtectedRoute role="parent"><ParentDashboard /></ProtectedRoute>}>
-          {/* Index route for /teacher */}
+        <Route path="/parent" element={<ProtectedRoute userRole="parent"><ParentDashboard /></ProtectedRoute>}>
           <Route index element={<ParentDashboard/>} />
           {/* Nested routes */}
-          {/* <Route path="dashboard" element={<ParentDashboard />} /> */}
-
           <Route path="strongArea" element={<ParentDashboardStrongArea />} />
           <Route path="weakArea" element={<ParentDashboardWeakArea />} />
         </Route>
 
 
         {/*  Student Dashboard */}
-        <Route path="/student" element={<ProtectedRoute role="student"><StudentDashboard /></ProtectedRoute>}>
+        <Route path="/student" element={<ProtectedRoute userRole="student"><StudentDashboard /></ProtectedRoute>}>
           {/* Index route for /teacher */}
           <Route index element={<StudentDashboard />} />
           {/* Nested routes */}
@@ -69,7 +68,7 @@ function App() {
         </Route>
 
         {/* Teacher Dashboard */}
-        <Route path="/teacher" element={<ProtectedRoute role="teacher"><TeacherDashboard /></ProtectedRoute>}>
+        <Route path="/teacher" element={<ProtectedRoute userRole="teacher"><TeacherDashboard /></ProtectedRoute>}>
           <Route index element={<TeacherDashboard />} />
           {/* Nested routes */}
           <Route path="teacherDashboardStudents" element={<TeacherDashboardStudents />} />

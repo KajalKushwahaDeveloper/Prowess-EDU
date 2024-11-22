@@ -1,7 +1,8 @@
-import Login_Logo from "../components/common/login_logo.jsx";
-import LoginForm from "../components/organisms/login_form.jsx";
+import Login_Logo from "../../components/common/login_logo.jsx";
+import LoginForm from "../../components/organisms/login_form.jsx";
 
 const Login = () => {
+  const admin = localStorage.getItem("userRole");
   return (
     <div className="flex flex-col lg:flex-row min-h-screen w-full overflow-hidden login_screen">
       {/* Left section with the logo */}
@@ -14,7 +15,7 @@ const Login = () => {
       {/* Right section with the login form */}
       <div className="flex items-center justify-center lg:w-1/2 w-full login-form mt-0 md:mt-1 overflow-hidden">
       <div className="bg-white w-full max-w-lg px-6 md:p-6">
-          <LoginForm />
+          <LoginForm userRole={admin}/>
         </div>
       </div>
     </div>
