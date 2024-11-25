@@ -24,7 +24,7 @@ export const teacherLogin = createAsyncThunk(
   }
 );
 
-const parentAuthReducer = createSlice({
+const teacherAuthReducer = createSlice({
   name: 'teacherAuth',
   initialState: {
     data: null,
@@ -55,6 +55,6 @@ const parentAuthReducer = createSlice({
   }
 });
 
-export const { logout } = parentAuthReducer.actions;
+export const { logout } = teacherAuthReducer.actions;
 
-export default parentAuthReducer.reducer;
+export default teacherAuthReducer.reducer;

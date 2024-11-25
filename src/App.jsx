@@ -24,6 +24,8 @@ import TeacherDashboardTimeTable from './pages/teacher_dashboard/teacherDashboar
 import NotFound from './pages/pageNotFound';
 import AdminDashboardParent from './pages/admin_dashboard/adminDashboardParent';
 import ParentLoginScreen from './pages/parent_dashboard/parentLoginScreen';
+import TeacherLoginScreen from './pages/teacher_dashboard/teacherLoginScreen';
+import StudentLoginScreen from './pages/student_dashboard/studentLoginScreen';
 
 function App() {
   return (
@@ -32,8 +34,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/parentLogin" element={<ParentLoginScreen />} />
-        <Route path="/StudentLogin" element={<ParentLoginScreen />} />
-        <Route path="/teacherLogin" element={<ParentLoginScreen />} />
+        <Route path="/studentLogin" element={<StudentLoginScreen />} />
+        <Route path="/teacherLogin" element={<TeacherLoginScreen />} />
 
         {/*  Admin Dashboard */}
         <Route path="/admin" element={<ProtectedRoute userRole="admin"><AdminDashboard /></ProtectedRoute>}>
