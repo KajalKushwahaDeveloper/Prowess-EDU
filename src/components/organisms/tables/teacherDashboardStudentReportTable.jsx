@@ -1,59 +1,63 @@
 import { Icons } from "../../../assets/icons";
-import { getReportsForTeacher } from "../../../features/dashboardSharedApi/teacherSharedreducer";
+import { getReportsForTeacher, deleteReport, editReport } from "../../../features/dashboardSharedApi/teacherSharedreducer";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
-const TeacherDashboardStudentReportTable = () => {
-    const[formData, setFormData] = useState({
-        studentName: "",
-        sID: "",
-        subject: "",
-        marks: "",
-        assignmentMarks: "",
-        testMarks: "",
-        grade: "",
-        level: "",
-        recommendation: "",
-        comment: ""
-    });
+const TeacherDashboardStudentReportTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
     const [visible, setVisible] = useState(false);
+    const [filteredReports, setFilteredReports] = useState([]); // For local filtering
 
     const dispatch = useDispatch();
     const { data, loading, error } = useSelector((state) => state.teacherDashboardSharedApi);
-    console.log("Redux Data:", data);
 
     useEffect(() => {
+        // Fetch reports on mount
         dispatch(getReportsForTeacher())
             .unwrap()
+            .then((response) => setFilteredReports(response.reports)) // Initialize local state
             .catch((err) => {
                 toast.error(error || "Failed to fetch reports");
             });
     }, [dispatch]);
-    
-    
-    const handleDelete = (rowData) => {
+
+    const handleDelete = async (rowData) => {
         try {
-            dispatch(deleteItem({ role: "student", id: rowData.id }));
-            toast.success("Student delete successfully! ");
+            await dispatch(deleteReport({ role: "student", id: rowData.id })).unwrap();
+
+            // Remove the deleted row from local state
+            setFilteredReports((prevReports) =>
+                prevReports.filter((report) => report.id !== rowData.id)
+            );
+
+            toast.success("Student deleted successfully!");
         } catch (error) {
-            console.log("error:", error);
+            console.error("Error deleting student:", error);
             toast.error(error || "Failed to delete student. Please fix errors.");
         }
     };
+
     const handleEdit = (rowData) => {
-        console.log("edit button click")
-        setVisible(true)
-        setModalMode("edit")
-        setCurrentStudent(rowData)
-    }
-    const handleReload = () => {
-        // Dispatch an action to trigger data reload
-        dispatch(getItem({ role: "student" }));
-        toast.info("Data reloaded successfully!");
+        console.log("edit button click");
+        setVisible(true);
+        setModalMode("edit");
+        setCurrentStudent(rowData);
     };
+
+    const handleReload = () => {
+        // Reload data from the API
+        dispatch(getReportsForTeacher())
+            .unwrap()
+            .then((response) => {
+                setFilteredReports(response.reports); // Ensure you're setting the correct data
+                toast.info("Data reloaded successfully!");
+            })
+            .catch((err) => toast.error("Failed to reload data"));
+    };
+    
+
     const columns = [
         { field: "id", header: "Id" },
         { field: "studentName", header: "Student name" },
@@ -64,14 +68,13 @@ const TeacherDashboardStudentReportTable = () => {
         {
             field: "Action",
             header: "Action",
-            body: () => {
+            body: (rowData) => {
                 return (
                     <div className="flex space-x-2">
                         <Button
                             backgroundColor="#FF8A00"
                             icon={Icons.editIcon}
                             onClick={() => handleEdit(rowData)}
-                        // onClick={() => setVisible(true)}
                         />
                         <Button
                             backgroundColor="#004871"
@@ -90,11 +93,24 @@ const TeacherDashboardStudentReportTable = () => {
     ];
 
     return (
-        <Table
-            data={data}
-            columns={columns}
-            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
-        />
+        <>
+            <Table
+                data={filteredReports} // Use locally filtered data
+                columns={columns}
+                tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
+            />
+            {
+                visible && (
+                    <AddNewStudentModal
+                        visible={visible}
+                        setVisible={setVisible}
+                        mode={modalMode}
+                        initialData={currentStudent}
+                        onHide={() => setVisible(false)}
+                    />
+                )
+            }
+        </>
     );
 };
 

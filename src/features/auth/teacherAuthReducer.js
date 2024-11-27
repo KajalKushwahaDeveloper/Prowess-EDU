@@ -11,8 +11,6 @@ export const teacherLogin = createAsyncThunk(
         LOGIN_TEACHER,
         payload
       );
-      console.log("response:", response?.data);
-
       return response?.data; // Return the API response data
     } catch (error) {
       // Handle errors and reject with value

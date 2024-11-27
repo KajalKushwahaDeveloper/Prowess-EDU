@@ -30,8 +30,8 @@ export const getReportsForTeacher = createAsyncThunk(
 // post api
 export const createReport = createAsyncThunk(
     "dashboard/createReport",
-    async ({  payload }, { rejectWithValue }) => {
-        localStorage.createReport("token")
+    async ({ id, payload }, { rejectWithValue }) => {
+        
         try {
 
             const token = localStorage.getItem("token"); 
@@ -44,7 +44,6 @@ export const createReport = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-
             const response = await axios.post(T_D_CREATE_REPORT, payload, config);
             return  response?.data 
         } catch (error) {
@@ -52,7 +51,31 @@ export const createReport = createAsyncThunk(
         }
     }
 );
+// export const createReport = createAsyncThunk(
+//     "teacherSharedApi/createReport",
+//     async ({ role, payload }, { rejectWithValue }) => {
+//         try {
+//             const token = localStorage.getItem("token"); 
+//             if (!token) {
+//                 return rejectWithValue("Unauthorized - Missing Token");
+//             }
 
+//             const config = {
+//                 headers: {
+//                     Authorization: `Bearer ${token}`,
+//                 },
+//             };
+//             // Fix: move config as a separate argument
+//             const response = await api.post(T_D_CREATE_REPORT, { role, ...payload }, config);
+//             return response.data;
+//         } catch (error) {
+//             return rejectWithValue(error.response?.data || error.message);
+//         }
+//     }
+// );
+
+
+  
 // put api
 export const editReport = createAsyncThunk(
     "dashboard/editReport",
@@ -68,13 +91,15 @@ export const editReport = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.put(T_D_EDIT_REPORT,  payload, config);
-            return  response?.data 
+            // Change DELETE to PUT for editing reports
+            const response = await axios.put(`${T_D_EDIT_REPORT}${id}`, payload, config);
+            return response?.data; // Return the updated report data
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Edit failed");
         }
     }
 );
+
 // delete api
 export const deleteReport = createAsyncThunk(
     "dashboard/deleteReport",
@@ -90,7 +115,9 @@ export const deleteReport = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.delete(T_D_DELETE_REPORT , config);
+            const url = T_D_DELETE_REPORT(id);
+            console.log("url:", url)
+            const response = await axios.delete(T_D_DELETE_REPORT(id), config);
             return response?.data 
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Delete failed");

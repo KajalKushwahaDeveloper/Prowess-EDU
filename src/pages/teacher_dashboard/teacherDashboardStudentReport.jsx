@@ -1,13 +1,15 @@
 import { useState } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
-import AddNewTeacherModal from "../../components/organisms/modals/addNewStudentModal";
+import CreateReportModal from "../../components/organisms/modals/createReportModal";
 import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
 import TeacherDashboardStudentReportTable from "../../components/organisms/tables/teacherDashboardStudentReportTable";
 
 const TeacherDashboardStudents = () => {
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalMode, setModalMode] = useState("add"); // Default to "add"
+  const [currentStudent, setCurrentStudent] = useState(null);
   const pageSize = 10; // Define how many students to show per page
   const studentsData = []; // Replace this with your actual data array
 
@@ -46,7 +48,7 @@ const TeacherDashboardStudents = () => {
           <hr className="mt-2" />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-16">
-          <TeacherDashboardStudentReportTable students={paginatedStudents} />
+          <TeacherDashboardStudentReportTable students={paginatedStudents} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
         </div>
       </div>
 
@@ -58,7 +60,7 @@ const TeacherDashboardStudents = () => {
           onPageChange={handlePageChange}
         />
       </div>
-      <AddNewTeacherModal visible={visible} setVisible={setVisible} />
+      <CreateReportModal visible={visible} setVisible={setVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
     </div>
   );
 }

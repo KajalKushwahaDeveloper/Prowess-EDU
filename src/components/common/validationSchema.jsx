@@ -17,9 +17,9 @@ export const addStudentSchema = Yup.object().shape({
     Class: Yup.string().required("Classes you can teach are required"),
     address: Yup.string().required("Address is required"),
     subjects: Yup.array()
-    .of(Yup.string().required("Each subject must be valid"))
-    .min(1, "Please select at least one subject")
-    .required("Subjects are required"),
+        .of(Yup.string().required("Each subject must be valid"))
+        .min(1, "Please select at least one subject")
+        .required("Subjects are required"),
 });
 
 export const addTeacherSchema = Yup.object().shape({
@@ -36,15 +36,15 @@ export const addTeacherSchema = Yup.object().shape({
     gender: Yup.string().required("Gender is required"),
     address: Yup.string().required("Address is required"),
     classesCanTeach
-: Yup.array()
-        .of(Yup.string().required("Each class must be valid"))
-        .min(1, "Please select at least one class")
-        .required("Classes you can teach are required"),
+        : Yup.array()
+            .of(Yup.string().required("Each class must be valid"))
+            .min(1, "Please select at least one class")
+            .required("Classes you can teach are required"),
     experience: Yup.string().required("Experience is required"),
     subjects: Yup.array()
-    .of(Yup.string().required("Each subject must be valid"))
-    .min(1, "Please select at least one subject")
-    .required("Subjects are required"),
+        .of(Yup.string().required("Each subject must be valid"))
+        .min(1, "Please select at least one subject")
+        .required("Subjects are required"),
 });
 
 export const addParentSchema = Yup.object().shape({
@@ -101,3 +101,15 @@ export const createTimeTableSchema = Yup.object().shape({
     date: Yup.string().required("Please select a date"),
 });
 
+export const createReportSchema = Yup.object().shape({
+    studentName: Yup.string().required("Student name is required"),
+    sID: Yup.string().required("sID is required"),
+    subject: Yup.string().required("Subject is required"),
+    marks: Yup.string().required("Marks is required").matches(/^[0-9]+$/, "Phone number must be digits"),
+    assignmentMarks: Yup.string().required("AssignmentMarks is required").matches(/^[0-9]+$/, "Phone number must be digits"),
+    testMarks: Yup.string().required("TestMarks is required").matches(/^[0-9]+$/, "Phone number must be digits"),
+    grade: Yup.string().required("Grade is required"),
+    level: Yup.string().required("Level is required"),
+    recommendation: Yup.string().required("Recommendation is required"),
+    comment: Yup.string().required("Comment is required"),
+});
