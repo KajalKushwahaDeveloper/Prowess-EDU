@@ -25,6 +25,10 @@ export const T_D_GET_REPORT_FOR_TEACHER = BASE_URL + "/getReportsForTeacher";
 export const T_D_CREATE_REPORT = BASE_URL + "/createReport";
 export const T_D_EDIT_REPORT = (id) => `${BASE_URL}/editReport/${id}`;
 export const T_D_DELETE_REPORT = (id) => `${BASE_URL}/deleteReport/${id}`;
+export const T_D_GET_VIDEO_FOR_TEACHER = BASE_URL + "/getVideosForTeacher";
+export const T_D_ADD_VIDEO = BASE_URL + "/addVideo";
+export const T_D_EDIT_VIDEO = (id) => `${BASE_URL}/editVideo/${id}`;
+export const T_D_DELETE_VIDEO = (id) => `${BASE_URL}/deleteVideo/${id}`;
 
 // PARENT DASHBOARD
 export const LOGIN_PARENT = BASE_URL + "/parentLogin";

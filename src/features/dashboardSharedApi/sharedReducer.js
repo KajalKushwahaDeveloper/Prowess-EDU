@@ -212,6 +212,7 @@ const sharedReducer = createSlice({
                 } else if (role === "parent") {
                     state.shouldReloadParentData = !state.shouldReloadParentData;
                 }
+                 
             })
             .addCase(addItem.rejected, (state, action) => {
                 state.loading = false;

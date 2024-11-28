@@ -5,6 +5,7 @@ import studentAuthReducer from "../features/auth/studentAuthReducer"
 import teacherAuthReducer from "../features/auth/teacherAuthReducer"
 import parentAuthReducer from "../features/auth/parentAuthReducer"
 import sharedTeacherDashboardReducer from "../features/dashboardSharedApi/teacherSharedreducer"
+import teacherDashboardVideoSharedApi from "../features/dashboardSharedApi/videosSharedApi"
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     teacherAuth:teacherAuthReducer,
     parentAuth:parentAuthReducer,
     teacherDashboardSharedApi :sharedTeacherDashboardReducer,
+    teacherDashboardVideoSharedApi :teacherDashboardVideoSharedApi,
 });
 
 export default rootReducer;

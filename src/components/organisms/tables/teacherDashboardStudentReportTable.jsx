@@ -5,6 +5,7 @@ import Table from "../../common/Table";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import CreateReportModal from "../modals/createReportModal";
 
 const TeacherDashboardStudentReportTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
     const [visible, setVisible] = useState(false);
@@ -101,7 +102,7 @@ const TeacherDashboardStudentReportTable = ({ setModalMode, modalMode, currentSt
             />
             {
                 visible && (
-                    <AddNewStudentModal
+                    <CreateReportModal
                         visible={visible}
                         setVisible={setVisible}
                         mode={modalMode}

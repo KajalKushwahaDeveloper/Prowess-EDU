@@ -1,6 +1,6 @@
 import React from "react";
 
-function GenderDropdown({
+function SubjectTypeDropdown({
   label,
   name,
   value,
@@ -14,17 +14,11 @@ function GenderDropdown({
   console.log("subjectdata:", subjectdata,type);
 
  // Determine options based on the type
- const options =
- type === 3
-   ? subjectdata?.subjects?.map((subject) => ({
+ const options = subjectdata?.subjects?.map((subject) => ({
        value: subject, // Assuming subject is a string
        label: subject,
      })) || [] // Fallback to an empty array
-   : [
-    { value: "Male", label: "Male" },
-    { value: "Female", label: "Female" },
-    { value: "Other", label: "Other" },
-  ];
+   
   return (
     <div className={`input-container ${customClass}`}>
       {/* Label */}
@@ -58,4 +52,4 @@ function GenderDropdown({
   );
 }
 
-export default GenderDropdown;
+export default SubjectTypeDropdown;

@@ -2,27 +2,60 @@ import { useState } from "react";
 import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
-import { addNewVideoSchema } from "../../common/validationSchema";
+import { useDispatch, useSelector } from "react-redux";
+import { FaSpinner } from "react-icons/fa";
+import { toast } from "react-toastify"; import { addNewVideoSchema } from "../../common/validationSchema";
+import capitalize from 'lodash/capitalize';
+import { addVideo, editVideo } from "../../../features/dashboardSharedApi/videosSharedApi";
 
-function AddNewVideoModal({ visible, setVisible }) {
+function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} }) {
     const [formData, setFormData] = useState({
         subject: "",
         chapter: "",
         topicName: "",
         class: "",
         uploadVideo: "",
+        ...initialData
     });
     const [errors, setErrors] = useState({});
+    const [filteredReports, setFilteredReports] = useState([]);
+    const teacherDashboardData = JSON.parse(localStorage.getItem("data"));
+    console.log("formdata:", formData);
+
+    const dispatch = useDispatch();
+    const { data, loading, error } = useSelector((state) => state.sharedApi);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData({
+            ...formData,
+            [name]:
+                ["subject", "topicName"].includes(name)
+                    ? capitalize(value) // Use lodash capitalize for these fields
+                    : value, // Use raw value for other fields
+        });
     };
 
     const handleAdd = async () => {
         try {
             await addNewVideoSchema.validate(formData, { abortEarly: false });
             setErrors({});
+            if (mode === "add") {
+                await dispatch(addVideo({ role: "student", payload: formData })).unwrap();
+                toast.success(data?.data?.message || "Student added successfully!");
+            } else if (mode === "edit") {
+                await dispatch(editVideo({ role: "student", id: initialData?.id, payload: formData })).unwrap();
+                toast.success(data?.data?.message || "Student updated successfully!");
+            }
+            // Validate the form data
+            setFormData({
+                subject: "",
+                chapter: "",
+                topicName: "",
+                class: "",
+                uploadVideo: "",
+            });
+            setVisible(false);
             // Handle adding video logic
             console.log("Video Data: ", formData);
         } catch (err) {
@@ -43,7 +76,7 @@ function AddNewVideoModal({ visible, setVisible }) {
             className="rounded-lg"
         >
             <div className="bg-white m-4">
-                <h1 className="font-medium text-2xl my-2">Add new Video</h1>
+                <h1 className="font-medium text-2xl my-2">{mode === "add" ? "Add new Video" : "Edit new Video"}</h1>
                 <hr className="mb-8 border-gray-300" />
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
@@ -124,7 +157,15 @@ function AddNewVideoModal({ visible, setVisible }) {
                         onClick={() => setVisible(false)}
                     />
                     <Button
-                        label="Add"
+                        label={
+                            loading ? (
+                                <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
+                            ) : mode === "add" ? (
+                                "Add"
+                            ) : (
+                                "Update"
+                            )
+                        }
                         backgroundColor="#00A943"
                         onClick={handleAdd}
                     />

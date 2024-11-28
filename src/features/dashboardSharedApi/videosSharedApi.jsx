@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { T_D_GET_REPORT_FOR_TEACHER, T_D_EDIT_REPORT,T_D_DELETE_REPORT ,T_D_CREATE_REPORT} from "../../constants/apiConfig";
+import { T_D_GET_VIDEO_FOR_TEACHER, T_D_EDIT_VIDEO,T_D_DELETE_VIDEO ,T_D_ADD_VIDEO} from "../../constants/apiConfig";
 
 // get api
-export const getReportsForTeacher = createAsyncThunk(
-    "dashboard/getReportsForTeacher",
+export const getVideosForTeacher = createAsyncThunk(
+    "dashboard/getVideosForTeacher",
     async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token"); // Corrected token retrieval
@@ -18,7 +18,7 @@ export const getReportsForTeacher = createAsyncThunk(
                 },
             };
 
-            const response = await axios.get(T_D_GET_REPORT_FOR_TEACHER, config);
+            const response = await axios.get(T_D_GET_VIDEO_FOR_TEACHER, config);
             return response?.data?.data || []; // Safeguard for undefined data
         } catch (error) {
             console.error("API Error:", error);
@@ -28,8 +28,8 @@ export const getReportsForTeacher = createAsyncThunk(
 );
 
 // post api
-export const createReport = createAsyncThunk(
-    "dashboard/createReport",
+export const addVideo = createAsyncThunk(
+    "dashboard/addVideo",
     async ({ id, payload }, { rejectWithValue }) => {
         
         try {
@@ -44,7 +44,7 @@ export const createReport = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.post(T_D_CREATE_REPORT, payload, config);
+            const response = await axios.post(T_D_ADD_VIDEO, payload, config);
             return  response?.data 
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Add failed");
@@ -53,8 +53,8 @@ export const createReport = createAsyncThunk(
 );
   
 // put api
-export const editReport = createAsyncThunk(
-    "dashboard/editReport",
+export const editVideo = createAsyncThunk(
+    "dashboard/editVideo",
     async ({ role, id, payload }, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token"); 
@@ -67,10 +67,10 @@ export const editReport = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            // Change DELETE to PUT for editing reports
-            const response = await axios.put(T_D_EDIT_REPORT(id),payload,config);
+            // Change DELETE to PUT for editing VIDEOs
+            const response = await axios.put(T_D_EDIT_VIDEO(id),payload,config);
 
-            return {data:response?.data} // Return the updated report data
+            return {data:response?.data} // Return the updated VIDEO data
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Edit failed");
         }
@@ -78,8 +78,8 @@ export const editReport = createAsyncThunk(
 );
 
 // delete api
-export const deleteReport = createAsyncThunk(
-    "dashboard/deleteReport",
+export const deleteVideo = createAsyncThunk(
+    "dashboard/deleteVideo",
     async ({ id }, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token"); 
@@ -92,7 +92,7 @@ export const deleteReport = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.delete(T_D_DELETE_REPORT(id), config);
+            const response = await axios.delete(T_D_DELETE_VIDEO(id), config);
             return {data:response?.data} 
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Delete failed");
@@ -100,8 +100,8 @@ export const deleteReport = createAsyncThunk(
     }
 );
 
-const sharedTeacherDashboardReducer = createSlice({
-    name: "teacherDashboardSharedApi",
+const sharedTeacherDashboardVideoReducer = createSlice({
+    name: "teacherDashboardVideoSharedApi",
     initialState: {
         data: [],
         loading: false,
@@ -111,63 +111,63 @@ const sharedTeacherDashboardReducer = createSlice({
     extraReducers: (builder) => {
         builder
             // Get Items
-            .addCase(getReportsForTeacher.pending, (state) => {
+            .addCase(getVideosForTeacher.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(getReportsForTeacher.fulfilled, (state, action) => {  
+            .addCase(getVideosForTeacher.fulfilled, (state, action) => {  
                 state.loading = false;
                 state.data = action.payload || [];  
                 console.log("state:", state.data);
                 
             })
-            .addCase(getReportsForTeacher.rejected, (state, action) => {
+            .addCase(getVideosForTeacher.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
             // Add Items
-            .addCase(createReport.pending, (state) => {
+            .addCase(addVideo.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(createReport.fulfilled, (state, action) => {
+            .addCase(addVideo.fulfilled, (state, action) => {
                 state.loading = false;
                 state.data = action.payload;
             })
-            .addCase(createReport.rejected, (state, action) => {
+            .addCase(addVideo.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
             // Edit Items
-            .addCase(editReport.pending, (state) => {
+            .addCase(editVideo.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(editReport.fulfilled, (state, action) => {
+            .addCase(editVideo.fulfilled, (state, action) => {
                 state.loading = false;
                 // const index = state.data.findIndex((item) => item.id === action.payload.id);
                 // if (index !== -1) state.data[index] = action.payload;
             })
-            .addCase(editReport.rejected, (state, action) => {
+            .addCase(editVideo.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
             // Delete Items
-            .addCase(deleteReport.pending, (state) => {
+            .addCase(deleteVideo.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(deleteReport.fulfilled, (state, action) => {
+            .addCase(deleteVideo.fulfilled, (state, action) => {
                 state.loading = false;
                 // state.data = state?.data?.filter((item) => item.id !== action.payload.id);
                 
             })
-            .addCase(deleteReport.rejected, (state, action) => {
+            .addCase(deleteVideo.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             });
     },
 });
 
-export default sharedTeacherDashboardReducer.reducer;
+export default sharedTeacherDashboardVideoReducer.reducer;
 

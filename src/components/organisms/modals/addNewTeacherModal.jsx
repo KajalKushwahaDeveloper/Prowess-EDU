@@ -10,6 +10,7 @@ import ClassDropdown from "../../molecules/classDropdown";
 import SubjectsDropdown from "../../molecules/subjectsDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
+import capitalize from 'lodash/capitalize';
 
 
 function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {} }) {
@@ -40,8 +41,13 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
       const formattedDate = value.split("-").reverse().join("-");
       setFormData({ ...formData, [name]: formattedDate });
     } else {
-      setFormData({ ...formData, [name]: value });
-    }
+      setFormData({ 
+        ...formData,
+        [name]:
+          ["name", "subject", "qualification", "address"].includes(name)
+            ? capitalize(value) // Use lodash capitalize for these fields
+            : value, // Use raw value for other fields
+          })};
   };
 
   const handleAdd = async () => {

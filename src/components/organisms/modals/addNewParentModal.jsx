@@ -8,8 +8,8 @@ import { addItem,editItem } from "../../../features/dashboardSharedApi/sharedRed
 import GenderDropdown from "../../molecules/genderDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+import capitalize from 'lodash/capitalize';
+
 
 function AddNewParentModal({ visible, setVisible, mode = "add", initialData = {} }) {
   const [formData, setFormData] = useState({
@@ -31,8 +31,13 @@ function AddNewParentModal({ visible, setVisible, mode = "add", initialData = {}
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    setFormData({ 
+    ...formData,
+    [name]:
+      ["name", "childName", "childSection", "address"].includes(name)
+        ? capitalize(value) // Use lodash capitalize for these fields
+        : value, // Use raw value for other fields
+      })};
 
   const handleAdd = async () => {
     try {

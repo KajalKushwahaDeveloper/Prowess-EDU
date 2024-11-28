@@ -8,6 +8,8 @@ import AddNewVideoModal from "../../components/organisms/modals/addNewVideomodal
 const TeacherDashboardVideos = () => {
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [modalMode, setModalMode] = useState("add"); // Default to "add"
+  const [currentStudent, setCurrentStudent] = useState(null);
   const pageSize = 10; // Define how many students to show per page
   const studentsData = []; // Replace this with your actual data array
 
@@ -47,7 +49,7 @@ const TeacherDashboardVideos = () => {
           <hr className="mt-2" />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-16">
-          <TodayTopicVideoTable students={paginatedStudents} />
+          <TodayTopicVideoTable students={paginatedStudents} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
         </div>
       </div>
 
@@ -59,7 +61,7 @@ const TeacherDashboardVideos = () => {
           onPageChange={handlePageChange}
         />
       </div>
-      <AddNewVideoModal visible={visible} setVisible={setVisible} />
+      <AddNewVideoModal visible={visible} setVisible={setVisible} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
     </div>
   );
 }

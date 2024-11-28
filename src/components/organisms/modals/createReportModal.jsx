@@ -8,7 +8,8 @@ import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { createReport, editReport } from "../../../features/dashboardSharedApi/teacherSharedreducer";
 import LevelDropdown from "../../molecules/levelDropdown";
-import { capitalize } from "lodash";
+import capitalize from 'lodash/capitalize';
+import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
 
 function CreateReportModal({ visible, setVisible, mode = "add", initialData = {} }) {
   const [formData, setFormData] = useState({
@@ -26,21 +27,16 @@ function CreateReportModal({ visible, setVisible, mode = "add", initialData = {}
   });
 
   const [errors, setErrors] = useState({});
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
   const teacherDashboardData = JSON.parse(localStorage.getItem("data"));
-  console.log("teacherDashboardData:", teacherDashboardData);
+  console.log("formdata:", formData);
 
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.sharedApi);
 
-  const capitalizeFirstLetter = (string) => {
-    if (!string) return ""; // Handle empty strings
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  };
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
+
     if (name === "dob") {
       // Format the date as DD-MM-YYYY
       const formattedDate = value.split("-").reverse().join("-");
@@ -51,13 +47,14 @@ function CreateReportModal({ visible, setVisible, mode = "add", initialData = {}
     } else {
       setFormData({
         ...formData,
-        [name]: name === "studentName" || name === "subject" || name === "grade"
-          ? capitalizeFirstLetter(value) // Capitalize only for specific fields
-          : value, // Use raw value for other fields
+        [name]:
+          ["studentName", "subject", "grade", "recommendation", "comment"].includes(name)
+            ? capitalize(value) // Use lodash capitalize for these fields
+            : value, // Use raw value for other fields
       });
     }
   };
-  
+
 
   const handleAdd = async () => {
     try {
@@ -154,13 +151,12 @@ function CreateReportModal({ visible, setVisible, mode = "add", initialData = {}
             </div>
 
             <div className="relative">
-              <InputFieldWithLabel
-                type="text"
-                labelText="Subject"
+              <SubjectTypeDropdown
+                label="Subjects"
                 name="subject"
-                placeholder="Enter Subject"
                 value={formData.subject}
                 onChange={handleInputChange}
+                error={errors.subject}
               />
               {errors.subject && (
                 <p
@@ -259,24 +255,6 @@ function CreateReportModal({ visible, setVisible, mode = "add", initialData = {}
                 <p className="text-rose-600 text-sm absolute left-0 " style={{ bottom: '-20px' }}>{errors.level}</p>
               )}
             </div>
-            {/* <div className="relative">
-              <InputFieldWithLabel
-                type="text"
-                labelText="Level"
-                name="level"
-                placeholder="Enter Level"
-                value={formData.level}
-                onChange={handleInputChange}
-              />
-              {errors.level && (
-                <p
-                  className="text-rose-600 text-md  absolute left-0 "
-                  style={{ bottom: "-22px" }}
-                >
-                  {errors.level}
-                </p>
-              )}
-            </div> */}
 
             <div className="relative">
               <InputFieldWithLabel

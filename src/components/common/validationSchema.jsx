@@ -61,10 +61,7 @@ export const addNewVideoSchema = Yup.object().shape({
     subject: Yup.string().required("Subject is required"),
     chapter: Yup.string().required("Chapter is required"),
     topicName: Yup.string().required("Topic Name is required"),
-    class: Yup.array()
-        .of(Yup.string().required("Each class must be valid"))
-        .min(1, "Please select at least one class")
-        .required("Classes you can teach are required"),
+    Class: Yup.string().required("Class you can teach are required"),
     uploadVideo: Yup.mixed().required("Video upload is required"),
 });
 
