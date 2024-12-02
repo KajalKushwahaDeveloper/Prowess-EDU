@@ -70,7 +70,7 @@ export const addNewAssignmentSchema = Yup.object().shape({
     chapter: Yup.string().required("Chapter is required"),
     topicName: Yup.string().required("Topic name is required"),
     class: Yup.string().required("Class is required"),
-    selectStudents: Yup.mixed().required("Please select a file"),
+    assignedTo: Yup.mixed().required("Please select a file"),
     type: Yup.string().required("Type is required"),
     level: Yup.string().required("Level is required"),
     uploadAssignment: Yup.string().required("Assignment upload is required"),

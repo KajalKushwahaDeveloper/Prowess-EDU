@@ -4,7 +4,6 @@ import Table from "../../common/Table";
 import { useState } from "react";
 
 const TestTable = () => {
-    const [products, setProducts] = useState("");
 
     const columns = [
         { field: "id", header: "Id" },

@@ -4,7 +4,7 @@ import { T_D_GET_ASIGNMENT_FOR_TEACHER,T_D_ADD_ASSIGNMENT} from "../../constants
 
 // get api
 export const getAssignForTeacher = createAsyncThunk(
-    "dashboard/getReportsForTeacher",
+    "dashboard/getAssignForTeacher",
     async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token"); // Corrected token retrieval
@@ -100,8 +100,8 @@ export const addAssign = createAsyncThunk(
 //     }
 // );
 
-const sharedTeacherDashboardReducer = createSlice({
-    name: "teacherDashboardSharedApi",
+const sharedTeacherDashboardAssignReducer = createSlice({
+    name: "teacherDashboardAssignSharedApi",
     initialState: {
         data: [],
         loading: false,
@@ -111,63 +111,63 @@ const sharedTeacherDashboardReducer = createSlice({
     extraReducers: (builder) => {
         builder
             // Get Items
-            .addCase(getReportsForTeacher.pending, (state) => {
+            .addCase(getAssignForTeacher.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(getReportsForTeacher.fulfilled, (state, action) => {  
+            .addCase(getAssignForTeacher.fulfilled, (state, action) => {  
                 state.loading = false;
                 state.data = action.payload || [];  
                 console.log("state:", state.data);
                 
             })
-            .addCase(getReportsForTeacher.rejected, (state, action) => {
+            .addCase(getAssignForTeacher.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
             // Add Items
-            .addCase(createReport.pending, (state) => {
+            .addCase(addAssign.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(createReport.fulfilled, (state, action) => {
+            .addCase(addAssign.fulfilled, (state, action) => {
                 state.loading = false;
                 state.data = action.payload;
             })
-            .addCase(createReport.rejected, (state, action) => {
+            .addCase(addAssign.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
             // Edit Items
-            .addCase(editReport.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(editReport.fulfilled, (state, action) => {
-                state.loading = false;
-                // const index = state.data.findIndex((item) => item.id === action.payload.id);
-                // if (index !== -1) state.data[index] = action.payload;
-            })
-            .addCase(editReport.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            })
-            // Delete Items
-            .addCase(deleteReport.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(deleteReport.fulfilled, (state, action) => {
-                state.loading = false;
-                // state.data = state?.data?.filter((item) => item.id !== action.payload.id);
+    //         .addCase(editReport.pending, (state) => {
+    //             state.loading = true;
+    //             state.error = null;
+    //         })
+    //         .addCase(editReport.fulfilled, (state, action) => {
+    //             state.loading = false;
+    //             // const index = state.data.findIndex((item) => item.id === action.payload.id);
+    //             // if (index !== -1) state.data[index] = action.payload;
+    //         })
+    //         .addCase(editReport.rejected, (state, action) => {
+    //             state.loading = false;
+    //             state.error = action.payload;
+    //         })
+    //         // Delete Items
+    //         .addCase(deleteReport.pending, (state) => {
+    //             state.loading = true;
+    //             state.error = null;
+    //         })
+    //         .addCase(deleteReport.fulfilled, (state, action) => {
+    //             state.loading = false;
+    //             // state.data = state?.data?.filter((item) => item.id !== action.payload.id);
                 
-            })
-            .addCase(deleteReport.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            });
+    //         })
+    //         .addCase(deleteReport.rejected, (state, action) => {
+    //             state.loading = false;
+    //             state.error = action.payload;
+    //         });
     },
 });
 
-export default sharedTeacherDashboardReducer.reducer;
+export default sharedTeacherDashboardAssignReducer.reducer;
 
