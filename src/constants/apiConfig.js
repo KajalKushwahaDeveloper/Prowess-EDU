@@ -29,6 +29,8 @@ export const T_D_GET_VIDEO_FOR_TEACHER = BASE_URL + "/getVideosForTeacher";
 export const T_D_ADD_VIDEO = BASE_URL + "/addVideo";
 export const T_D_EDIT_VIDEO = (id) => `${BASE_URL}/editVideo/${id}`;
 export const T_D_DELETE_VIDEO = (id) => `${BASE_URL}/deleteVideo/${id}`;
+export const T_D_GET_ASIGNMENT_FOR_TEACHER = BASE_URL + "/getAssignForTeacher";
+export const T_D_ADD_ASSIGNMENT = BASE_URL + "/addAssign";
 
 // PARENT DASHBOARD
 export const LOGIN_PARENT = BASE_URL + "/parentLogin";

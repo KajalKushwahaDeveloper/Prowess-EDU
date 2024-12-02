@@ -8,29 +8,30 @@ import { toast } from "react-toastify";
 import AddNewVideoModal from "../modals/addNewVideomodal";
 
 const TodayTopicVideoTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
-    const [products, setProducts] = useState({ setModalMode, modalMode, currentStudent, setCurrentStudent });
+    
     const [visible, setVisible] = useState(false);
     const [filteredReports, setFilteredReports] = useState([]); // For local filtering
+    const { data, loading, error } = useSelector((state) => state.teacherDashboardVideoSharedApiReducer);
     const dispatch = useDispatch();
-    const { data, loading, error } = useSelector((state) => state.teacherDashboardVideoSharedApi);
-
+console.log("setFilteredReports:",data)
     useEffect(() => {
         // Fetch reports on mount
         dispatch(getVideosForTeacher())
             .unwrap()
-            .then((response) => setFilteredReports(response.videos)) // Initialize local state
+            .then((response) => setFilteredReports(response?.videos)) // Initialize local state
             .catch((err) => {
                 toast.error(error || "Failed to fetch Data");
+                console.log("id:", response.videos)
             });
     }, [dispatch]);
 
     const handleDelete = async (rowData) => {
         try {
-            await dispatch(deleteVideo({ role: "student", id: rowData.id })).unwrap();
+            await dispatch(deleteVideo({  id: rowData.id })).unwrap();
 
             // Remove the deleted row from local state
-            setFilteredReports((prevReports) =>
-                prevReports.filter((report) => report.id !== rowData.id)
+            setFilteredReports((prevVideos) =>
+                prevVideos.filter((videos) => videos.id !== rowData.id)
             );
 
             toast.success(error || "Videos deleted successfully!");
@@ -52,7 +53,7 @@ const TodayTopicVideoTable = ({ setModalMode, modalMode, currentStudent, setCurr
         dispatch(getVideosForTeacher())
             .unwrap()
             .then((response) => {
-                setFilteredReports(response.reports); // Ensure you're setting the correct data
+                setFilteredReports(response.videos); // Ensure you're setting the correct data
                 toast.info("Data reloaded successfully!");
             })
             .catch((err) => toast.error("Failed to reload data"));
@@ -61,15 +62,15 @@ const TodayTopicVideoTable = ({ setModalMode, modalMode, currentStudent, setCurr
 
     const columns = [
         { field: "id", header: "Id" },
-        { field: "subjectName", header: "Subject Name" },
+        { field: "subject", header: "Subject Name" },
         { field: "chapter", header: "Chapter" },
         { field: "topic", header: "Topic" },
-        { field: "class", header: "Class" },
-        { field: "file", header: "File" },
+        { field: "Class", header: "Class" },
+        { field: "videoFile", header: "File" },
         {
             field: "Action",
             header: "Action",
-            body: () => {
+            body: (rowData) => {
                 return (
                     <div className="flex space-x-2">
                         <Button
@@ -92,6 +93,7 @@ const TodayTopicVideoTable = ({ setModalMode, modalMode, currentStudent, setCurr
             },
         },
     ];
+    
 
     return (
         <>
