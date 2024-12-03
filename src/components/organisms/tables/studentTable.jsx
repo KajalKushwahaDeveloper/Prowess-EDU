@@ -34,7 +34,6 @@ const StudentsTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
     }
   };
   const handleEdit = (rowData) => {
-    console.log("edit button click")
     setVisible(true)
     setModalMode("edit")
     setCurrentStudent(rowData)

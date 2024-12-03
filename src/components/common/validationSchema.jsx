@@ -64,16 +64,50 @@ export const addNewVideoSchema = Yup.object().shape({
     Class: Yup.string().required("Class you can teach are required"),
     uploadVideo: Yup.mixed().required("Video upload is required"),
 });
-
 export const addNewAssignmentSchema = Yup.object().shape({
-    subject: Yup.string().required("Subject is required"),
-    chapter: Yup.string().required("Chapter is required"),
-    topicName: Yup.string().required("Topic name is required"),
-    class: Yup.string().required("Class is required"),
-    assignedTo: Yup.mixed().required("Please select a file"),
-    type: Yup.string().required("Type is required"),
-    level: Yup.string().required("Level is required"),
-    uploadAssignment: Yup.string().required("Assignment upload is required"),
+    subject: Yup.string()
+        .required('Subject is required')
+        .max(50, 'Subject must be less than 50 characters'),
+
+    chapter: Yup.string()
+        .required('Chapter is required')
+        .max(50, 'Chapter must be less than 50 characters'),
+
+    topic: Yup.string()
+        .required('Topic Name is required')
+        .max(50, 'Topic Name must be less than 50 characters'),
+
+    Class: Yup.string()
+        .required('Class is required')
+        .matches(/^\d+$/, 'Class must be a valid number'),
+
+    assignedTo: Yup.string().required('Assigned To is required'),
+
+    level: Yup.string()
+        .required('Level is required')
+        .oneOf(['Easy', 'Medium', 'Hard'], 'Level must be valid'),
+
+    assignFile: Yup.mixed()
+        .nullable()
+        .required('Assignment file is required')
+        .test(
+            'fileType',
+            'Only PDF, DOC, DOCX, or TXT files are allowed',
+            (value) => !value || ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'].includes(value.type)
+        )
+        .test(
+            'fileSize',
+            'File size must be less than 2MB',
+            (value) => !value || value.size <= 2 * 1024 * 1024
+        ),
+    startDate: Yup.date()
+        .transform((value, originalValue) => (originalValue === "" ? null : value)) // Transform empty strings to null
+        .required("Start date is required")
+        .min(new Date(), "Start date must be today or later"),
+    endDate: Yup.date()
+        .transform((value, originalValue) => (originalValue === "" ? null : value)) // Transform empty strings to null
+        .required("End date is required")
+        .min(Yup.ref("startDate"), "End date must be after the start date"),
 });
 
 export const createOnlineClassSchema = Yup.object().shape({

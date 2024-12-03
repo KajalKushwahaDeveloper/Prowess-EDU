@@ -10,8 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import AddNewParentModal from "../modals/addNewParentModal";
 import { Icons } from "../../../assets/icons";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 
 const ParentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
   const dispatch = useDispatch();
@@ -38,7 +36,6 @@ const ParentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStuden
     }
   };
   const handleEdit = (rowData) => {
-    console.log("edit button click")
     setVisible(true)
     setModalMode("edit")
     setCurrentStudent(rowData)

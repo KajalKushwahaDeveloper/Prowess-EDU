@@ -17,7 +17,6 @@ export const getReportsForTeacher = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-
             const response = await axios.get(T_D_GET_REPORT_FOR_TEACHER, config);
             return response?.data?.data || []; // Safeguard for undefined data
         } catch (error) {

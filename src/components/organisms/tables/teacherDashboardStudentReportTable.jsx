@@ -1,5 +1,5 @@
 import { Icons } from "../../../assets/icons";
-import { getReportsForTeacher, deleteReport, editReport } from "../../../features/dashboardSharedApi/teacherSharedreducer";
+import { getReportsForTeacher, deleteReport } from "../../../features/dashboardSharedApi/teacherSharedreducer";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useEffect, useState } from "react";
@@ -41,7 +41,6 @@ const TeacherDashboardStudentReportTable = ({ setModalMode, modalMode, currentSt
     };
 
     const handleEdit = (rowData) => {
-        console.log("edit button click");
         setVisible(true);
         setModalMode("edit");
         setCurrentStudent(rowData);
@@ -60,7 +59,7 @@ const TeacherDashboardStudentReportTable = ({ setModalMode, modalMode, currentSt
     
 
     const columns = [
-        { field: "id", header: "Id" },
+        { field: "sID", header: "Id" },
         { field: "studentName", header: "Student name" },
         { field: "marks", header: "Marks" },
         { field: "assignmentMarks", header: "Assignment Marks" },

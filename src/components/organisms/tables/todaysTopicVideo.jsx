@@ -42,7 +42,6 @@ console.log("setFilteredReports:",data)
     };
 
     const handleEdit = (rowData) => {
-        console.log("edit button click");
         setVisible(true);
         setModalMode("edit");
         setCurrentStudent(rowData);

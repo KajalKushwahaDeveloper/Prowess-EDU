@@ -22,7 +22,6 @@ const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
     }, [dispatch, shouldReloadTeacherData]);
 
     const handleEdit = (rowData) => {
-        console.log("edit button click")
         setVisible(true)
         setModalMode("edit")
         setCurrentStudent(rowData)

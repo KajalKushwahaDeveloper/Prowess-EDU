@@ -31,6 +31,8 @@ export const T_D_EDIT_VIDEO = (id) => `${BASE_URL}/editVideo/${id}`;
 export const T_D_DELETE_VIDEO = (id) => `${BASE_URL}/deleteVideo/${id}`;
 export const T_D_GET_ASIGNMENT_FOR_TEACHER = BASE_URL + "/getAssignForTeacher";
 export const T_D_ADD_ASSIGNMENT = BASE_URL + "/addAssign";
+export const T_D_EDIT_ASSIGNMENT = (id) => `${BASE_URL}/editAssign/${id}`;
+export const T_D_DELETE_ASSIGNMENT = (id) => `${BASE_URL}/deleteAssign/${id}`;
 
 // PARENT DASHBOARD
 export const LOGIN_PARENT = BASE_URL + "/parentLogin";

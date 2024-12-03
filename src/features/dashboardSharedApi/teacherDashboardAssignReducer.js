@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { T_D_GET_ASIGNMENT_FOR_TEACHER,T_D_ADD_ASSIGNMENT} from "../../constants/apiConfig";
+import { T_D_GET_ASIGNMENT_FOR_TEACHER, T_D_ADD_ASSIGNMENT, T_D_EDIT_ASSIGNMENT, T_D_DELETE_ASSIGNMENT} from "../../constants/apiConfig";
 
 // get api
 export const getAssignForTeacher = createAsyncThunk(
@@ -27,14 +27,12 @@ export const getAssignForTeacher = createAsyncThunk(
     }
 );
 
-// post api
+// post api  
 export const addAssign = createAsyncThunk(
     "dashboard/addAssign",
-    async ({ id, payload }, { rejectWithValue }) => {
-        
+    async ({ payload }, { rejectWithValue }) => {
         try {
-
-            const token = localStorage.getItem("token"); 
+            const token = localStorage.getItem("token");
             if (!token) {
                 return rejectWithValue("Unauthorized - Missing Token");
             }
@@ -45,60 +43,64 @@ export const addAssign = createAsyncThunk(
                 },
             };
             const response = await axios.post(T_D_ADD_ASSIGNMENT, payload, config);
-            return  response?.data 
+            return response?.data?.data || [];
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || "Add failed");
+            return rejectWithValue(error.response?.data?.message || "Failed to add assignment");
         }
     }
 );
-  
-// // put api
-// export const editReport = createAsyncThunk(
-//     "dashboard/editReport",
-//     async ({ role, id, payload }, { rejectWithValue }) => {
-//         try {
-//             const token = localStorage.getItem("token"); 
-//             if (!token) {
-//                 return rejectWithValue("Unauthorized - Missing Token");
-//             }
 
-//             const config = {
-//                 headers: {
-//                     Authorization: `Bearer ${token}`,
-//                 },
-//             };
-//             // Change DELETE to PUT for editing reports
-//             const response = await axios.put(T_D_EDIT_REPORT(id),payload,config);
 
-//             return {data:response?.data} // Return the updated report data
-//         } catch (error) {
-//             return rejectWithValue(error.response?.data?.message || "Edit failed");
-//         }
-//     }
-// );
+// put api
+export const editAssign = createAsyncThunk(
+    "dashboard/editAssign",
+    async ({ role, id, payload }, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("token"); 
+            if (!token) {
+                return rejectWithValue("Unauthorized - Missing Token");
+            }
 
-// // delete api
-// export const deleteReport = createAsyncThunk(
-//     "dashboard/deleteReport",
-//     async ({ id }, { rejectWithValue }) => {
-//         try {
-//             const token = localStorage.getItem("token"); 
-//             if (!token) {
-//                 return rejectWithValue("Unauthorized - Missing Token");
-//             }
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+            // Change DELETE to PUT for editing reports
+            const response = await axios.put(T_D_EDIT_ASSIGNMENT(id),payload,config);
+
+            return response?.data?.data || []; // Return the updated report data
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || "Edit failed");
+        }
+    }
+);
+
+// delete api
+export const deleteAssign = createAsyncThunk(
+    "dashboard/deleteAssign",
+    async ({ id }, { rejectWithValue }) => {
+        console.log("Received id in thunk:", id);
+        try {
+            const token = localStorage.getItem("token"); 
+            if (!token) {
+                return rejectWithValue("Unauthorized - Missing Token");
+            }
            
-//             const config = {
-//                 headers: {
-//                     Authorization: `Bearer ${token}`,
-//                 },
-//             };
-//             const response = await axios.delete(T_D_DELETE_REPORT(id), config);
-//             return {data:response?.data} 
-//         } catch (error) {
-//             return rejectWithValue(error.response?.data?.message || "Delete failed");
-//         }
-//     }
-// );
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+            const response = await axios.delete(T_D_DELETE_ASSIGNMENT(id), config);
+            console.log("ID passed to API utility:", response?.data); // Debug log
+
+            return response?.data?.data || [];
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || "Delete failed");
+        }
+    }
+);
 
 const sharedTeacherDashboardAssignReducer = createSlice({
     name: "teacherDashboardAssignSharedApi",
@@ -118,7 +120,7 @@ const sharedTeacherDashboardAssignReducer = createSlice({
             .addCase(getAssignForTeacher.fulfilled, (state, action) => {  
                 state.loading = false;
                 state.data = action.payload || [];  
-                console.log("state:", state.data);
+               
                 
             })
             .addCase(getAssignForTeacher.rejected, (state, action) => {
@@ -139,33 +141,33 @@ const sharedTeacherDashboardAssignReducer = createSlice({
                 state.error = action.payload;
             })
             // Edit Items
-    //         .addCase(editReport.pending, (state) => {
-    //             state.loading = true;
-    //             state.error = null;
-    //         })
-    //         .addCase(editReport.fulfilled, (state, action) => {
-    //             state.loading = false;
-    //             // const index = state.data.findIndex((item) => item.id === action.payload.id);
-    //             // if (index !== -1) state.data[index] = action.payload;
-    //         })
-    //         .addCase(editReport.rejected, (state, action) => {
-    //             state.loading = false;
-    //             state.error = action.payload;
-    //         })
-    //         // Delete Items
-    //         .addCase(deleteReport.pending, (state) => {
-    //             state.loading = true;
-    //             state.error = null;
-    //         })
-    //         .addCase(deleteReport.fulfilled, (state, action) => {
-    //             state.loading = false;
-    //             // state.data = state?.data?.filter((item) => item.id !== action.payload.id);
-                
-    //         })
-    //         .addCase(deleteReport.rejected, (state, action) => {
-    //             state.loading = false;
-    //             state.error = action.payload;
-    //         });
+            .addCase(editAssign.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(editAssign.fulfilled, (state, action) => {
+                state.loading = false;
+                // const index = state.data.findIndex((item) => item.id === action.payload.id);
+                // if (index !== -1) state.data[index] = action.payload;
+            })
+            .addCase(editAssign.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            // Delete Items
+            .addCase(deleteAssign.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(deleteAssign.fulfilled, (state, action) => {
+                state.loading = false;
+                // state.data = state?.data?.filter((item) => item.id !== action.payload.id);
+                console.log("state:", state.data);
+            })
+            .addCase(deleteAssign.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
     },
 });
 
