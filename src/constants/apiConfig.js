@@ -16,6 +16,8 @@ export const DELETE_PARENT = (id) => `${BASE_URL}/deleteParent/${id}`;
 
 // STUDENT_DASHBOARD
 export const LOGIN_STUDENT = BASE_URL + "/studentLogin";
+export const S_D_GET_NEW_ASIGN_FOR_STUDENT =  BASE_URL + "/getNewAssignForStudent";
+export const S_D_GET_ASSIGN_QSNS_FOR_STUDENT =  BASE_URL + "/getAssignQsnsForStudent";
 
 // TEACHER DASHBOARD
 export const LOGIN_TEACHER = BASE_URL + "/teacherLogin";
@@ -33,6 +35,10 @@ export const T_D_GET_ASIGNMENT_FOR_TEACHER = BASE_URL + "/getAssignForTeacher";
 export const T_D_ADD_ASSIGNMENT = BASE_URL + "/addAssign";
 export const T_D_EDIT_ASSIGNMENT = (id) => `${BASE_URL}/editAssign/${id}`;
 export const T_D_DELETE_ASSIGNMENT = (id) => `${BASE_URL}/deleteAssign/${id}`;
+export const T_D_GET_ASSIGN_QSNS_FOR_TEACHER = BASE_URL + "/getAssignQsnsForTeacher";
+export const T_D_ADD_ASSIGN_QNSN = (id) => BASE_URL + "/addAssignQsn";
+export const T_D_EDIT_ASSIGN_QNSN = (id) => `${BASE_URL}/editAssignQsn/${id}`;
+export const T_D_DELETE_ASSIGN_QNSN = (id) => `${BASE_URL}/deleteAssignQsn/${id}`;
 
 // PARENT DASHBOARD
 export const LOGIN_PARENT = BASE_URL + "/parentLogin";

@@ -1,9 +1,28 @@
 import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { getAssignQsnsForStudent } from "../../../features/dashboardSharedApi/studentDashboardSharedApiReducer.js";
 
-const downloadAssignmentModal = ({ visible, setVisible }) => {
 
+const downloadAssignmentModal = ({ visible, setVisible,setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
+    const [filteredReports, setFilteredReports] = useState([]);
+    const dispatch = useDispatch();
+    const { data, loading, error } = useSelector((state) => state.studentDashboardNewAssignSharedApi);
+    console.log("downloadAssignmentModal:", data);
+
+    useEffect(() => {
+        // Fetch reports on mount
+        dispatch(getAssignQsnsForStudent(10))
+            .unwrap()
+            .then((response) => setFilteredReports(response.assignments)) // Initialize local state
+            .catch((err) => {
+                // toast.error(error || "Failed to fetch reports");
+                toast.error("Failed to fetch reports");
+            });
+    }, [dispatch]);
     const assignmentQuestions = [
         {
             questionNumber: "Question 1",

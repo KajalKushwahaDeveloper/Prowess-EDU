@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ADMIN_LOGIN, LOGIN_STUDENT } from "../../constants/apiConfig";
+import {  LOGIN_STUDENT } from "../../constants/apiConfig";
 
 export const studentLogin = createAsyncThunk(
   'studentAuth/studentLogin', //action type

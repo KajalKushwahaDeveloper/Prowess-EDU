@@ -12,6 +12,7 @@ import { addAssign, editAssign } from "../../../features/dashboardSharedApi/teac
 import LevelDropdown from "../../molecules/levelDropdown";
 import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
 import ClassTypeDropdown from "../../molecules/classTypeDropdown";
+import AddNewAssignmentQsnModal from "./addNewAssignQsnModal";
 
 const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData = {} }) => {
     const assignmentQuestions = [
@@ -39,10 +40,25 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
     const [errors, setErrors] = useState({});
     const [isSuccess, setIsSuccess] = useState(false); // Track success state
     const [selectedClasses, setSelectedClasses] = useState([]);
+    const [filteredReports, setFilteredReports] = useState([]);
+
     const dispatch = useDispatch();
     const { data, loading, error } = useSelector((state) => state.teacherDashboardAssignSharedApi);
 
     console.log("validation error:", errors);
+
+    console.log("downloadAssignmentModal:", data);
+
+    useEffect(() => {
+        // Fetch reports on mount
+        dispatch(getAssignQnsnForTeacher(10))
+            .unwrap()
+            .then((response) => setFilteredReports(response.assignments)) // Initialize local state
+            .catch((err) => {
+                // toast.error(error || "Failed to fetch reports");
+                toast.error("Failed to fetch reports");
+            });
+    }, [dispatch]);
 
     const handleInputChange = (e) => {
         const { name, value, files } = e.target;
@@ -71,7 +87,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
             // Validate the form data with Yup
             await addNewAssignmentSchema.validate(formData, { abortEarly: false });
             setErrors({}); // Clear previous errors
-    
+
             // Format the startDate and endDate as DD-MM-YYYY
             const formattedStartDate = formData.startDate
                 ? formData.startDate.split("-").reverse().join("-")
@@ -79,10 +95,10 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
             const formattedEndDate = formData.endDate
                 ? formData.endDate.split("-").reverse().join("-")
                 : "";
-    
+
             const formDataToSend = new FormData();
             console.log("formDataToSend:", formDataToSend);
-    
+
             Object.keys(formData).forEach((key) => {
                 if (key === "startDate") {
                     formDataToSend.append("startDate", formattedStartDate);
@@ -94,7 +110,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
                     formDataToSend.append(key, formData[key]);
                 }
             });
-    
+
             let resultAction;
             if (resultAction?.status === 200) {
                 setIsSuccess(true); // Mark as successful
@@ -110,7 +126,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
                 resultAction = await dispatch(editAssign({ id: initialData?.id, payload: formDataToSend })).unwrap();
                 toast.success(resultAction?.message || "Assignment updated successfully!");
             }
-    
+
             // Reset the form data after successful add or edit
             setFormData({
                 subject: "",
@@ -123,7 +139,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
                 startDate: "",
                 endDate: "",
             });
-    
+
         } catch (err) {
             // Handle Yup validation errors
             if (err?.inner) {
@@ -138,7 +154,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
             }
         }
     };
-    
+
     return (
         <Modal
             visible={visible}
@@ -292,51 +308,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
                     </div>
                 ) : (
                     < div >
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-                            {assignmentQuestions.map((currentData, index) => (
-                                <div key={index} className="flex flex-col space-y-1">
-                                    <h2 className="font-semibold">{currentData.questionNumber}</h2>
-                                    <div className="border shadow-lg p-4 rounded-lg flex items-center justify-between gap-1">
-                                        <p className="">{currentData.question}</p>
-                                        <div className="flex items-center justify-between gap-1">
-                                            <Button icon={Icons.editIcon} backgroundColor="#FF8A00" />
-                                            <Button icon={Icons.deleteIcon} backgroundColor="#FF4D00" />
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="flex items-center justify-start  text-lg text-semibold gap-0">
-                            <Button
-                                icon={Icons.plusIcon} // Use custom CSS class
-                                className="text-[#0069A4]"
-                                backgroundColor="#ffffff"
-                                iconColor="#0069A4"
-                            />
-
-                            <p className="text-[#0069A4]  text-semibold">Add New Questions</p>
-                        </div>
-
-                        <div className="flex justify-end gap-4 mt-6">
-                            <Button
-                                label="Cancel"
-                                backgroundColor="#FF8A00"
-                                onClick={() => setVisible(false)}
-                            />
-                            <Button
-                                label={
-                                    loading ? (
-                                        <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
-                                    ) : mode === "add" ? (
-                                        "Add"
-                                    ) : (
-                                        "Update"
-                                    )
-                                }
-                                backgroundColor="#00A943"
-                            // onClick={handleAdd}
-                            />
-                        </div>
+                        <AddNewAssignmentQsnModal />
                     </div>
                 )}
             </div>
