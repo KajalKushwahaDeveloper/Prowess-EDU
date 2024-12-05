@@ -17,7 +17,7 @@ const SharedLayout = () => {
     setIsOpen(!isOpen);
   };
 
-  const links = studentLinks;
+  const links = teacherLinks;
   //   let links;
   //   switch (userRole) {
   //     case "admin":

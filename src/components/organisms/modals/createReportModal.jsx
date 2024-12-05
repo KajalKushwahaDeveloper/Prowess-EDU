@@ -249,7 +249,6 @@ function CreateReportModal({ visible, setVisible, mode = "add", initialData = {}
                 name="level"
                 value={formData.level}
                 onChange={handleInputChange}
-                error={errors.level}
               />
               {errors.level && (
                 <p className="text-rose-600 text-sm absolute left-0 " style={{ bottom: '-20px' }}>{errors.level}</p>

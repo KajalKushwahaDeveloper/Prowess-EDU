@@ -58,4 +58,5 @@ export const Icons = {
   angleRight: "pi pi-angle-right",
   angleDown:"pi pi-angle-down",
   rightArrow:"pi pi-arrow-right",
+  cancelIcon: "pi pi-times",
 };

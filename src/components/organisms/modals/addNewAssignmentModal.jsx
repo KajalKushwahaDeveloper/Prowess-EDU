@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
@@ -13,6 +13,8 @@ import LevelDropdown from "../../molecules/levelDropdown";
 import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
 import ClassTypeDropdown from "../../molecules/classTypeDropdown";
 import AddNewAssignmentQsnModal from "./addNewAssignQsnModal";
+import { getAssignForTeacher } from "../../../features/dashboardSharedApi/teacherDashboardAssignReducer";
+import { useNavigate } from "react-router-dom";
 
 const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData = {} }) => {
     const assignmentQuestions = [
@@ -39,19 +41,18 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
     });
     const [errors, setErrors] = useState({});
     const [isSuccess, setIsSuccess] = useState(false); // Track success state
-    const [selectedClasses, setSelectedClasses] = useState([]);
     const [filteredReports, setFilteredReports] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false); // For question modal
 
     const dispatch = useDispatch();
     const { data, loading, error } = useSelector((state) => state.teacherDashboardAssignSharedApi);
+    const navigate = useNavigate();
+console.log("data:", data.data);
 
-    console.log("validation error:", errors);
-
-    console.log("downloadAssignmentModal:", data);
 
     useEffect(() => {
         // Fetch reports on mount
-        dispatch(getAssignQnsnForTeacher(10))
+        dispatch(getAssignForTeacher(10))
             .unwrap()
             .then((response) => setFilteredReports(response.assignments)) // Initialize local state
             .catch((err) => {
@@ -87,7 +88,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
             // Validate the form data with Yup
             await addNewAssignmentSchema.validate(formData, { abortEarly: false });
             setErrors({}); // Clear previous errors
-
+    
             // Format the startDate and endDate as DD-MM-YYYY
             const formattedStartDate = formData.startDate
                 ? formData.startDate.split("-").reverse().join("-")
@@ -95,10 +96,10 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
             const formattedEndDate = formData.endDate
                 ? formData.endDate.split("-").reverse().join("-")
                 : "";
-
+    
             const formDataToSend = new FormData();
             console.log("formDataToSend:", formDataToSend);
-
+    
             Object.keys(formData).forEach((key) => {
                 if (key === "startDate") {
                     formDataToSend.append("startDate", formattedStartDate);
@@ -110,23 +111,24 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
                     formDataToSend.append(key, formData[key]);
                 }
             });
-
+    
             let resultAction;
-            if (resultAction?.status === 200) {
-                setIsSuccess(true); // Mark as successful
-                toast.success(data?.data?.message || "Assignment added successfully!");
-            } else {
-                throw new Error(data?.data?.message || "Failed to add assignment.");
-            }
-            // Dispatch the appropriate action based on mode
             if (mode === "add") {
+                // Dispatch 'addAssign' action and await the result
                 resultAction = await dispatch(addAssign({ payload: formDataToSend })).unwrap();
-                toast.success(resultAction?.message || "Assignment added successfully!");
             } else if (mode === "edit") {
                 resultAction = await dispatch(editAssign({ id: initialData?.id, payload: formDataToSend })).unwrap();
-                toast.success(resultAction?.message || "Assignment updated successfully!");
             }
-
+    console.log("resultAction:", resultAction);
+    
+            // Check for success after the dispatch
+            if (resultAction?.status === 200) {
+                toast.success(resultAction?.message || "Assignment added successfully!");
+                setIsSuccess(true); // Mark as successful
+            } else {
+                throw new Error(resultAction?.message || "Failed to add assignment.");
+            }
+    
             // Reset the form data after successful add or edit
             setFormData({
                 subject: "",
@@ -139,7 +141,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
                 startDate: "",
                 endDate: "",
             });
-
+    
         } catch (err) {
             // Handle Yup validation errors
             if (err?.inner) {
@@ -154,7 +156,16 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
             }
         }
     };
+    
 
+    const handleOpenModal = () => {
+        console.log("Opening modal..."); // Debug log
+        setIsModalOpen(true);
+    };
+    const handleCloseModal = () => {
+        setVisible(false);      // Close the form modal
+        setIsModalOpen(false);   // Open the question modals
+    };
     return (
         <Modal
             visible={visible}
@@ -164,153 +175,156 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
             className="rounded-lg"
         >
             <div>
-                {!isSuccess ? (
-                    <div className="bg-white m-4">
-                        <h1 className="font-medium text-2xl my-2">{mode === "add" ? "Add new Assignment" : "Edit new Assignment"} </h1>
-                        <hr className="mb-8 border-gray-300" />
-
-                        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-                            <div className="relative">
-                                <SubjectTypeDropdown
-                                    label="Subjects"
-                                    name="subject"
-                                    value={formData.subject}
-                                    onChange={handleInputChange}
-                                    error={errors.subject}
-                                />
-                                {errors.subject && (
-                                    <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.subject}</p>
-                                )}
-                            </div>
-                            <div className="relative">
-                                <InputFieldWithLabel
-                                    type="text"
-                                    labelText="Chapter"
-                                    name="chapter"
-                                    placeholder="Enter Student Chapter"
-                                    value={formData.chapter}
-                                    onChange={handleInputChange}
-                                />
-                                {errors.chapter && (
-                                    <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.chapter}</p>
-                                )}
-                            </div>
-                            <div className="relative">
-                                <InputFieldWithLabel
-                                    type="text"
-                                    labelText="Topic Name"
-                                    name="topic"
-                                    placeholder="Enter Topic Name"
-                                    value={formData.topic}
-                                    onChange={handleInputChange}
-                                />
-                                {errors.topic && (
-                                    <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.topic}</p>
-                                )}
-                            </div>
-                            <div className="relative">
-                                <ClassTypeDropdown
-                                    label="Class"
-                                    name="Class"
-                                    value={formData.Class}
-                                    onChange={handleInputChange}
-                                />
-                                {errors.Class && (
-                                    <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.Class}</p>
-                                )}
-                            </div>
-                            <div className="relative">
-                                <InputFieldWithLabel
-                                    type="text"
-                                    labelText="Select Students"
-                                    name="assignedTo"
-                                    placeholder="Select Students"
-                                    value={formData.assignedTo}
-                                    onChange={handleInputChange}
-                                />
-                                {errors.assignedTo && (
-                                    <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.assignedTo}</p>
-                                )}
-                            </div>
-                            <div className="relative">
-                                <LevelDropdown
-                                    label="Level"
-                                    name="level"
-                                    value={formData.level}
-                                    onChange={handleInputChange}
-                                />
-                                {errors.level && (
-                                    <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.level}</p>
-                                )}
-                            </div>
-                            <div className="relative">
-                                <InputFieldWithLabel
-                                    labelText="Start Date"
-                                    name="startDate"
-                                    type="date"
-                                    value={formData.startDate}
-                                    onChange={handleInputChange}
-                                    error={errors.startDate}
-                                />
-                                {errors.startDate && (
-                                    <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.startDate}</p>
-                                )}
-                            </div>
-
-                            <div className="relative">
-                                <InputFieldWithLabel
-                                    labelText="End Date"
-                                    name="endDate"
-                                    type="date"
-                                    //  placeholder="Enter something"
-                                    value={formData.endDate}
-                                    onChange={handleInputChange}
-                                    error={errors.endDate}
-                                />
-                                {errors.endDate && (
-                                    <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.endDate}</p>
-                                )}
-                            </div>
-                            <div className="relative">
-                                <InputFieldWithLabel
-                                    type="file"
-                                    labelText="Upload Assignment"
-                                    name="assignFile"
-                                    placeholder="Upload Assignment"
-                                    onChange={handleInputChange} // Handle file input change
-                                />
-
-                                {errors.assignFile && (
-                                    <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.assignFile}</p>
-                                )}
-                            </div>
+                <div className="bg-white m-4">
+                    <h1 className="font-medium text-2xl my-2">{mode === "add" ? "Add new Assignment" : "Edit new Assignment"} </h1>
+                    <hr className="mb-8 border-gray-300" />
+                    <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+                        <div className="relative">
+                            <SubjectTypeDropdown
+                                label="Subjects"
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleInputChange}
+                                error={errors.subject}
+                            />
+                            {errors.subject && (
+                                <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.subject}</p>
+                            )}
                         </div>
-                        <div className="flex justify-end gap-4 mt-6">
-                            <Button
-                                label="Cancel"
-                                backgroundColor="#FF8A00"
-                                onClick={() => setVisible(false)}
+                        <div className="relative">
+                            <InputFieldWithLabel
+                                type="text"
+                                labelText="Chapter"
+                                name="chapter"
+                                placeholder="Enter Student Chapter"
+                                value={formData.chapter}
+                                onChange={handleInputChange}
                             />
-                            <Button
-                                label={
-                                    loading ? (
-                                        <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
-                                    ) : mode === "add" ? (
-                                        "Add"
-                                    ) : (
-                                        "Update"
-                                    )
-                                }
-                                backgroundColor="#00A943"
-                                onClick={handleAdd}
+                            {errors.chapter && (
+                                <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.chapter}</p>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <InputFieldWithLabel
+                                type="text"
+                                labelText="Topic Name"
+                                name="topic"
+                                placeholder="Enter Topic Name"
+                                value={formData.topic}
+                                onChange={handleInputChange}
                             />
+                            {errors.topic && (
+                                <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.topic}</p>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <ClassTypeDropdown
+                                label="Class"
+                                name="Class"
+                                value={formData.Class}
+                                onChange={handleInputChange}
+                            />
+                            {errors.Class && (
+                                <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.Class}</p>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <InputFieldWithLabel
+                                type="text"
+                                labelText="Select Students"
+                                name="assignedTo"
+                                placeholder="Select Students"
+                                value={formData.assignedTo}
+                                onChange={handleInputChange}
+                            />
+                            {errors.assignedTo && (
+                                <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.assignedTo}</p>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <LevelDropdown
+                                label="Level"
+                                name="level"
+                                value={formData.level}
+                                onChange={handleInputChange}
+                            />
+                            {errors?.level && (
+                                <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.level}</p>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <InputFieldWithLabel
+                                labelText="Start Date"
+                                name="startDate"
+                                type="date"
+                                value={formData.startDate}
+                                onChange={handleInputChange}
+                                error={errors.startDate}
+                            />
+                            {errors.startDate && (
+                                <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.startDate}</p>
+                            )}
+                        </div>
+
+                        <div className="relative">
+                            <InputFieldWithLabel
+                                labelText="End Date"
+                                name="endDate"
+                                type="date"
+                                //  placeholder="Enter something"
+                                value={formData.endDate}
+                                onChange={handleInputChange}
+                                error={errors.endDate}
+                            />
+                            {errors.endDate && (
+                                <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.endDate}</p>
+                            )}
+                        </div>
+                        <div className="relative">
+                            <InputFieldWithLabel
+                                type="file"
+                                labelText="Upload Assignment"
+                                name="assignFile"
+                                placeholder="Upload Assignment"
+                                onChange={handleInputChange} // Handle file input change
+                            />
+
+                            {errors.assignFile && (
+                                <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.assignFile}</p>
+                            )}
                         </div>
                     </div>
-                ) : (
-                    < div >
-                        <AddNewAssignmentQsnModal />
+                    <div className="flex justify-end gap-4 mt-6">
+                        <Button
+                            label="Cancel"
+                            backgroundColor="#FF8A00"
+                            onClick={() => setVisible(false)}
+                        // icon ={Icons.cancelIcon}
+                        />
+                        <Button
+                            label={
+                                loading ? (
+                                    <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
+                                ) : mode === "add" ? (
+                                    "Add"
+                                ) : (
+                                    "Update"
+                                )
+                            }
+                            backgroundColor="#00A943"
+                            onClick={handleAdd}
+                        />
+                        <Button
+                           visible={!visible}
+                            backgroundColor="#0069A4"
+                            onClick={handleOpenModal}
+                            icon={Icons.rightArrow}
+                        />
+                        {isModalOpen && (
+                           <AddNewAssignmentQsnModal visible={isModalOpen} onClose={handleCloseModal} />
+                        )}
                     </div>
-                )}
+                </div>
             </div>
 
         </Modal >

@@ -1,4 +1,4 @@
-const Button = ({ label, onClick, width, height, customClass, icon, backgroundColor, iconColor }) => {
+const Button = ({ label, onClick, width, height, customClass, icon, backgroundColor, iconColor, border }) => {
   return (
     <>
       <div className="flex items-center justify-center">
@@ -13,7 +13,8 @@ const Button = ({ label, onClick, width, height, customClass, icon, backgroundCo
             border: 'none',                 // No border
             outline: 'none',                // No outline on click
             borderRadius: '6px',            // Border radius of 6px
-            padding: '10px 10px',           // Optional padding for button
+            padding: '10px 10px',
+            border: border,         // Optional padding for button
           }}
           className={`font-medium ${customClass} flex items-center justify-center hover:opacity-90`} // Applied flex here
         >
@@ -21,7 +22,6 @@ const Button = ({ label, onClick, width, height, customClass, icon, backgroundCo
             <span >{icon && <i className={`pi ${icon}`}  style={{ color: iconColor || "#FFFFFF", fontSize:"1rem" }}></i>} </span>
             <span className="text-lg">{label}</span>
           </div>
-
         </button>
       </div>
     </>
