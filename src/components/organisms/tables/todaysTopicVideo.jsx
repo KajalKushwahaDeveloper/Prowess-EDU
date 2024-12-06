@@ -2,7 +2,7 @@ import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState, useEffect } from "react";
-import { getVideosForTeacher, deleteVideo } from "../../../features/dashboardSharedApi/videosSharedApi";
+// import { getVideosForTeacher, deleteVideo } from "../../../features/dashboardSharedApi/videosSharedApi";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import AddNewVideoModal from "../modals/addNewVideomodal";
@@ -11,23 +11,23 @@ const TodayTopicVideoTable = ({ setModalMode, modalMode, currentStudent, setCurr
     
     const [visible, setVisible] = useState(false);
     const [filteredReports, setFilteredReports] = useState([]); // For local filtering
-    const { data, loading, error } = useSelector((state) => state.teacherDashboardVideoSharedApiReducer);
+    // const { data, loading, error } = useSelector((state) => state.teacherDashboardVideoSharedApiReducer);
     const dispatch = useDispatch();
-console.log("setFilteredReports:",data)
-    useEffect(() => {
-        // Fetch reports on mount
-        dispatch(getVideosForTeacher())
-            .unwrap()
-            .then((response) => setFilteredReports(response?.videos)) // Initialize local state
-            .catch((err) => {
-                toast.error(error || "Failed to fetch Data");
-                console.log("id:", response.videos)
-            });
-    }, [dispatch]);
+// console.log("setFilteredReports:",data)
+    // useEffect(() => {
+    //     // Fetch reports on mount
+    //     dispatch(getVideosForTeacher())
+    //         .unwrap()
+    //         .then((response) => setFilteredReports(response?.videos)) // Initialize local state
+    //         .catch((err) => {
+    //             // toast.error(error || "Failed to fetch Data");
+    //             console.log("id:", response.videos)
+    //         });
+    // }, [dispatch]);
 
     const handleDelete = async (rowData) => {
         try {
-            await dispatch(deleteVideo({  id: rowData.id })).unwrap();
+            // await dispatch(deleteVideo({  id: rowData.id })).unwrap();
 
             // Remove the deleted row from local state
             setFilteredReports((prevVideos) =>
@@ -49,13 +49,13 @@ console.log("setFilteredReports:",data)
 
     const handleReload = () => {
         // Reload data from the API
-        dispatch(getVideosForTeacher())
-            .unwrap()
-            .then((response) => {
-                setFilteredReports(response.videos); // Ensure you're setting the correct data
-                toast.info("Data reloaded successfully!");
-            })
-            .catch((err) => toast.error("Failed to reload data"));
+        // dispatch(getVideosForTeacher())
+        //     .unwrap()
+        //     .then((response) => {
+        //         setFilteredReports(response.videos); // Ensure you're setting the correct data
+        //         toast.info("Data reloaded successfully!");
+        //     })
+        //     .catch((err) => toast.error("Failed to reload data"));
     };
     
 

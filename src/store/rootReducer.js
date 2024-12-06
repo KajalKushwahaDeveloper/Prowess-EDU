@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
     teacherAuth:teacherAuthReducer,
     parentAuth:parentAuthReducer,
     teacherDashboardSharedApi :sharedTeacherDashboardReducer,
-    teacherDashboardVideoSharedApi :teacherDashboardVideoSharedApi,
+    videosSharedApi :teacherDashboardVideoSharedApi,
     teacherDashboardAssignSharedApi : sharedTeacherDashboardAssignReducer,
     studentDashboardNewAssignSharedApi : sharedStudentDashboardAssignReducer,
     teacherDashboardAssignQsnSharedApi : sharedTeacherDashboardAssignQsnReducer
