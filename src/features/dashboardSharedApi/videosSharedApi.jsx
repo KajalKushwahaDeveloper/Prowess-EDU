@@ -39,13 +39,15 @@ const teacherDashboardVideoSharedApi = createSlice({
     error: null,
     videoData: null,
   },
+  
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPresignedUrl.pending, (state) => {
-        state.loading = true;
-        state.error = null;  
-      })
+    .addCase(fetchPresignedUrl.fulfilled, (state, action) => {
+      state.loading = false;
+      state.presignedUrl = action.payload; // action.payload must contain the presigned URL
+    })
+    
       .addCase(fetchPresignedUrl.fulfilled, (state, action) => {
         state.loading = false;
         state.presignedUrl = action.payload;

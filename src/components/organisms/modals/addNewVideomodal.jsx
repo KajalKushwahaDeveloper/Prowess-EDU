@@ -9,7 +9,6 @@ import { fetchPresignedUrl, addVideo } from "../../../features/dashboardSharedAp
 
 function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} }) {
     const dispatch = useDispatch();
-    const { presignedUrl, loading } = useSelector((state) => state.video);
     const [videoData, setVideoData] = useState({
       title: "",
       description: "",
@@ -18,27 +17,30 @@ function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} 
       videoUrl: "",
       ...initialData,
     });
-  
+    const { presignedUrl = null, loading = false } = useSelector((state) => state.video || {});
+    console.log(useSelector((state) => state.video));
+
     // Handle file upload
     const handleFileUpload = async (event) => {
-      const file = event.target.files[0];
+      const file = event.target.files[0]; 
       if (!file) return;
   
       const fileName = file.name;
       const fileType = file.type;
-  
       try {
-        await dispatch(fetchPresignedUrl({ fileName, fileType })).unwrap();
+        const result = await dispatch(fetchPresignedUrl({ fileName, fileType })).unwrap();
         setVideoData((prev) => ({
           ...prev,
           fileName,
           fileType,
-          videoUrl: presignedUrl, // presignedUrl contains the URL to upload the file
+          videoUrl: result, // Use result from the action
         }));
         toast.success("Presigned URL fetched successfully!");
       } catch (error) {
+        console.error("Error fetching presigned URL:", error);
         toast.error(error?.message || "Failed to fetch presigned URL");
       }
+      
     };
   
     // Handle form submission
