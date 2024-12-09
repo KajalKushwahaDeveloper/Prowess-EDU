@@ -1,4 +1,4 @@
-const Button = ({ label, onClick, width, height, customClass, icon, backgroundColor, iconColor, border }) => {
+const Button = ({ label, onClick, width, height, customClass, icon, backgroundColor, iconColor }) => {
   return (
     <>
       <div className="flex items-center justify-center">

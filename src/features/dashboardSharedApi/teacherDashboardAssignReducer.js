@@ -44,7 +44,7 @@ export const addAssign = createAsyncThunk(
                 },
             };
             const response = await axios.post(T_D_ADD_ASSIGNMENT, payload, config);
-            return response?.data?.data || [];
+            return response || [];
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Failed to add assignment");
         }

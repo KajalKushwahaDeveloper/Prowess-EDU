@@ -28,6 +28,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
         },
     ]
     const [formData, setFormData] = useState({
+        id: "",
         subject: "",
         chapter: "",
         topic: "",
@@ -47,7 +48,7 @@ const AddNewAssignmentModal = ({ visible, setVisible, mode = "add", initialData 
     const dispatch = useDispatch();
     const { data, loading, error } = useSelector((state) => state.teacherDashboardAssignSharedApi);
     const navigate = useNavigate();
-console.log("data:", data.data);
+console.log("data:", data.data, "init", initialData);
 
 
     useEffect(() => {
@@ -119,7 +120,7 @@ console.log("data:", data.data);
             } else if (mode === "edit") {
                 resultAction = await dispatch(editAssign({ id: initialData?.id, payload: formDataToSend })).unwrap();
             }
-    console.log("resultAction:", resultAction);
+            console.log("resultAction:", resultAction);
     
             // Check for success after the dispatch
             if (resultAction?.status === 200) {
@@ -131,6 +132,7 @@ console.log("data:", data.data);
     
             // Reset the form data after successful add or edit
             setFormData({
+                id: "",
                 subject: "",
                 chapter: "",
                 topic: "",
@@ -321,7 +323,7 @@ console.log("data:", data.data);
                             icon={Icons.rightArrow}
                         />
                         {isModalOpen && (
-                           <AddNewAssignmentQsnModal visible={isModalOpen} onClose={handleCloseModal} />
+                           <AddNewAssignmentQsnModal visible={isModalOpen} onClose={handleCloseModal} assignmentId={formData.id} />
                         )}
                     </div>
                 </div>

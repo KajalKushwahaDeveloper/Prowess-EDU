@@ -11,7 +11,7 @@ import {
   deleteAssignQsn,
 } from "../../../features/dashboardSharedApi/teacherDashboardAssignQsnReducer";
 
-const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {} }) => {
+const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {}, assignmentId }) => {
   const [assignmentQuestions, setAssignmentQuestions] = useState([]);
   const [formData, setFormData] = useState({
     id: null, // Track the ID for editing
@@ -25,7 +25,7 @@ const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {} }) => {
   );
 
   useEffect(() => {
-    dispatch(getAssignQnsnForTeacher({ assignmentId: formData.id }))
+    dispatch(getAssignQnsnForTeacher({ assignmentId: assignmentId }))
       .unwrap()
       .then((response) => {
         setAssignmentQuestions(response);
@@ -51,7 +51,7 @@ const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {} }) => {
 
     if (formData.id) {
       // Edit existing question
-      dispatch(editAssignQsn({ id: formData.id, payload: { question: formData.question, assignmentId: formData.assignmentId } }))
+      dispatch(editAssignQsn({ id: assignmentId, payload: { question: formData.question, assignmentId: formData.id } }))
 
         .unwrap()
         .then(() => {
@@ -68,7 +68,7 @@ const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {} }) => {
         });
     } else {
       // Add new question
-      dispatch(addAssignQsn({ id: formData.id, payload: { question: formData.question } }))
+      dispatch(addAssignQsn({ id: assignmentId, payload: { question: formData.question } }))
         .unwrap()
         .then((newQuestion) => {
           setAssignmentQuestions((prev) => [...prev, newQuestion]);
