@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import {
   fetchPresignedUrl,
   addVideo,
+  editVideo,
 } from "../../../features/dashboardSharedApi/videosSharedApi";
 
 function AddNewVideoModal({
@@ -31,6 +32,17 @@ function AddNewVideoModal({
     (state) => state.video || {}
   );
 
+  useEffect(() => {
+    if (mode === "edit" && initialData) {
+      setFormData({
+        ...initialData,
+        fileName: initialData.fileName || "",
+        fileType: initialData.fileType || "",
+        videoUrl: initialData.videoUrl || "",
+      });
+    }
+  }, [mode, initialData]);
+
   // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +52,26 @@ function AddNewVideoModal({
     }));
   };
 
-  // Handle file upload
+  const uploadToS3 = async (file, presignedUrl) => {
+    try {
+      const response = await fetch(presignedUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+        },
+        body: file,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to upload file to S3.");
+      }
+      toast.success("File uploaded to S3 successfully!");
+    } catch (error) {
+      console.error("Error uploading to S3:", error);
+      toast.error("Error uploading file to S3.");
+    }
+  };
+
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -55,42 +86,41 @@ function AddNewVideoModal({
 
     try {
       const { name: fileName, type: fileType } = file;
-
-      // Generate fileKey with the format: timestamp.filename
-      const fileKey = `${fileName.replace(/\s+/g, "%20")}`;
+      const fileKey = `${fileName}`; // Using fileName as fileKey
 
       // Fetch the presigned URL
       const result = await dispatch(
         fetchPresignedUrl({ fileName: fileKey, fileType })
       ).unwrap();
-      console.log("PresignedUrlresult:", result);
 
+      // Once presigned URL is fetched, upload the file to S3
+      await uploadToS3(file, result?.presignedUrl);
+
+      // Set the video URL with file key
       setFormData((prev) => ({
         ...prev,
-        fileName: fileKey, // Store the generated file key
+        fileName: result?.fileKey,
         fileType,
-        videoUrl: result, // Store the presigned URL
+        videoUrl: result?.presignedUrl, // Store the presigned URL
       }));
-
-      toast.success("Presigned URL fetched successfully!");
     } catch (error) {
-      console.error("Error fetching presigned URL:", error);
-      toast.error(error?.message || "Failed to fetch presigned URL");
+      console.error("Error during file upload process:", error);
+      toast.error(error?.message || "File upload process failed.");
     }
   };
 
   // Generate the final video URL with the calculated timestamp
   const generateVideoUrl = () => {
     const baseUrl = formData.videoUrl; // The presigned base URL
-    const fileName = formData.fileName.replace(/\s+/g, "%20"); // Encode spaces in filename
-    const baseWithoutFileName = baseUrl.substring(
-      0,
-      baseUrl.lastIndexOf("/") + 1
-    ); // Remove the file name from the URL
-    return `${baseWithoutFileName}${fileName}`;
+    const fileName = formData.fileName; // Assuming fileName is set as "video.mp4"
+
+    const encodedFileName = encodeURIComponent(fileName);
+
+    const finalVideoUrl = `${baseUrl}${encodedFileName}`;
+
+    return finalVideoUrl;
   };
 
-  // Handle form submission
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     if (!formData.videoUrl) {
@@ -100,17 +130,23 @@ function AddNewVideoModal({
 
     const finalVideoUrl = generateVideoUrl(); // Construct the video URL
 
-    console.log("addVideo:", finalVideoUrl);
-
     try {
-      const data = await dispatch(
-        addVideo({ ...formData, videoUrl: finalVideoUrl })
-      ).unwrap();
-      toast.success(data?.data?.message || "Video added successfully!");
-      setVisible(false);
+      let data;
+      if (mode === "add") {
+        data = await dispatch(
+          addVideo({ ...formData, videoUrl: finalVideoUrl })
+        ).unwrap();
+        toast.success(data?.data?.message || "Video added successfully!");
+      } else if (mode === "edit") {
+        data = await dispatch(
+          editVideo({ ...formData, videoUrl: finalVideoUrl })
+        ).unwrap();
+        toast.success(data?.data?.message || "Video updated successfully!");
+      }
+
+      setVisible(false); // Close modal on success
     } catch (error) {
-      console.error("Error adding video:", error);
-      toast.error(error?.message || "Failed to add video");
+      toast.error(error?.message || "Failed to process video.");
     }
   };
 
@@ -167,6 +203,12 @@ function AddNewVideoModal({
             name="uploadVideo"
             onChange={handleFileUpload}
           />
+          {loading && (
+            <div className="flex items-center justify-center mt-2">
+              <FaSpinner className="animate-spin text-gray-500 text-2xl" />
+              <span className="ml-2 text-gray-600">Fetching URL...</span>
+            </div>
+          )}
         </div>
 
         <div className="flex justify-end gap-4 mt-6">
@@ -179,12 +221,15 @@ function AddNewVideoModal({
             label={
               loading ? (
                 <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
-              ) : (
+              ) : mode === "add" ? (
                 "Add"
+              ) : (
+                "Update"
               )
             }
             backgroundColor="#00A943"
             onClick={handleFormSubmit}
+            disabled={loading} // Prevent double submission
           />
         </div>
       </div>

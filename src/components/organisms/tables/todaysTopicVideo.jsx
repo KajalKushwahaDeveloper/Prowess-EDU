@@ -3,7 +3,7 @@ import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState, useEffect } from "react";
 import {
-  getVideosForTeacher,deleteVideo
+  getVideosForTeacher, deleteVideo
 } from "../../../features/dashboardSharedApi/videosSharedApi";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -23,8 +23,7 @@ const TodayTopicVideoTable = ({
   
   const dispatch = useDispatch();
   
- // Fetch data on initial mount
- useEffect(() => {
+  useEffect(() => {
     dispatch(getVideosForTeacher())
       .unwrap()
       .then((response) => setFilteredReports(response?.videos)) // Initialize local state
@@ -56,11 +55,10 @@ const TodayTopicVideoTable = ({
   };
 
   const handleReload = () => {
-    // Reload data from the API
     dispatch(getVideosForTeacher())
       .unwrap()
       .then((response) => {
-        setFilteredReports(response.videos); // Set the updated data to the table
+        setFilteredReports(response.videos);
         toast.info("Data reloaded successfully!");
       })
       .catch((err) => toast.error("Failed to reload data"));
