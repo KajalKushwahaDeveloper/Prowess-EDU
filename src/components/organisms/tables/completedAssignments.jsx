@@ -1,10 +1,23 @@
-import { Icons } from "../../../assets/icons";
-import Button from "../../atoms/button";
 import Table from "../../common/Table";
-import { useState } from "react";
+import { useState, useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAssignForTeacher } from "../../../features/dashboardSharedApi/teacherDashboardAssignReducer";
+import { toast } from "react-toastify";
+
 
 const CompletedAssignmentsTable = () => {
-    const [products, setProducts] = useState("");
+    const [filteredReports, setFilteredReports] = useState([]);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        // Fetch reports on mount
+        dispatch(getAssignForTeacher())
+            .unwrap()
+            .then((response) => setFilteredReports(response.assignments)) // Initialize local state
+            .catch((error) => {
+                toast.error(error || "Failed to fetch reports");
+            });
+    }, [dispatch]);
 
     const columns = [
         { field: "id", header: "Id" },
@@ -17,7 +30,7 @@ const CompletedAssignmentsTable = () => {
 
     return (
         <Table
-            data={products}
+            data={filteredReports}
             columns={columns}
             tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
         />

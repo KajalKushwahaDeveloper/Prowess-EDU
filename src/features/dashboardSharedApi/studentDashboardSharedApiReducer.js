@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { S_D_GET_NEW_ASIGN_FOR_STUDENT, S_D_GET_ASSIGN_QSNS_FOR_STUDENT } from "../../constants/apiConfig";
+import { S_D_GET_NEW_ASIGN_FOR_STUDENT, S_D_GET_ASSIGN_QSNS_FOR_STUDENT, S_D_GET_NEW_VIDEOS_FOR_STUDENT } from "../../constants/apiConfig";
 
 // get api
 export const getNewAssignForStudent = createAsyncThunk(
@@ -17,6 +17,7 @@ export const getNewAssignForStudent = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
+            console.log("classIdAssign:", classId);
 
             const response = await axios.get(`${S_D_GET_NEW_ASIGN_FOR_STUDENT}?Class=${classId}`, config);
 
@@ -52,6 +53,8 @@ export const getAssignQsnsForStudent = createAsyncThunk(
         }
     }
 );
+
+
 
 // post api  
 // export const addAssign = createAsyncThunk(
@@ -147,11 +150,11 @@ const sharedStudentDashboardAssignReducer = createSlice({
                 state.loading = false;
                 state.data = action.payload || [];
             })
-            // get getAssignQsnsForStudent
             .addCase(getNewAssignForStudent.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
+            // get getAssignQsnsForStudent
             .addCase(getAssignQsnsForStudent.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -164,6 +167,7 @@ const sharedStudentDashboardAssignReducer = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
+            
         // Add Items
         // .addCase(addAssign.pending, (state) => {
         //     state.loading = true;

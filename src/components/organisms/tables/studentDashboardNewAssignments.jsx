@@ -1,120 +1,78 @@
-// import { Icons } from "../../../assets/icons";
-// import Button from "../../atoms/button";
-// import Table from "../../common/Table";
-// import { useState } from "react";
-// import { data } from "./data";
-// import ViewAll from "../../common/viewAllFunctionality";
-
-// const StudentDashboardNewAssignmentsTable = () => {
-//     const [products, setProducts] = useState(data);
-//     const [showAll, setShowAll] = useState(false);
-
-//     const columns = [
-//         { field: "id", header: "Id" },
-//         { field: "subjectName", header: "Subject Name" },
-//         { field: "chapter", header: "Chapter" },
-//         { field: "questions", header: "Questions" },
-//         { field: "marks", header: "Marks" },
-//         {
-//             field: "Action",
-//             header: "Action",
-//             body: () => {
-//                 return (
-//                     <div className="flex space-x-2">
-//                         <Button
-//                             // label="view"
-//                             // onClick={() => handleEdit(rowData)}
-//                             backgroundColor="#00A943"
-//                             icon={Icons.viewIcon}
-//                         />
-
-//                     </div>
-//                 );
-//             },
-//         },
-//     ];
-//     const displayedData = showAll ? products : products.slice(0,2);
-//     return (
-//         <>
-//         <Table
-//             data={displayedData}
-//             columns={columns}
-//             tableStyle={{ minWidth: "40rem", fontSize: "2rem" }}
-//         />
-//               <ViewAll showAll={showAll} setShowAll={setShowAll}/>
-//         </>
-//     );
-// };
-
-// export default StudentDashboardNewAssignmentsTable;
-
-
 import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState, useEffect } from "react";
-import { data } from "./data";
 import ViewAll from "../../common/viewAllFunctionality";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getNewAssignForStudent } from "../../../features/dashboardSharedApi/studentDashboardSharedApiReducer.js";
+import ViewSDNewAssignModal from "../modals/viewSDNewAssignmentsModal.jsx";
 
-const StudentDashboardNewAssignmentsTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
-    const [showAll, setShowAll] = useState(false);
-    const [products, setProducts] = useState(data);
-    const [visible, setVisible] = useState(false);
-    const [filteredReports, setFilteredReports] = useState([]);
+const StudentDashboardNewAssignmentsTable = () => {
+  const [showAll, setShowAll] = useState(false);
+  const [newAssignment, setNewAssigment] = useState([]);
+  const [visible, setVisible] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState(null);
 
-    const dispatch = useDispatch();
-    // const { data, loading, error } = useSelector((state) => state.studentDashboardNewAssignSharedApi);
-    // console.log("studentDashboardNewAssignmentData:", data);
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        // Fetch reports on mount
-        dispatch(getNewAssignForStudent(10))
-            .unwrap()
-            .then((response) => setFilteredReports(response.assignments)) // Initialize local state
-            .catch((err) => {
-                // toast.error(error || "Failed to fetch reports");
-                toast.error("Failed to fetch reports");
-            });
-    }, [dispatch]);
+  const studentClass = JSON.parse(localStorage.getItem("data"));
 
-    const columns = [
-        { field: "id", header: "Id" },
-        { field: "subjectName", header: "Subject Name" },
-        { field: "chapter", header: "Chapter" },
-        { field: "questions", header: "Questions" },
-        { field: "marks", header: "Marks" },
-        {
-            field: "Action",
-            header: "Action",
-            body: () => {
-                return (
-                    <div className="flex space-x-2">
-                        <Button
-                            // label="view"
-                            // onClick={() => handleEdit(rowData)}
-                            backgroundColor="#00A943"
-                            icon={Icons.viewIcon}
-                        />
+  console.log("newAssignment:", newAssignment);
 
-                    </div>
-                );
-            },
-        },
-    ];
-    const displayedData = showAll ? products : products.slice(0, 2);
-    return (
-        <>
-            <Table
-                data={displayedData}
-                columns={columns}
-                tableStyle={{ minWidth: "40rem", fontSize: "2rem" }}
+  useEffect(() => {
+    // Fetch reports on mount
+    dispatch(getNewAssignForStudent(studentClass?.Class))
+      .unwrap()
+      .then((response) => setNewAssigment(response?.assignments))
+      .catch((error) => {
+        toast.error(error || "Failed to fetch reports");
+      });
+  }, [dispatch]);
+
+  const columns = [
+    { header: "Id", body: (rowData) => rowData.id || "N/A" },
+    { header: "Subject Name", body: (rowData) => rowData.subject || "N/A" },
+    { header: "Chapter", body: (rowData) => rowData.chapter || "N/A" },
+    { header: "Questions", body: (rowData) => rowData.questions || "N/A" },
+    { header: "Marks", body: (rowData) => rowData.marks || "N/A" },
+    {
+      field: "Action",
+      header: "Action",
+      body: (rowData) => {
+        return (
+          <div className="flex space-x-2">
+            <Button
+              onClick={() => {
+                setSelectedAssignment(rowData); // Set the selected assignment
+                setVisible(true); // Show the modal
+              }}
+              backgroundColor="#00A943"
+              icon={Icons.viewIcon}
             />
-            <ViewAll showAll={showAll} setShowAll={setShowAll} />
-        </>
-    );
+          </div>
+        );
+      },
+    },
+  ];
+  const displayedData = showAll ? newAssignment : newAssignment?.slice(0, 2);
+  return (
+    <>
+      <Table
+        data={displayedData}
+        columns={columns}
+        tableStyle={{ minWidth: "40rem", fontSize: "2rem" }}
+      />
+      <ViewAll showAll={showAll} setShowAll={setShowAll} />
+      {visible && (
+        <ViewSDNewAssignModal
+          setVisible={setVisible}
+          visible={visible}
+          assignmentData={selectedAssignment} // Pass the selected assignment
+        />
+      )}
+    </>
+  );
 };
 
 export default StudentDashboardNewAssignmentsTable;

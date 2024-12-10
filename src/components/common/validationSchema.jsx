@@ -144,3 +144,11 @@ export const createReportSchema = Yup.object().shape({
     recommendation: Yup.string().required("Recommendation is required"),
     comment: Yup.string().required("Comment is required"),
 });
+
+export const videoValidationSchema = Yup.object().shape({
+    subject: Yup.string().required("Subject is required").trim(),
+    chapter: Yup.string().required("Chapter is required").trim(),
+    topic: Yup.string().required("Topic is required").trim(),
+    Class: Yup.string().required("Class is required").trim(),
+    videoFile: Yup.mixed().required("Video file is required"),
+  });

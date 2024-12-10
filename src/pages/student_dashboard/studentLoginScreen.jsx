@@ -23,7 +23,7 @@ const StudentLoginScreen = () => {
   useEffect(() => {
     if (data?.status === 200) {
       localStorage.setItem("token", data?.data?.token);
-      localStorage.setItem("data", JSON.stringify(data?.data?.user));
+      localStorage.setItem("data", JSON.stringify(data?.data?.student));
       toast.success(data?.data?.message || "Login successful!", { autoClose: 1000 });
   
       // Navigate after toast

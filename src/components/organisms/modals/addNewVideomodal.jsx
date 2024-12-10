@@ -5,18 +5,11 @@ import Modal from "../../common/modal";
 import { useDispatch, useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
-import {
-  fetchPresignedUrl,
-  addVideo,
-  editVideo,
-} from "../../../features/dashboardSharedApi/videosSharedApi";
+import { fetchPresignedUrl, addVideo, editVideo } from "../../../features/dashboardSharedApi/videosSharedApi";
+import capitalize from "lodash/capitalize";
+import {videoValidationSchema} from "../../common/validationSchema";
 
-function AddNewVideoModal({
-  visible,
-  setVisible,
-  mode = "add",
-  initialData = {},
-}) {
+function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} }) {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     fileName: "",
@@ -28,9 +21,7 @@ function AddNewVideoModal({
     Class: "",
     ...initialData,
   });
-  const { presignedUrl = null, loading = false } = useSelector(
-    (state) => state.video || {}
-  );
+  const { presignedUrl = null, loading = false } = useSelector((state) => state.video || {});
 
   useEffect(() => {
     if (mode === "edit" && initialData) {
@@ -43,12 +34,11 @@ function AddNewVideoModal({
     }
   }, [mode, initialData]);
 
-  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "subject" || name === "topic" ? capitalize(value) : value,
     }));
   };
 
@@ -78,9 +68,7 @@ function AddNewVideoModal({
 
     const allowedTypes = ["video/mp4", "video/mkv", "video/avi"];
     if (!allowedTypes.includes(file.type)) {
-      toast.error(
-        "Invalid file type. Only MP4, MKV, and AVI files are allowed."
-      );
+      toast.error("Invalid file type. Only MP4, MKV, and AVI files are allowed.");
       return;
     }
 
@@ -89,9 +77,7 @@ function AddNewVideoModal({
       const fileKey = `${fileName}`; // Using fileName as fileKey
 
       // Fetch the presigned URL
-      const result = await dispatch(
-        fetchPresignedUrl({ fileName: fileKey, fileType })
-      ).unwrap();
+      const result = await dispatch(fetchPresignedUrl({ fileName: fileKey, fileType })).unwrap();
 
       // Once presigned URL is fetched, upload the file to S3
       await uploadToS3(file, result?.presignedUrl);
@@ -109,44 +95,29 @@ function AddNewVideoModal({
     }
   };
 
-  // Generate the final video URL with the calculated timestamp
-  const generateVideoUrl = () => {
-    const baseUrl = formData.videoUrl; // The presigned base URL
-    const fileName = formData.fileName; // Assuming fileName is set as "video.mp4"
-
-    const encodedFileName = encodeURIComponent(fileName);
-
-    const finalVideoUrl = `${baseUrl}${encodedFileName}`;
-
-    return finalVideoUrl;
-  };
-
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    if (!formData.videoUrl) {
-      toast.error("Please upload a video before submitting.");
-      return;
-    }
-
-    const finalVideoUrl = generateVideoUrl(); // Construct the video URL
-
     try {
+      await videoValidationSchema.validate(formData, { abortEarly: false });
+
+      const finalVideoUrl = formData.videoUrl;
+
       let data;
       if (mode === "add") {
-        data = await dispatch(
-          addVideo({ ...formData, videoUrl: finalVideoUrl })
-        ).unwrap();
+        data = await dispatch(addVideo({ ...formData, videoUrl: finalVideoUrl })).unwrap();
         toast.success(data?.data?.message || "Video added successfully!");
       } else if (mode === "edit") {
-        data = await dispatch(
-          editVideo({ ...formData, videoUrl: finalVideoUrl })
-        ).unwrap();
+        data = await dispatch(editVideo({ ...formData, videoUrl: finalVideoUrl })).unwrap();
         toast.success(data?.data?.message || "Video updated successfully!");
       }
 
       setVisible(false); // Close modal on success
     } catch (error) {
-      toast.error(error?.message || "Failed to process video.");
+      if (error.inner) {
+        error.inner.forEach((err) => toast.error(err.message));
+      } else {
+        toast.error(error?.message || "Failed to process video.");
+      }
     }
   };
 
