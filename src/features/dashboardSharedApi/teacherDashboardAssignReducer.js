@@ -19,7 +19,10 @@ export const getAssignForTeacher = createAsyncThunk(
             };
 
             const response = await axios.get(T_D_GET_ASIGNMENT_FOR_TEACHER, config);
-            return response?.data?.data || []; // Safeguard for undefined data
+            console.log("getAssignForTeacherResponse:", response);
+
+            
+            return response?.data || []; // Safeguard for undefined data
         } catch (error) {
             console.error("API Error:", error);
             return rejectWithValue(error.response?.data?.message || "Get failed");
@@ -55,7 +58,7 @@ export const addAssign = createAsyncThunk(
 // put api
 export const editAssign = createAsyncThunk(
     "dashboard/editAssign",
-    async ({ role, id, payload }, { rejectWithValue }) => {
+    async ({ id, payload }, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
             if (!token) {

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { S_D_GET_NEW_ASIGN_FOR_STUDENT, S_D_GET_ASSIGN_QSNS_FOR_STUDENT, S_D_GET_NEW_VIDEOS_FOR_STUDENT } from "../../constants/apiConfig";
+import { S_D_GET_NEW_ASIGN_FOR_STUDENT, S_D_GET_ASSIGN_QSNS_FOR_STUDENT } from "../../constants/apiConfig";
 
 // get api
 export const getNewAssignForStudent = createAsyncThunk(
-    "dashboard/getAssignForTeacher",
+    "dashboard/getNewAssignForStudent",
     async (classId, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token"); // Corrected token retrieval
