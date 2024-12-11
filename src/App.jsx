@@ -26,6 +26,7 @@ import AdminDashboardParent from './pages/admin_dashboard/adminDashboardParent';
 import ParentLoginScreen from './pages/parent_dashboard/parentLoginScreen';
 import TeacherLoginScreen from './pages/teacher_dashboard/teacherLoginScreen';
 import StudentLoginScreen from './pages/student_dashboard/studentLoginScreen';
+import StudentDashboardTest from './pages/student_dashboard/studentDashboardTest';
 
 function App() {
   return (
@@ -63,6 +64,7 @@ function App() {
           {/* Nested routes */}
           <Route path="studentDashboardVideos" element={<StudentDashboardVideos />} />
           <Route path="assignment" element={<AssignmentAndTest />} />
+          <Route path="test" element={<StudentDashboardTest />} />
           <Route path="onlineClass" element={<OnlineClass />} />
           <Route path="faqFeedback" element={<FAQFeedback />} />
           <Route path="studentFaq" element={<StudentFAQ />} />

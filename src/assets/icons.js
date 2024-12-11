@@ -11,8 +11,13 @@ export const studentLinks = [
   { icon: "pi-video", name: "Video", path: "/student/studentDashboardVideos" },
   {
     icon: "pi-file-check",
-    name: "Assignments & Tests",
+    name: "Assignments ",
     path: "/student/assignment",
+  },
+  {
+    icon: "pi-hourglass",
+    name: "Tests ",
+    path: "/student/test",
   },
   { icon: "pi-desktop", name: "Online Class", path: "/student/OnlineClass" },
   { icon: "pi-question-circle", name: "FAQ/Feedback", path: "/student/faqFeedback" },

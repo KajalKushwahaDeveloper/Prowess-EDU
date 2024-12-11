@@ -4,26 +4,28 @@ import Modal from "../../common/modal";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { getAssignQsnsForStudent } from "../../../features/dashboardSharedApi/studentDashboardSharedApiReducer.js";
+import { getTestQsnsForStudent } from "../../../features/dashboardSharedApi/studentDashboardSharedApiReducer.js";
 import { jsPDF } from "jspdf";
 
-const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] }) => {
+const DownloadTestModal = ({ visible, setVisible, filteredTest = [] }) => {
     const [filteredAssignQsn, setFilteredAssignQsn] = useState([]);
     const dispatch = useDispatch();
+    
+console.log("filteredTest:", filteredTest);
 
     useEffect(() => {
-        if (!Array.isArray(filteredAssignment) || filteredAssignment.length === 0) {
-            console.warn("filteredAssignment is empty or not an array:", filteredAssignment);
+        if (!Array.isArray(filteredTest) || filteredTest.length === 0) {
+            console.warn("filteredTest is empty or not an array:", filteredTest);
             return;
         }
 
         const fetchAssignments = async () => {
             try {
-                const promises = filteredAssignment.map((assignment) =>
+                const promises = filteredTest.map((test) =>
                     dispatch(
-                        getAssignQsnsForStudent({
-                            classId: assignment.Class,
-                            assignmentId: assignment.id,
+                        getTestQsnsForStudent({
+                            classId: test.Class,
+                            testId: test.id,
                         })
                     ).unwrap()
                 );
@@ -38,16 +40,17 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
         };
 
         fetchAssignments();
-    }, [dispatch, filteredAssignment]);
+    }, [dispatch, filteredTest]);
 
     const handleDownloadPdf = (assignmentDetails, questions) => {
         const doc = new jsPDF();
-        const text = "Assignment";
+        const text = "Test";
         const pageWidth = doc.internal.pageSize.width; // Get the page width
         const textWidth = doc.getStringUnitWidth(text) * doc.internal.scaleFactor; // Get text width
         const x = (pageWidth - textWidth) / 2; // Calculate x to center the text
         
         doc.setFontSize(18).text(text, x, 10);
+        
         doc.setFontSize(12);
 
         // Assignment details
@@ -57,9 +60,10 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
             `Topic Name: ${assignmentDetails.topic}`,
             `Class: ${assignmentDetails.Class}`,
             `Level: ${assignmentDetails.level}`,
-            `Student for: ${assignmentDetails.student}`,
+            `Student for: ${assignmentDetails.assignedTo}`,
+            `Start time: ${assignmentDetails.startTime}`,
+            `End time: ${assignmentDetails.endTime}`,
             `Start Date: ${assignmentDetails.startDate}`,
-            `Submit Date: ${assignmentDetails.endDate}`,
         ];
 
         details.forEach((text, index) => doc.text(text, 10, 20 + index * 10));
@@ -74,7 +78,7 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
             doc.text(`${index + 1}. ${question.question}`, 10, 125 + index * 10);
         });
 
-        doc.save("assignment.pdf");
+        doc.save(`${assignmentDetails.subject} Test.pdf`);
     };
 
     return (
@@ -86,10 +90,10 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
             className="rounded-lg"
         >
             <div className="bg-white m-4">
-                <h1 className="font-semibold text-2xl my-2">Download Test</h1>
+                <h1 className="font-semibold text-2xl my-2">Download Assignment</h1>
                 <hr className="mb-8 border-gray-300" />
-                {Array.isArray(filteredAssignment) && filteredAssignment.length > 0 ? (
-                    filteredAssignment.map((currentData, index) => (
+                {Array.isArray(filteredTest) && filteredTest.length > 0 ? (
+                    filteredTest.map((currentData, index) => (
                         <div
                         className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-y-0 md:gap-x-8"
                         key={index}
@@ -113,34 +117,37 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
                                 Level: <span className="font-normal">{currentData.level}</span>
                             </h1>
                             <h1 className="mb-2">
-                                Student for: <span className="font-normal">{currentData.subject}</span>
+                                Student for: <span className="font-normal">{currentData.assignedTo}</span>
                             </h1>
                         </div>
                         <div className="text-md font-semibold">
                             <h1 className="mb-2">
-                                Start date: <span className="font-normal">{currentData.startDate}</span>
+                                Start time: <span className="font-normal">{currentData.startTime}</span>
                             </h1>
                             <h1 className="mb-2">
-                                Submit date: <span className="font-normal">{currentData.endDate}</span>
+                                End time: <span className="font-normal">{currentData.endTime}</span>
+                            </h1>
+                            <h1 className="mb-2">
+                                start date: <span className="font-normal">{currentData.startDate}</span>
                             </h1>
                         </div>
                     </div>
                     ))
                 ) : (
-                    <p className="text-gray-500">No assignments available.</p>
+                    <p className="text-gray-500">No assignments available till </p>
                 )}
                 <hr className="my-4" />
                 {filteredAssignQsn.length > 0 ? (
                    <div className="grid grid-cols-1 gap-4 mb-8">
-                   {filteredAssignQsn.map((currentAssignQsn, index) => (
+                   {filteredAssignQsn.map((currentData, index) => (
                        <div key={index} className="flex flex-col space-y-1">
                            <h2 className="font-semibold">Question {index + 1}</h2>
-                           <p className="border shadow-lg p-4 rounded-lg">{currentAssignQsn.question}</p>
+                           <p className="border shadow-lg p-4 rounded-lg">{currentData.question}</p>
                        </div>
                    ))}
                </div>
                 ) : (
-                    <p className="text-gray-500">No questions available.</p>
+                    <p className="text-gray-500"> No questions available.</p>
                 )}
 
 
@@ -148,7 +155,7 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
                     <Button
                         icon={Icons.downloadIcon}
                         onClick={() =>
-                            handleDownloadPdf(filteredAssignment[0], filteredAssignQsn) // Example with first assignment
+                            handleDownloadPdf(filteredTest[0], filteredAssignQsn) // Example with first assignment
                         }
                     />
                     <Button label="Cancel" backgroundColor="#FF8A00" onClick={() => setVisible(false)} />
@@ -158,4 +165,4 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
     );
 };
 
-export default DownloadAssignmentModal;
+export default DownloadTestModal;

@@ -3,38 +3,20 @@ import Button from "../../atoms/button";
 import Table from "../../common/Table";
 import { useState, useEffect } from "react";
 import ViewAll from "../../common/viewAllFunctionality";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
-import { getNewAssignForStudent } from "../../../features/dashboardSharedApi/studentDashboardSharedApiReducer.js";
 import ViewSDNewAssignModal from "../modals/viewSDNewAssignmentsModal.jsx";
 
-const StudentDashboardNewAssignmentsTable = () => {
+const StudentDashboardNewAssignmentsTable = ({newAssignment, selectedAssignment, setSelectedAssignment}) => {
   const [showAll, setShowAll] = useState(false);
-  const [newAssignment, setNewAssigment] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [selectedAssignment, setSelectedAssignment] = useState(null);
-
-  const dispatch = useDispatch();
-
-  const studentClass = JSON.parse(localStorage.getItem("data"));
-
-  console.log("newAssignment:", newAssignment);
-
-  useEffect(() => {
-    // Fetch reports on mount
-    dispatch(getNewAssignForStudent(studentClass?.Class))
-      .unwrap()
-      .then((response) => setNewAssigment(response?.assignments))
-      .catch((error) => {
-        toast.error(error || "Failed to fetch reports");
-      });
-  }, [dispatch]);
 
   const columns = [
     { header: "Id", body: (rowData) => rowData.id || "N/A" },
     { header: "Subject Name", body: (rowData) => rowData.subject || "N/A" },
     { header: "Chapter", body: (rowData) => rowData.chapter || "N/A" },
-    { header: "Questions", body: (rowData) => rowData.questions || "N/A" },
+    { 
+      header: "Questions", 
+      body: (rowData) => (rowData.questions && rowData.questions.length) || "N/A" 
+    },
     { header: "Marks", body: (rowData) => rowData.marks || "N/A" },
     {
       field: "Action",

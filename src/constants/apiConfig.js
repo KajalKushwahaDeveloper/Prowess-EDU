@@ -19,7 +19,8 @@ export const LOGIN_STUDENT = BASE_URL + "/studentLogin";
 export const S_D_GET_NEW_ASIGN_FOR_STUDENT =  BASE_URL + "/getNewAssignForStudent";
 export const S_D_GET_ASSIGN_QSNS_FOR_STUDENT =  BASE_URL + "/getAssignQsnsForStudent";
 export const S_D_GET_NEW_VIDEOS_FOR_STUDENT =  BASE_URL + "/getNewVideosForStudent";
-
+export const S_D_GET_NEW_TEST_FOR_STUDENT =  BASE_URL + "/getNewTestForStudent";
+export const S_D_GET_TEST_QSNS_FOR_STUDENT =  BASE_URL + "/getTestQsnsForStudent";
 // TEACHER DASHBOARD
 export const LOGIN_TEACHER = BASE_URL + "/teacherLogin";
 export const T_D_GET_STUDENT_FOR_TEACHER = BASE_URL + "/getStudentsForTeacher";
