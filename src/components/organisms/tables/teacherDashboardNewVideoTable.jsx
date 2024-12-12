@@ -4,51 +4,67 @@ import Table from "../../common/Table";
 import { useState } from "react";
 import { data } from "./data";
 import ViewAll from "../../common/viewAllFunctionality"
+import ViewTDVideoModal from "../modals/viewTDVideoModal";
 
-const TeacherDashboardNewVideoTable = () => {
-    const [products, setProducts] = useState(data);
+const TeacherDashboardNewVideoTable = ({ videos }) => {
+    const [selectedVideos, setSelectedVideo] = useState("");
     const [showAll, setShowAll] = useState(false);
-
+    const [visible, setVisible] = useState(false);
     const columns = [
-        { field: "id", header: "Id" },
-        { field: "subjectName", header: "Subject Name" },
-        { field: "teacherName", header: "Teacher Name" },
-        { field: "chapter", header: "Chapter" },
-        { field: "topic", header: "Topic" },
+        {
+            field: "serialNo",
+            header: "S.No",
+            body: (rowData, options) => options.rowIndex + 1,
+        },
+        {
+            field: "subject",
+            header: "Subject Name",
+            body: (rowData) => rowData.subject || "N/A",
+        },
+        {
+            header: "Class",
+            body: (rowData) => rowData?.Class || "N/A",
+        },
+        { header: "Chapter", body: (rowData) => rowData.chapter || "N/A" },
+        { header: "Topic", body: (rowData) => rowData.topic || "N/A" },
         {
             field: "Action",
             header: "Action",
-            body: () => {
+            body: (rowData) => {
                 return (
                     <div className="flex space-x-2">
                         <Button
-                            // label="edit"
-                            // onClick={() => handleEdit(rowData)}
-                            backgroundColor="#FF8A00"
-                            icon={Icons.editIcon}
+                            onClick={() => {
+                                setSelectedVideo(rowData); // Set the selected assignment
+                                setVisible(true); // Show the modal
+                            }}
+                            backgroundColor="#00A943"
+                            icon={Icons.viewIcon}
                         />
-                        <Button
-                            // label="delete"
-                            // onClick={() => handleEdit(rowData)}
-                            backgroundColor="#FF4D00"
-                            icon={Icons.deleteIcon}
-                        />
+                        
                     </div>
                 );
             },
         },
     ];
-    const displayedData = showAll ? products : products.slice(0,2)
+    const displayedData = showAll ? videos : videos.slice(0, 2)
 
     return (
-    <>
-        <Table
-            data={displayedData}
-            columns={columns}
-            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
+        <>
+            <Table
+                data={displayedData}
+                columns={columns}
+                tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
+            />
+            <ViewAll showAll={showAll} setShowAll={setShowAll} />
+            {visible && (
+        <ViewTDVideoModal
+          setVisible={setVisible}
+          visible={visible}
+          vedioData={selectedVideos} // Pass the selected assignment
         />
-          <ViewAll showAll={showAll} setShowAll={setShowAll}/>
-    </>
+      )}
+        </>
     );
 };
 

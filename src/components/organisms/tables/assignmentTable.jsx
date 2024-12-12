@@ -10,6 +10,7 @@ import AddNewAssignmentModal from "../modals/addNewAssignmentModal";
 const AssignmentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
     const [visible, setVisible] = useState(false);
     const [filteredReports, setFilteredReports] = useState([]); // For local filtering
+console.log("AssignmentTable:",filteredReports);
 
     const dispatch = useDispatch();
     const { data, loading, error } = useSelector((state) => state.teacherDashboardAssignSharedApi);
@@ -18,7 +19,7 @@ const AssignmentTable = ({ setModalMode, modalMode, currentStudent, setCurrentSt
         // Fetch reports on mount
         dispatch(getAssignForTeacher())
         .unwrap()
-        .then((response) => setFilteredReports(response.assignments)) // Initialize local state
+        .then((response) => setFilteredReports(response?.data?.assignments)) // Initialize local state
         .catch((err) => {
             toast.error(error || "Failed to fetch reports");
         });

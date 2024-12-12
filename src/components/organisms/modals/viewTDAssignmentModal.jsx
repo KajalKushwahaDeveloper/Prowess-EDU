@@ -1,10 +1,8 @@
-import { useState } from "react";
 import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
-import { useSelector } from "react-redux";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 
-function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
+function ViewTDAssignModal({ visible, setVisible, vedioData }) {
 
   return (
     <>
@@ -16,7 +14,7 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
         className="rounded-lg"
       >
         <div className="bg-white lg:m-0 m-4">
-          <h1 className="font-medium text-2xl my-2">View new Video </h1>
+        <h1 className="font-medium text-2xl my-2">View new Assignment </h1>
           <hr className="mb-8 border-gray-300" />
 
           {/* Form fields */}
@@ -26,7 +24,7 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
                 type="text"
                 labelText="Id"
                 name="id"
-                value={videoData?.id || "N/A"}
+                value={vedioData?.id || "N/A"}
               />
             </div> */}
             <div className="relative">
@@ -34,36 +32,46 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
                 type="text"
                 labelText="Subject Name"
                 name="subject"
-                value={videoData?.subject || "N/A"}
+                value={vedioData?.subject || "N/A"}
               />
             </div>
+
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
-                labelText="Teacher Name"
-                name="name"
-                value={videoData?.teacherDetail?.name || "N/A"}
+                labelText="Class"
+                name="Class"
+                value={vedioData?.Class || "N/A"}
               />
             </div>
+
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
                 labelText="Chapter"
                 name="chapter"
-                value={videoData?.chapter || "N/A"}
+                value={vedioData?.chapter || "N/A"}
+              />
+            </div>
+
+         
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Questions"
+                name="questions"
+                value={vedioData?.questions?.length || "N/A"}
               />
             </div>
 
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
-                labelText="Topic"
-                name="topic"
-                value={videoData?.topic || "N/A"}
+                labelText="Marks"
+                name="marks"
+                value={vedioData?.marks || "N/A"}
               />
             </div>
-
-            
           </div>
 
           {/* Action Buttons */}
@@ -80,4 +88,4 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
   );
 }
 
-export default ViewSDNewVideoModal;
+export default ViewTDAssignModal;

@@ -4,34 +4,41 @@ import Table from "../../common/Table";
 import { useState } from "react";
 import { data } from "./data";
 import ViewAll from "../../common/viewAllFunctionality";
+import ViewTDAssignModal from "../modals/viewTDAssignmentModal";
 
-const TeacherDashboardNewAssignmentsTable = () => {
-    const [products, setProducts] = useState(data);
+const TeacherDashboardNewAssignmentsTable = ({ newAssignment }) => {
+    const [selectedAssignment, setSelectedAssignment] = useState("");
     const [showAll, setShowAll] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     const columns = [
-        { field: "id", header: "Id" },
-        { field: "subjectName", header: "Subject Name" },
-        { field: "chapter", header: "Chapter" },
-        { field: "questions", header: "Questions" },
-        { field: "marks", header: "Marks" },
+        {
+            field: "serialNo",
+            header: "S.No",
+            body: (rowData, options) => options.rowIndex + 1,
+        },
+        { header: "Subject Name", body: (rowData) => rowData.subject || "N/A" },
+        { header: "Class", body: (rowData) => rowData.Class || "N/A" },
+        { header: "Chapter", body: (rowData) => rowData.chapter || "N/A" },
+        {
+            header: "Questions",
+            body: (rowData) => (rowData.questions && rowData?.questions?.length) || "N/A"
+        },
+        { header: "Marks", body: (rowData) => rowData.marks || "N/A" },
+
         {
             field: "Action",
             header: "Action",
-            body: () => {
+            body: (rowData) => {
                 return (
                     <div className="flex space-x-2">
                         <Button
-                            // label="edit"
-                            // onClick={() => handleEdit(rowData)}
-                            backgroundColor="#FF8A00"
-                            icon={Icons.editIcon}
-                        />
-                        <Button
-                            // label="delete"
-                            // onClick={() => handleEdit(rowData)}
-                            backgroundColor="#FF4D00"
-                            icon={Icons.deleteIcon}
+                            onClick={() => {
+                                setSelectedAssignment(rowData); // Set the selected assignment
+                                setVisible(true); // Show the modal
+                            }}
+                            backgroundColor="#00A943"
+                            icon={Icons.viewIcon}
                         />
 
                     </div>
@@ -39,18 +46,24 @@ const TeacherDashboardNewAssignmentsTable = () => {
             },
         },
     ];
-    const displayedData = showAll ? products : products.slice(0,2)
+    const displayedData = showAll ? newAssignment : newAssignment.slice(0, 2)
 
     return (
         <>
-        <Table
-            data={displayedData}
-            columns={columns}
-            ta
-            bleStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
-        />
-          <ViewAll showAll={showAll} setShowAll={setShowAll}/>
-    </>
+            <Table
+                data={displayedData}
+                columns={columns}
+                tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
+            />
+            <ViewAll showAll={showAll} setShowAll={setShowAll} />
+            {visible && (
+                <ViewTDAssignModal
+                    setVisible={setVisible}
+                    visible={visible}
+                    assignmentData={selectedAssignment} // Pass the selected assignment
+                />
+            )}
+        </>
     );
 };
 

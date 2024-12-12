@@ -19,14 +19,14 @@ function ViewSDNewAssignModal({ visible, setVisible, assignmentData }) {
 
           {/* Form fields */}
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-            <div className="relative">
+            {/* <div className="relative">
               <InputFieldWithLabel
                 type="text"
                 labelText="Id"
                 name="id"
                 value={assignmentData?.id || "N/A"}
               />
-            </div>
+            </div> */}
             <div className="relative">
               <InputFieldWithLabel
                 type="text"

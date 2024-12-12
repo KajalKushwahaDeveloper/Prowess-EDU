@@ -1,24 +1,26 @@
-import { Icons } from "../../../assets/icons";
-import Button from "../../atoms/button";
-import Table from "../../common/Table";
-import { useState } from "react";
 
-const CompletedClassesTable = () => {
-    const [products, setProducts] = useState("");
+import Table from "../../common/Table";
+
+const CompletedClassesTable = ({ onlineClass }) => {
 
     const columns = [
-        { field: "id", header: "Id" },
-        { field: "subject", header: "Subject" },
-        { field: "startDate", header: "Start Date" },
-        { field: "teacher", header: "Teacher" },
-        { field: "status", header: "Status" },
+        {
+            field: "serialNo",
+            header: "S.No",
+            body: (rowData, options) => options.rowIndex + 1,
+        },
+        { header: "Subject", body: (rowData) => (rowData.subject) || "N/A" },
+        { header: "Teacher", body: (rowData) => (rowData?.teacherDetail?.name) || "N/A" },
+        { header: "Start Date", body: (rowData) => (rowData.date) || "N/A" },
+        { header: "Start Time", body: (rowData) => (rowData.time) || "N/A" },
+        { header: "Status", body: (rowData) => (rowData.studentStatus) || "N/A" },
     ];
 
     return (
         <Table
-            data={products}
+            data={onlineClass}
             columns={columns}
-            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
+            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
         />
     );
 };

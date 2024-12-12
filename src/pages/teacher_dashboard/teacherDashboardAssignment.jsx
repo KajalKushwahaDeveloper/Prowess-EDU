@@ -30,7 +30,6 @@ const TeacherDashboardAssignment = () => {
     currentPage * pageSize
   );
 
-  const headingName = "Add New Student";
 
   return (
     <div className="admin-dashboard m-6 dashboard">

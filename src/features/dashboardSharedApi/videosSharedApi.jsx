@@ -41,7 +41,7 @@ export const fetchPresignedUrl = createAsyncThunk(
 // Async thunk to add video to the server after upload
 export const addVideo = createAsyncThunk(
   "video/addVideo",
-  async (payload, { rejectWithValue }) => {
+  async ( { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -53,7 +53,7 @@ export const addVideo = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.post(T_D_ADD_VIDEO, payload, config);
+      const response = await axios.post(T_D_ADD_VIDEO,  config);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);

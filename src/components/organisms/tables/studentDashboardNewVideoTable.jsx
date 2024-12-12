@@ -10,8 +10,11 @@ const StudentDashboardNewVideoTable = ({videos, selectedVideo, setSelectedVideo}
   const [visible, setVisible] = useState(false);
 
   const columns = [
-    { header: "Id", body: (rowData) => rowData.id || "N/A" },
     {
+      field: "serialNo",
+      header: "S.No",
+      body: (rowData, options) => options.rowIndex + 1,
+  },    {
       field: "subject",
       header: "Subject Name",
       body: (rowData) => rowData.subject || "N/A",
@@ -54,7 +57,7 @@ const StudentDashboardNewVideoTable = ({videos, selectedVideo, setSelectedVideo}
         <ViewSDNewVideoModal
           setVisible={setVisible}
           visible={visible}
-          assignmentData={selectedVideo} // Pass the selected assignment
+          videoData={selectedVideo} // Pass the selected assignment
         />
       )}
     </>

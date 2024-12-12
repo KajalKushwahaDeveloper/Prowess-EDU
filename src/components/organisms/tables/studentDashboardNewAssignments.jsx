@@ -10,7 +10,11 @@ const StudentDashboardNewAssignmentsTable = ({newAssignment, selectedAssignment,
   const [visible, setVisible] = useState(false);
 
   const columns = [
-    { header: "Id", body: (rowData) => rowData.id || "N/A" },
+    {
+      field: "serialNo",
+      header: "S.No",
+      body: (rowData, options) => options.rowIndex + 1,
+  },
     { header: "Subject Name", body: (rowData) => rowData.subject || "N/A" },
     { header: "Chapter", body: (rowData) => rowData.chapter || "N/A" },
     { 

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 
-function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
+function ViewTDVideoModal({ visible, setVisible ,vedioData}) {
 
   return (
     <>
@@ -26,7 +26,7 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
                 type="text"
                 labelText="Id"
                 name="id"
-                value={videoData?.id || "N/A"}
+                value={vedioData?.id || "N/A"}
               />
             </div> */}
             <div className="relative">
@@ -34,15 +34,15 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
                 type="text"
                 labelText="Subject Name"
                 name="subject"
-                value={videoData?.subject || "N/A"}
+                value={vedioData?.subject || "N/A"}
               />
             </div>
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
-                labelText="Teacher Name"
-                name="name"
-                value={videoData?.teacherDetail?.name || "N/A"}
+                labelText="Class"
+                name="Class"
+                value={vedioData?.Class || "N/A"}
               />
             </div>
             <div className="relative">
@@ -50,7 +50,7 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
                 type="text"
                 labelText="Chapter"
                 name="chapter"
-                value={videoData?.chapter || "N/A"}
+                value={vedioData?.chapter || "N/A"}
               />
             </div>
 
@@ -59,7 +59,7 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
                 type="text"
                 labelText="Topic"
                 name="topic"
-                value={videoData?.topic || "N/A"}
+                value={vedioData?.topic || "N/A"}
               />
             </div>
 
@@ -80,4 +80,4 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
   );
 }
 
-export default ViewSDNewVideoModal;
+export default ViewTDVideoModal;
