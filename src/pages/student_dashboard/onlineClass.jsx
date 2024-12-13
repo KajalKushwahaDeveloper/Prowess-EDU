@@ -20,7 +20,7 @@ const OnlineClass = () => {
 
     useEffect(() => {
         // Fetch reports on mount
-        dispatch(getOnlineClassesForStudent({ classId: studentClass?.Class }))
+        dispatch(getOnlineClassesForStudent({ classId: `${studentClass?.Class}-${studentClass?.section}` }))
             .unwrap()
             .then((response) => {
                 console.log("response:", response);

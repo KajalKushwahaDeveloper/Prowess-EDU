@@ -27,6 +27,8 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
     subjects: [],
     ...initialData,
   });
+  console.log("formData:", formData);
+  
   const [errors, setErrors] = useState({});
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
@@ -41,28 +43,44 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
       const formattedDate = value.split("-").reverse().join("-");
       setFormData({ ...formData, [name]: formattedDate });
     } else {
-      setFormData({ 
+      setFormData({
         ...formData,
-        [name]:
-          ["name", "subject", "qualification", "address"].includes(name)
-            ? capitalize(value) // Use lodash capitalize for these fields
-            : value, // Use raw value for other fields
-          })};
+        [name]: ["name", "subject", "qualification", "address"].includes(name)
+          ? capitalize(value)
+          : value,
+      });
+    }
   };
 
   const handleAdd = async () => {
     try {
-      // Dispatch the addItem action with role and payload
-      await addTeacherSchema.validate(formData, { abortEarly: false });
+      // Ensure classesCanTeach is properly formatted as an array
+      const updatedClassesCanTeach = Array.isArray(formData.classesCanTeach)
+        ? formData.classesCanTeach.map((item) => item.trim()) // Trim spaces for each item
+        : formData.classesCanTeach
+            .split(",") // Split by commas if it's a string
+            .map((item) => item.trim()); // Trim spaces for each item
+  
+      // Update the formData with the transformed classesCanTeach
+      const updatedFormData = {
+        ...formData,
+        classesCanTeach: updatedClassesCanTeach, // Ensure it's an array
+      };
+  
+      // Validate the updated form data
+      await addTeacherSchema.validate(updatedFormData, { abortEarly: false });
       setErrors({});
+  
+      // Dispatch the action based on the mode
       if (mode === "add") {
-        await dispatch(addItem({ role: "teacher", payload: formData })).unwrap();
+        await dispatch(addItem({ role: "teacher", payload: updatedFormData })).unwrap();
         toast.success(data?.data?.message || "Teacher added successfully!");
       } else if (mode === "edit") {
-        await dispatch(editItem({ role: "teacher", id: initialData?.id, payload: formData })).unwrap();
+        await dispatch(editItem({ role: "teacher", id: initialData?.id, payload: updatedFormData })).unwrap();
         toast.success(data?.data?.message || "Teacher updated successfully!");
       }
-      // Validate the form data
+  
+      // Reset form data
       setFormData({
         name: "",
         email: "",
@@ -75,6 +93,7 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
         experience: "",
         subjects: [],
       });
+  
       setVisible(false); // Optionally close the modal on success
     } catch (error) {
       const formattedErrors = {};
@@ -87,7 +106,8 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
       console.log("Validation or API errors:", error);
     }
   };
-
+  
+  
   return (
     <>
       <Modal
@@ -159,11 +179,10 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
               )}
             </div>
             <div className="relative">
-              <InputFieldWithLabel
+            <InputFieldWithLabel
                 type="date"
                 labelText="Date of Birth"
                 name="dob"
-                placeholder="Select Date of Birth"
                 value={formData?.dob?.split("-").reverse().join("-")}
                 onChange={handleInputChange}
               />
@@ -223,7 +242,6 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
                   </p>
                 )}
             </div>
-
 
             <div className="relative">
               <InputFieldWithLabel

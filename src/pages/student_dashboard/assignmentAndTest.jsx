@@ -21,7 +21,7 @@ const AssignmentAndTest = () => {
     useEffect(() => {
         // Fetch reports on mount
         console.log("getAssign") // Log the response to check its structure
-        dispatch(getNewAssignForStudent(studentClass?.Class))
+        dispatch(getNewAssignForStudent(`${studentClass?.Class}-${studentClass?.section}`))
             .unwrap()
             .then((response) => {
                 console.log("getAssign0:"); // Log the response to check its structure

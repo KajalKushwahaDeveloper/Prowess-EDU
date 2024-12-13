@@ -50,7 +50,7 @@ const AddNewAssignmentModal = ({
 
   useEffect(() => {
     // Fetch reports on mount
-    dispatch(getAssignForTeacher({ classId: studentClass?.Class }))
+    dispatch(getAssignForTeacher({ classId: `${studentClass?.Class}-${studentClass?.section}` }))
       .unwrap()
       .then((response) => setFilteredReports(response.assignments)) // Initialize local state
       .catch((error) => {

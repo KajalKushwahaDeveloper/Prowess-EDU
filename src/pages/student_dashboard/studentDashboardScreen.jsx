@@ -21,7 +21,7 @@ function StudentDashboard() {
 
   useEffect(() => {
     // Fetch reports on mount
-    dispatch(getNewVideosForStudent({ classId: studentClass?.Class }))
+    dispatch(getNewVideosForStudent({ classId: `${studentClass?.Class}-${studentClass?.section}`}))
       .unwrap()
       .then((response) => setVideos(response?.videos)) // Initialize local state
       .catch((err) => {
@@ -31,9 +31,9 @@ function StudentDashboard() {
 
   useEffect(() => {
     // Fetch reports on mount
-    dispatch(getNewAssignForStudent(studentClass?.Class))
+    dispatch(getNewAssignForStudent(`${studentClass?.Class}-${studentClass?.section}`))
       .unwrap()
-      .then((response) => setNewAssigment(response?.assignments))
+      .then((response) => setNewAssigment(response?.data?.assignments))
       .catch((error) => {
         toast.error(error || "Failed to fetch reports");
       });

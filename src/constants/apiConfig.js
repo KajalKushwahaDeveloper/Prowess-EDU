@@ -22,7 +22,7 @@ export const S_D_GET_NEW_VIDEOS_FOR_STUDENT =  BASE_URL + "/getNewVideosForStude
 export const S_D_GET_NEW_TEST_FOR_STUDENT =  BASE_URL + "/getNewTestForStudent";
 export const S_D_GET_TEST_QSNS_FOR_STUDENT =  BASE_URL + "/getTestQsnsForStudent";
 export const S_D_GET_ONLINE_CLASSES_FOR_STUDENT =  BASE_URL + "/getOnlineClassesForStudent";
-export const S_D_UPDATE_ONLINE_CLASSES_FOR_STUDENT =  BASE_URL + "/updateOnlineClassStatus";
+export const S_D_UPDATE_ONLINE_CLASSES_FOR_STUDENT = (id) => `${BASE_URL}/updateOnlineClassStatusn/${id}`;
 
 // TEACHER DASHBOARD
 export const LOGIN_TEACHER = BASE_URL + "/teacherLogin";

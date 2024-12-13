@@ -32,7 +32,7 @@ const JoinClassModal = ({  visible, setVisible, selectedClass, setOnlineClass })
 
             // Dispatch API call to update class status
             const response = await dispatch(
-                updateOnlineClassStatus({ onlineClassId: classData.id, payload })
+                updateOnlineClassStatus(classData.id, payload)
             ).unwrap();
 
             // Update local state for `onlineClass`

@@ -135,7 +135,7 @@ export const getOnlineClassesForStudent = createAsyncThunk(
 // updateOnlineClassStatus
 export const updateOnlineClassStatus = createAsyncThunk(
     "dashboard/updateOnlineClassStatus",
-    async ({ onlineClassId , payload}, { rejectWithValue }) => {
+    async ({   payload}, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token"); // Corrected token retrieval
             if (!token) {
@@ -148,7 +148,7 @@ export const updateOnlineClassStatus = createAsyncThunk(
                 },
             };
 
-            const response = await axios.put(`${S_D_UPDATE_ONLINE_CLASSES_FOR_STUDENT}?onlineClassId=${onlineClassId}`,payload, config);
+            const response = await axios.put(S_D_UPDATE_ONLINE_CLASSES_FOR_STUDENT ,payload, config);
 
             return response?.data || []; 
         } catch (error) {
