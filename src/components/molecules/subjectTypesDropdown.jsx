@@ -12,7 +12,6 @@ function SubjectTypeDropdown({
   // Safely parse localStorage data
   const subjectdata = JSON.parse(localStorage.getItem("data")) || {}; // Default to empty object
   const type = subjectdata?.type || "N/A"; // Fallback to "N/A" if type is missing
-  console.log("subjectdata:", subjectdata, type);
 
   // Safely extract subjects and map to options
   const options =

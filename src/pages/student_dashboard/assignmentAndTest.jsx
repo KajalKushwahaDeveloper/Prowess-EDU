@@ -20,18 +20,14 @@ const AssignmentAndTest = () => {
 
     useEffect(() => {
         // Fetch reports on mount
-        console.log("getAssign") // Log the response to check its structure
         dispatch(getNewAssignForStudent(`${studentClass?.Class}-${studentClass?.section}`))
             .unwrap()
             .then((response) => {
-                console.log("getAssign0:"); // Log the response to check its structure
                 setFilteredAssignment(response?.assignments || []);
-                console.log("getAssign2") // Log the response to check its structure
 
             })
             .catch((error) => {
                 toast.error(error || "Failed to fetch reports");
-                console.log("getAssignerror") // Log the response to check its structure
 
             });
         console.log("getAssign1") // Log the response to check its structure

@@ -11,7 +11,6 @@ function GenderDropdown({
 }) {
   const subjectdata = JSON.parse(localStorage.getItem("data"))
   const type = subjectdata.type
-  console.log("subjectdata:", subjectdata,type);
 
  // Determine options based on the type
  const options =

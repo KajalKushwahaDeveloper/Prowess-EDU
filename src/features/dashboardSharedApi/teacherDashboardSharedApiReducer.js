@@ -79,13 +79,13 @@ export const editOnlineClass = createAsyncThunk(
 export const deleteOnlineClass = createAsyncThunk(
     "dashboard/deleteOnlineClass",
     async ({ id }, { rejectWithValue }) => {
-        console.log("Received id in thunk:", id);
+        console.log("Received id in thunk:", id); // Check the ID here
         try {
             const token = localStorage.getItem("token"); 
             if (!token) {
                 return rejectWithValue("Unauthorized - Missing Token");
             }
-            
+
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -100,6 +100,7 @@ export const deleteOnlineClass = createAsyncThunk(
         }
     }
 );
+
 
 const sharedTeacherDashboardOnlineClassReducer = createSlice({
     name: "teacherDashboardOnlineClassSharedApi",

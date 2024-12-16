@@ -5,12 +5,16 @@ import Modal from "../../common/modal";
 import { createOnlineClassSchema } from "../../common/validationSchema";
 import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
 import ClassTypeDropdown from "../../molecules/classTypeDropdown";
-import { useDispatch, useSelector } from "react-redux";
+import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import capitalize from 'lodash/capitalize';
+import { addOnlineClass, editOnlineClass } from "../../../features/dashboardSharedApi/teacherDashboardSharedApiReducer";
 
-function CreateOnlineClassModal({ visible, setVisible,initialData={} }) {
+
+function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = "add" }) {
     const [formData, setFormData] = useState({
-        id: null,
+        id: initialData?.id,
         Class: "",
         subject: "",
         chapter: "",
@@ -22,34 +26,47 @@ function CreateOnlineClassModal({ visible, setVisible,initialData={} }) {
     });
     const [errors, setErrors] = useState({});
 
+    const { data, loading, error } = useSelector((state) => state.teacherDashboardOnlineClassSharedApi);
+    const dispatch = useDispatch();
+
+    console.log("initialDataformData:", initialData);
 
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData({
+            ...formData,
+            [name]:
+                ["topic"].includes(name)
+                    ? capitalize(value) // Use lodash capitalize for these fields
+                    : value, // Use raw value for other fields
+        });
     };
+
 
     const handleAdd = async () => {
         try {
-            const updatedFormData = {
-                ...formData,
-                Class: Array.isArray(formData.Class)
-                    ? formData.Class
-                    : [formData.Class], // Ensure it's an array
-            };
+            console.log("Validating form data:", formData);
+            // Validate formData
+            await createOnlineClassSchema.validate(formData, { abortEarly: false });
+            console.log("Form validated"); // Ensure validation is passingP
+            setErrors({}); // Clear previous errors if validation passes
 
-            await createOnlineClassSchema.validate(updatedFormData, { abortEarly: false });
-            setErrors({});
             // Handle adding video logic
             if (mode === "add") {
-                await dispatch(editOnlineClass({ role: "parent", payload: formData })).unwrap();
-                toast.success(data?.data?.message || "Parent added successfully!");
+                console.log("Calling addOnlineClass API with payload:", formData);
+                await dispatch(addOnlineClass({ payload: formData, id:initialData.id })).unwrap();
+                const response = await dispatch(addOnlineClass({ payload: formData })).unwrap();
+                console.log("API response:", response);
+                toast.success(data?.data?.message || "Online class added successfully!");
             } else if (mode === "edit") {
-                await dispatch(addedOnlineClass({ role: "parent", id: initialData.id, payload: formData })).unwrap();
-                toast.success(data?.data?.message || "Parent updated successfully!");
+                await dispatch(editOnlineClass({ id: initialData?.id, payload: formData })).unwrap();
+                toast.success(data?.data?.message || "Online class updated successfully!");
             }
-            // Validate the form data
+
+            // Reset form data after successful submission
             setFormData({
+                id: "",
                 Class: "",
                 subject: "",
                 chapter: "",
@@ -59,52 +76,26 @@ function CreateOnlineClassModal({ visible, setVisible,initialData={} }) {
                 link: "",
             });
             setVisible(false);
-        } catch (err) {
-            const validationErrors = {};
-            err.inner.forEach((error) => {
-                validationErrors[error.path] = error.message;
-            });
-            setErrors(validationErrors);
-            toast.error(error || "Failed to add Online Classes. Please fix errors.");
+        } catch (error) {
+            // Handle validation errors
+            if (error?.inner) {
+                const formattedErrors = {};
+                error?.inner?.forEach((err) => {
+                    formattedErrors[err.path] = err.message;
+                });
+                setErrors(formattedErrors);
+            }
+
+            // Handle API errors
+            if (error?.response?.data) {
+                toast.error(error.response.data.message || "Failed to add online class. Please fix errors.");
+            } else {
+                toast.error(error || "An unknown error occurred.");
+            }
+
             console.log("Validation or API errors:", error);
         }
-    }
-    //   const handleAdd = async () => {
-    //     try {
-    //       // Dispatch the addItem action with role and payload
-    //       await addParentSchema.validate(formData, { abortEarly: false });
-    //       setErrors({}); // Clear previous errors if validation passes
-    //       if (mode === "add") {
-    //         await dispatch(addItem({ role: "parent", payload: formData })).unwrap();
-    //         toast.success(data?.data?.message || "Parent added successfully!");
-    //       } else if (mode === "edit") {
-    //         await dispatch(editItem({ role: "parent", id: initialData.id, payload: formData })).unwrap();
-    //         toast.success(data?.data?.message || "Parent updated successfully!");
-    //       }
-    //       // Validate the form data
-    //       setFormData({
-    //         name: "",
-    //         phone: "",
-    //         email: "",
-    //         gender: "",
-    //         childName: "",
-    //         childClass: "",
-    //         childSection: "",
-    //         address: "",
-    //       });
-    //       setVisible(false);
-    //       // setCurrentStudent(null)
-    //     } catch (error) {
-    //       const formattedErrors = {};
-    //       error?.inner?.forEach((error) => {
-    //         formattedErrors[error.path] = error.message;
-    //       });
-    //       console.log("Validation errors:", formattedErrors); 
-    //       setErrors(formattedErrors);
-    //       toast.error(error || "Failed to add parent. Please fix errors.");
-    //       console.log("Validation or API errors:", error);
-    //     }
-    //   };
+    };
 
     return (
         <Modal
@@ -115,7 +106,7 @@ function CreateOnlineClassModal({ visible, setVisible,initialData={} }) {
             className="rounded-lg"
         >
             <div className="bg-white m-4">
-                <h1 className="font-medium text-2xl my-2">Create online class</h1>
+                <h1 className="font-medium text-2xl my-2">{mode === "add" ? "Create online class" : "Update online class"}</h1>
                 <hr className="mb-8" />
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
@@ -206,7 +197,15 @@ function CreateOnlineClassModal({ visible, setVisible,initialData={} }) {
                         onClick={() => setVisible(false)}
                     />
                     <Button
-                        label="Add"
+                        label={
+                            loading ? (
+                                <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
+                            ) : mode === "add" ? (
+                                "Add"
+                            ) : (
+                                "Update"
+                            )
+                        }
                         backgroundColor="#00A943"
                         onClick={handleAdd}
                     />

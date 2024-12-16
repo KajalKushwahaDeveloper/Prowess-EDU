@@ -51,7 +51,7 @@ export const T_D_DELETE_ASSIGN_QNSN = (id) => `${BASE_URL}/deleteAssignQsn/${id}
 export const T_D_GET_ONLINE_CLASSES_FOR_TEACHER = BASE_URL + "/getOnlineClassesForTeacher";
 export const T_D_ADD_ONLINE_CLASSES = BASE_URL + "/addOnlineClass";
 export const T_D_UPDATE_ONLINE_CLASSES = (id) => `${BASE_URL}/editOnlineClass/${id}`;
-export const T_D_DELETE_ONLINE_CLASSES = (id) => `${BASE_URL}/deleteOnlineClass${id}`;
+export const T_D_DELETE_ONLINE_CLASSES = (id) => `${BASE_URL}/deleteOnlineClass/${id}`;
 
 // PARENT DASHBOARD
 export const LOGIN_PARENT = BASE_URL + "/parentLogin";

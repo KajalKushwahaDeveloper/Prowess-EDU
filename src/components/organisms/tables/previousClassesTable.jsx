@@ -1,42 +1,69 @@
+import { useDispatch } from "react-redux";
 import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
+import { toast } from "react-toastify";
 
-const PreviousClassesTable = ({onlineClass}) => {
-    // const [products, setProducts] = useState("");
-    
-    const handleEdit = (question) => {
-        setFormData({
-            id: question.id,
-            question: question.question,
-        });
-    };
+import {deleteOnlineClass,getOnlineClassesForTeacher } from "../../../features/dashboardSharedApi/teacherDashboardSharedApiReducer"
 
-    const handleDelete = (id) => {
-        dispatch(deleteOnlineClass({ id }))
+const PreviousClassesTable = ({onlineClass, setOnlineClass,    visible,
+    setVisible,
+    setModalMode,
+    modalMode,setCurrentClass}) => {
+
+    const dispatch = useDispatch();
+    const studentData = JSON.parse(localStorage.getItem("data"));
+
+  useEffect(() => {
+        dispatch(getOnlineClassesForTeacher(studentData?.id))
             .unwrap()
-            .then(() => {
-                setAssignmentQuestions((prev) => prev.filter((q) => q.id !== id));
-                toast.success("Question deleted successfully!");
+            .then((response) => {
+                setOnlineClass(response?.onlineClasses);
             })
             .catch(() => {
-                toast.error("Failed to delete question.");
+                toast.error("Failed to fetch questions");
             });
+    }, [dispatch]);
+
+    const handleDelete = async (rowData) => {
+        console.log("Deleting rowData:", rowData.id); // Log to check the rowData
+        try {
+            await dispatch(deleteOnlineClass({ id: rowData.id })).unwrap();
+            setOnlineClass((prevReports) =>
+                prevReports.filter((report) => report.id !== rowData.id)
+            );
+            toast.success("Student deleted successfully!");
+        } catch (error) {
+            console.error("Error deleting student:", error);
+            toast.error(error || "Failed to delete student. Please fix errors.");
+        }
     };
     
+
+    const handleEdit = (rowData) => {
+        setVisible(true);
+        setModalMode("edit");
+        setCurrentClass(rowData);
+    };
+
+    
     const columns = [
-        { field: "id", header: "Id" },
+        {
+            field: "serialNo",
+            header: "S.No",
+            body: (rowData, options) => options.rowIndex + 1,
+        },
         { field: "subject", header: "Subject" },
         { field: "chapter", header: "Chapter" },
         { field: "topic", header: "Topic" },
         { field: "class", header: "Class" },
         { field: "date", header: "Date" },
-        { field: "studentJoined", header: "Student joined" },
+        { field: "studentJoined", header: "Student joined" ,  body: (rowData) => rowData.studentJoined || "N/A"},
         {
             field: "Action",
             header: "Action",
-            body: () => {
+            body: (rowData) => {
                 return (
                     <div className="flex space-x-2">
                         <Button
@@ -44,11 +71,7 @@ const PreviousClassesTable = ({onlineClass}) => {
                         icon={Icons.editIcon}
                         onClick={() => handleEdit(rowData)}
                     />
-                    <Button
-                        backgroundColor="#004871"
-                        icon={Icons.reloadIcon}
-                        // onClick={handleReload}
-                    />
+                 
                     <Button
                         backgroundColor="#FF4D00"
                         icon={Icons.deleteIcon}

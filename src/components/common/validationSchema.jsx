@@ -111,15 +111,12 @@ export const addNewAssignmentSchema = Yup.object().shape({
 });
 
 export const createOnlineClassSchema = Yup.object().shape({
-    Class: Yup.array()
-          .of(Yup.string().required("Each class must be valid"))
-          .min(1, "Please select at least one class")
-          .required("Classes you can teach are required"),
+    Class: Yup.string().required("Class is required"),
     subject: Yup.string().required("Subject is required"),
     chapter: Yup.string().required("Chapter is required"),
-    topicName: Yup.string().required("Topic name is required"),
+    topic: Yup.string().required("Topic name is required"),
     date: Yup.string().required("Please select a date"),
-    addLink: Yup.string().required("Link is required"),
+    link: Yup.string().required("Link is required"),
 });
 
 export const createTimeTableSchema = Yup.object().shape({

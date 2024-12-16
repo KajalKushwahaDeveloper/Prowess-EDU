@@ -20,7 +20,6 @@ const StudentDashboardTest = () => {
 
     useEffect(() => {
         // Fetch reports on mount
-        console.log("getAssign") // Log the response to check its structure
         dispatch(getNewTestForStudent(`${studentClass?.Class}-${studentClass?.section}`))
             .unwrap()
             .then((response) => {

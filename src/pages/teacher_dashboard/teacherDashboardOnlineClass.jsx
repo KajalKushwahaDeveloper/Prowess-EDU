@@ -6,13 +6,14 @@ import { Icons } from "../../assets/icons";
 import Button from "../../components/atoms/button";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {getOnlineClassesForTeacher} from "../../features/dashboardSharedApi/teacherDashboardSharedApiReducer";
+import { getOnlineClassesForTeacher } from "../../features/dashboardSharedApi/teacherDashboardSharedApiReducer";
 
 const TeacherDashboardOnlineClass = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedChapter, setSelectedChapter] = useState(null);
     const [onlineClass, setOnlineClass] = useState(null);
-
+    const [modalMode, setModalMode] = useState("add");
+    const [currentClass, setCurrentClass] = useState(null);
     const studentData = JSON.parse(localStorage.getItem("data"));
 
     const dispatch = useDispatch();
@@ -28,13 +29,12 @@ const TeacherDashboardOnlineClass = () => {
             });
     }, [dispatch]);
 
-    const cardDetails = [
-        { subject: "Math 11th", chapter: "Chapter 1 (Topic name)", date_time: "4/10/2024 10.15am", cardStyle: { backgroundColor: "#EEDFF7" }, totalNumberClass: "text-base font-normal", iconBorderClass: " bg-[#FF8A00] right-1 bottom-1 px-3 py-1 rounded-lg" },
-    ];
     // FF8A00
-    const handleCardClick = (chapter) => {
+    const handleAddClass = (chapter) => {
+        console.log("Add class clicked", chapter); // Log chapter to see if it's being passed
         setSelectedChapter(chapter);
         setIsModalVisible(true);
+        setCurrentStudent(null);
     };
 
     return (
@@ -45,7 +45,7 @@ const TeacherDashboardOnlineClass = () => {
                     <div className="flex justify-evenly items-center space-x-4">
                         <Button
                             icon={Icons.plusIcon}
-                            onClick={() => handleCardClick(cardDetails.chapter)}
+                            onClick={handleAddClass}
                             label="Create New class"
                         />
                     </div>
@@ -62,11 +62,11 @@ const TeacherDashboardOnlineClass = () => {
                     {onlineClass?.map((currentData, index) => (
                         <div key={index} onClick={() => handleCardClick(currentData.chapter)}>
                             <Card
-                                cardHeading={currentData.subject}
-                                totalNumber={currentData.chapter}
-                                cardStyle = {{ backgroundColor: "#EEDFF7" }}
+                                cardHeading={`${currentData.subject} ${currentData.Class}`}
+                                totalNumber={`Chapter ${currentData.chapter} ${currentData.topic}`}
+                                cardStyle={{ backgroundColor: "#EEDFF7" }}
                                 iconClass={Icons.editIcon}
-                                date_time={currentData.date}
+                                date_time={`${currentData.date} ${currentData.time}`}
                                 totalNumberClass={currentData.totalNumberClass}
                                 iconBorderClass={currentData.iconBorderClass}
                             />
@@ -78,7 +78,7 @@ const TeacherDashboardOnlineClass = () => {
             <div>
                 <h2 className="font-bold text-xl text-xl my-4">Previous Classes</h2>
                 <hr className="mb-8" />
-                <PreviousClassesTable onlineClass={onlineClass} />
+                <PreviousClassesTable onlineClass={onlineClass} setOnlineClass={setOnlineClass} setModalMode={setModalMode} modalMode={modalMode} setCurrentClass={setCurrentClass} setVisible={setIsModalVisible} />
             </div>
 
             {/* Assignment Modal */}
@@ -87,6 +87,9 @@ const TeacherDashboardOnlineClass = () => {
                 visible={isModalVisible}
                 setVisible={setIsModalVisible}
                 newAssignment={selectedChapter}
+                setModalMode={setModalMode}
+                mode={modalMode}
+                initialData={currentClass}
             />
         </div>
     );
