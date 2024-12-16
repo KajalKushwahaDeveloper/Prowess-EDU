@@ -33,7 +33,7 @@ export const fetchPresignedUrl = createAsyncThunk(
       );
       return response?.data?.data; // return the presigned URL
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error?.response?.data);
     }
   }
 );
@@ -41,7 +41,7 @@ export const fetchPresignedUrl = createAsyncThunk(
 // Async thunk to add video to the server after upload
 export const addVideo = createAsyncThunk(
   "video/addVideo",
-  async ( { rejectWithValue }) => {
+  async (videoData, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -53,13 +53,16 @@ export const addVideo = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.post(T_D_ADD_VIDEO,  config);
+
+      // Ensure the videoData is passed as the payload
+      const response = await axios.post(T_D_ADD_VIDEO, videoData, config);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error?.response?.data || error.message);
     }
   }
 );
+
 
 // get api
 export const getVideosForTeacher = createAsyncThunk(
@@ -102,6 +105,8 @@ export const editVideo = createAsyncThunk(
       };
       // Change DELETE to PUT for editing VIDEOs
       const response = await axios.put(T_D_EDIT_VIDEO(id), payload, config);
+      console.log("API Response edit:", response.data);
+      
 
       return response?.data ; // Return the updated VIDEO data
     } catch (error) {

@@ -10,7 +10,6 @@ import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import capitalize from 'lodash/capitalize';
 
-
 function AddNewParentModal({ visible, setVisible, mode = "add", initialData = {} }) {
   const [formData, setFormData] = useState({
     name: "",

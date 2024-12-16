@@ -30,7 +30,7 @@ const TodayTopicVideoTable = ({
       .catch((error) => {
         toast.error(error || "Failed to fetch Data");
       });
-  }, [dispatch]);
+  }, [dispatch,videoData]);
 
   const handleDelete = async (rowData) => {
     try {

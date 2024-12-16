@@ -62,7 +62,14 @@ function ViewTDVideoModal({ visible, setVisible ,vedioData}) {
                 value={vedioData?.topic || "N/A"}
               />
             </div>
-
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Video File"
+                name="videoFile"
+                value={vedioData?.videoFile || "N/A"}
+              />
+            </div>
             
           </div>
 

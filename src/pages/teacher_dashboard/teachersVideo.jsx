@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
 import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
@@ -8,12 +8,18 @@ import AddNewVideoModal from "../../components/organisms/modals/addNewVideomodal
 const TeacherDashboardVideos = () => {
   const [visible, setVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [modalMode, setModalMode] = useState("add"); // Default to "add"
+  const [modalMode, setModalMode] = useState("add");
   const [currentStudent, setCurrentStudent] = useState(null);
-  const pageSize = 10; // Define how many students to show per page
-  const studentsData = []; // Replace this with your actual data array
+  const [videos, setVideos] = useState([]); // State to store video list
+  const pageSize = 10;
+
+  const handleModalClose = () => {
+    setVisible(false);
+  };
 
   const handleAddStudent = () => {
+    setModalMode("add");
+    setCurrentStudent(null);
     setVisible(true);
   };
 
@@ -21,16 +27,26 @@ const TeacherDashboardVideos = () => {
     setCurrentPage(newPage);
   };
 
-  // Calculate paginated data
-  const paginatedStudents = studentsData.slice(
+  // Callback to handle new or updated video
+  const handleVideoSuccess = (video) => {
+    setVideos((prevVideos) => {
+      if (modalMode === "add") {
+        return [video, ...prevVideos]; // Add new video to the list
+      } else if (modalMode === "edit") {
+        return prevVideos.map((v) => (v.id === video.id ? video : v)); // Update the edited video
+      }
+      return prevVideos;
+    });
+  };
+
+  const paginatedVideos = videos.slice(
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
 
-  const headingName = "Add New Student";
-
   return (
     <div className="admin-dashboard m-6 dashboard">
+      {/* Header Section */}
       <div className="my-4 flex items-start md:items-center justify-between flex-col sm:flex-row pb-2">
         <h1 className="text-black font-bold text-2xl mb-2">Videos</h1>
         <div className="flex items-center justify-center">
@@ -43,27 +59,41 @@ const TeacherDashboardVideos = () => {
       </div>
       <hr />
 
+      {/* Table Section */}
       <div className="mt-8">
         <h1 className="text-black font-bold text-xl mb-4">
-        Todays topic Video
+          Today's Topic Videos
           <hr className="mt-2" />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-16">
-          <TodayTopicVideoTable students={paginatedStudents} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
+          <TodayTopicVideoTable
+            students={paginatedVideos}
+            setModalMode={setModalMode}
+            modalMode={modalMode}
+            currentStudent={currentStudent}
+            setCurrentStudent={setCurrentStudent}
+          />
         </div>
       </div>
 
-      {/* Pagination Component */}
+      {/* Pagination */}
       <div className="flex items-center justify-center">
         <Pagination
           currentPage={currentPage}
-          totalPages={Math.ceil(studentsData.length / pageSize)}
+          totalPages={Math.ceil(videos.length / pageSize)}
           onPageChange={handlePageChange}
         />
       </div>
-      <AddNewVideoModal visible={visible} setVisible={setVisible} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
+
+      {/* Add New Video Modal */}
+      <AddNewVideoModal
+        visible={visible}
+        setVisible={handleModalClose}
+        mode={modalMode}
+        initialData={currentStudent}
+        onSuccess={handleVideoSuccess} // Pass callback to handle success
+      />
     </div>
   );
-}
-
+};
 export default TeacherDashboardVideos;

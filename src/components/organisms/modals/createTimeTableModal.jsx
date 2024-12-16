@@ -3,12 +3,14 @@ import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 import { createTimeTableSchema } from "../../common/validationSchema";
+import ClassTypeDropdown from "../../molecules/classTypeDropdown";
+import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
 
 function CreateTimeTableModal({ visible, setVisible }) {
     const [formData, setFormData] = useState({
         teacherName: "",
         subject: "",
-        class: "",
+        Class: "",
         date: "",
     });
     const [errors, setErrors] = useState({});
@@ -47,54 +49,50 @@ function CreateTimeTableModal({ visible, setVisible }) {
 
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                     <div className="relative">
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Teacher Name"
-                        name="teacherName"
-                        placeholder="Enter Teacher Name"
-                        value={formData.teacherName}
-                        onChange={handleInputChange}
-                    />
-                     {errors.teacherName && (
+                        <InputFieldWithLabel
+                            type="text"
+                            labelText="Teacher Name"
+                            name="teacherName"
+                            placeholder="Enter Teacher Name"
+                            value={formData.teacherName}
+                            onChange={handleInputChange}
+                        />
+                        {errors.teacherName && (
                             <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.teacherName}</p>
                         )}
                     </div>
                     <div className="relative">
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Class"
-                        name="class"
-                        placeholder="Enter Class"
-                        value={formData.class}
-                        onChange={handleInputChange}
-                    />
-                     {errors.class && (
+                        <ClassTypeDropdown
+                            label="Class"
+                            name="Class"
+                            value={formData.Class}
+                            onChange={handleInputChange}
+                        />
+                        {errors.class && (
                             <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.class}</p>
                         )}
                     </div>
                     <div className="relative">
-                    <InputFieldWithLabel
-                        type="text"
-                        labelText="Subject"
-                        name="subject"
-                        placeholder="Enter Subject"
-                        value={formData.subject}
-                        onChange={handleInputChange}
-                    />
-                     {errors.subject && (
+                        <SubjectTypeDropdown
+                            label="Subject"
+                            name="subject"
+                            value={formData.subject}
+                            onChange={handleInputChange}
+                        />
+                        {errors.subject && (
                             <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.subject}</p>
                         )}
                     </div>
                     <div className="relative">
-                    <InputFieldWithLabel
-                        type="date"
-                        labelText="Date & time"
-                        name="date"
-                        placeholder="Enter Date & time"
-                        value={formData.date}
-                        onChange={handleInputChange}
-                    />
-                     {errors.date && (
+                        <InputFieldWithLabel
+                            type="date"
+                            labelText="Date & time"
+                            name="date"
+                            placeholder="Enter Date & time"
+                            value={formData.date}
+                            onChange={handleInputChange}
+                        />
+                        {errors.date && (
                             <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.date}</p>
                         )}
                     </div>

@@ -2,8 +2,8 @@ import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 
-function ViewTDAssignModal({ visible, setVisible, vedioData }) {
-
+function ViewTDAssignModal({ visible, setVisible, assignmentData }) {
+  console.log("assignmentData:", assignmentData);  
   return (
     <>
       <Modal
@@ -19,20 +19,12 @@ function ViewTDAssignModal({ visible, setVisible, vedioData }) {
 
           {/* Form fields */}
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-            {/* <div className="relative">
-              <InputFieldWithLabel
-                type="text"
-                labelText="Id"
-                name="id"
-                value={vedioData?.id || "N/A"}
-              />
-            </div> */}
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
                 labelText="Subject Name"
                 name="subject"
-                value={vedioData?.subject || "N/A"}
+                value={assignmentData?.subject || "N/A"}
               />
             </div>
 
@@ -41,7 +33,7 @@ function ViewTDAssignModal({ visible, setVisible, vedioData }) {
                 type="text"
                 labelText="Class"
                 name="Class"
-                value={vedioData?.Class || "N/A"}
+                value={assignmentData?.Class || "N/A"}
               />
             </div>
 
@@ -50,7 +42,7 @@ function ViewTDAssignModal({ visible, setVisible, vedioData }) {
                 type="text"
                 labelText="Chapter"
                 name="chapter"
-                value={vedioData?.chapter || "N/A"}
+                value={assignmentData?.chapter || "N/A"}
               />
             </div>
 
@@ -60,16 +52,77 @@ function ViewTDAssignModal({ visible, setVisible, vedioData }) {
                 type="text"
                 labelText="Questions"
                 name="questions"
-                value={vedioData?.questions?.length || "N/A"}
+                value={assignmentData?.questions?.length || "N/A"}
+              />
+            </div>
+
+            {/* <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Marks"
+                name="marks"
+                value={assignmentData?.marks || "N/A"}
+              />
+            </div> */}
+            
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Topic"
+                name="topic"
+                value={assignmentData?.topic || "N/A"}
+              />
+            </div>
+
+         
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Assigned To"
+                name="assignedTo"
+                value={assignmentData?.assignedTo || "N/A"}
               />
             </div>
 
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
-                labelText="Marks"
-                name="marks"
-                value={vedioData?.marks || "N/A"}
+                labelText="Level"
+                name="level"
+                value={assignmentData?.level || "N/A"}
+              />
+            </div>
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Start Date"
+                name="startDate"
+                value={assignmentData?.startDate || "N/A"}
+              />
+            </div>
+
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="End Date"
+                name="endDate"
+                value={assignmentData?.endDate || "N/A"}
+              />
+            </div>
+            {/* <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Assign File"
+                name="assignFile"
+                value={assignmentData?.assignFile || "N/A"}
+              />
+            </div> */}
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Status"
+                name="status"
+                value={assignmentData?.status || "N/A"}
               />
             </div>
           </div>

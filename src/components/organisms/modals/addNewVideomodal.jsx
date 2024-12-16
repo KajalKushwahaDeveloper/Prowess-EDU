@@ -7,7 +7,9 @@ import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { fetchPresignedUrl, addVideo, editVideo } from "../../../features/dashboardSharedApi/videosSharedApi";
 import capitalize from "lodash/capitalize";
-import {videoValidationSchema} from "../../common/validationSchema";
+import { videoValidationSchema } from "../../common/validationSchema";
+import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
+import ClassTypeDropdown from "../../molecules/classTypeDropdown";
 
 function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} }) {
   const dispatch = useDispatch();
@@ -19,20 +21,22 @@ function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} 
     chapter: "",
     topic: "",
     Class: "",
+    videoFile: null, // Add videoFile field
     ...initialData,
   });
-  const { presignedUrl = null, loading = false } = useSelector((state) => state.video || {});
+  const { presignedUrl = null, loading = false, errors = {} } = useSelector((state) => state.video || {});
+console.log("formData:",formData);
 
-  useEffect(() => {
-    if (mode === "edit" && initialData) {
-      setFormData({
-        ...initialData,
-        fileName: initialData.fileName || "",
-        fileType: initialData.fileType || "",
-        videoUrl: initialData.videoUrl || "",
-      });
-    }
-  }, [mode, initialData]);
+  // useEffect(() => {
+  //   if (mode === "edit" && initialData) {
+  //     setFormData({
+  //       ...initialData,
+  //       fileName: initialData.fileName || "",
+  //       fileType: initialData.fileType || "",
+  //       videoUrl: initialData.videoUrl || "",
+  //     });
+  //   }
+  // }, [mode, initialData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -74,26 +78,28 @@ function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} 
 
     try {
       const { name: fileName, type: fileType } = file;
-      const fileKey = `${fileName}`; // Using fileName as fileKey
+      const fileKey = `${fileName}`;
 
       // Fetch the presigned URL
       const result = await dispatch(fetchPresignedUrl({ fileName: fileKey, fileType })).unwrap();
 
-      // Once presigned URL is fetched, upload the file to S3
+      // Upload the file to S3
       await uploadToS3(file, result?.presignedUrl);
 
-      // Set the video URL with file key
+      // Update formData with the uploaded file and URL
       setFormData((prev) => ({
         ...prev,
+        videoFile: file, // Store the actual file
         fileName: result?.fileKey,
         fileType,
-        videoUrl: result?.presignedUrl, // Store the presigned URL
+        videoUrl: result?.presignedUrl,
       }));
     } catch (error) {
       console.error("Error during file upload process:", error);
       toast.error(error?.message || "File upload process failed.");
     }
   };
+
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -104,10 +110,22 @@ function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} 
 
       let data;
       if (mode === "add") {
-        data = await dispatch(addVideo({ ...formData, videoUrl: finalVideoUrl })).unwrap();
+        await dispatch(addVideo({ ...formData, videoUrl: finalVideoUrl })).unwrap();
         toast.success(data?.data?.message || "Video added successfully!");
       } else if (mode === "edit") {
-        data = await dispatch(editVideo({ ...formData, videoUrl: finalVideoUrl })).unwrap();
+        const payload = {
+          subject: formData.subject,
+          chapter: formData.chapter,
+          topic: formData.topic,
+          Class: formData.Class,
+          videoUrl: formData.videoUrl,
+          fileName: formData.fileName,
+          fileType: formData.fileType,
+        };
+
+        console.log("Edit Payload:", payload);
+
+        await dispatch(editVideo({ id: initialData.id, payload })).unwrap();
         toast.success(data?.data?.message || "Video updated successfully!");
       }
 
@@ -120,6 +138,7 @@ function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} 
       }
     }
   };
+
 
   return (
     <Modal
@@ -136,50 +155,70 @@ function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} 
         <hr className="mb-8 border-gray-300" />
 
         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-          <InputFieldWithLabel
-            type="text"
-            labelText="Subject"
-            name="subject"
-            placeholder="Enter Subject"
-            value={formData.subject}
-            onChange={handleInputChange}
-          />
-          <InputFieldWithLabel
-            type="text"
-            labelText="Chapter"
-            name="chapter"
-            placeholder="Enter Chapter"
-            value={formData.chapter}
-            onChange={handleInputChange}
-          />
-          <InputFieldWithLabel
-            type="text"
-            labelText="Topic Name"
-            name="topic"
-            placeholder="Enter Topic Name"
-            value={formData.topic}
-            onChange={handleInputChange}
-          />
-          <InputFieldWithLabel
-            type="text"
-            labelText="Class"
-            name="Class"
-            placeholder="Enter Class"
-            value={formData.Class}
-            onChange={handleInputChange}
-          />
-          <InputFieldWithLabel
-            type="file"
-            labelText="Upload Video"
-            name="uploadVideo"
-            onChange={handleFileUpload}
-          />
-          {loading && (
-            <div className="flex items-center justify-center mt-2">
-              <FaSpinner className="animate-spin text-gray-500 text-2xl" />
-              <span className="ml-2 text-gray-600">Fetching URL...</span>
-            </div>
-          )}
+          <div className="relative">
+            <SubjectTypeDropdown
+              label="Subjects"
+              name="subject"
+              value={formData.subject || ""}
+              onChange={handleInputChange}
+            />
+            {errors.subject && (
+              <p className="text-rose-600 text-md absolute left-0" style={{ bottom: '-22px' }}>
+                {errors?.subject}
+              </p>
+            )}
+          </div>
+          <div className="relative">
+            <InputFieldWithLabel
+              type="text"
+              labelText="Chapter"
+              name="chapter"
+              placeholder="Enter Chapter"
+              value={formData.chapter}
+              onChange={handleInputChange}
+            />
+            {errors.chapter && (
+              <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.chapter}</p>
+            )}
+          </div>
+          <div className="relative">
+            <InputFieldWithLabel
+              type="text"
+              labelText="Topic Name"
+              name="topic"
+              placeholder="Enter Topic Name"
+              value={formData.topic}
+              onChange={handleInputChange}
+            />
+            {errors.topic && (
+              <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.topic}</p>
+            )}
+          </div>
+          <div className="relative">
+            <ClassTypeDropdown
+              label="Class"
+              name="Class"
+              value={formData.Class}
+              onChange={handleInputChange}
+            />
+            {errors.Class && (
+              <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.Class}</p>
+            )}
+          </div>
+          <div className="relative">
+            <InputFieldWithLabel
+              type="file"
+              labelText="Upload Video"
+              name="uploadVideo"
+              value={formData.fileName}
+              onChange={handleFileUpload}
+            />
+          
+            {errors.uploadVideo && (
+              <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.uploadVideo}</p>
+            )}
+          </div>
+
         </div>
 
         <div className="flex justify-end gap-4 mt-6">

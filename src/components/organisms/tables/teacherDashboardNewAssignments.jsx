@@ -11,6 +11,7 @@ const TeacherDashboardNewAssignmentsTable = ({ newAssignment }) => {
     const [showAll, setShowAll] = useState(false);
     const [visible, setVisible] = useState(false);
 
+
     const columns = [
         {
             field: "serialNo",
@@ -46,7 +47,7 @@ const TeacherDashboardNewAssignmentsTable = ({ newAssignment }) => {
             },
         },
     ];
-    const displayedData = showAll ? newAssignment : newAssignment.slice(0, 2)
+    const displayedData = showAll ? newAssignment : newAssignment?.slice(0, 2)
 
     return (
         <>

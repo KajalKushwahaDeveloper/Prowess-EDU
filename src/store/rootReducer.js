@@ -10,7 +10,7 @@ import sharedTeacherDashboardAssignReducer from "../features/dashboardSharedApi/
 import sharedStudentDashboardAssignReducer from "../features/dashboardSharedApi/studentDashboardSharedApiReducer.js"
 import sharedStudentDashboardVideosReducer from "../features/dashboardSharedApi/studentDashboardvideosReducer.js"
 import sharedTeacherDashboardAssignQsnReducer from "../features/dashboardSharedApi/teacherDashboardAssignQsnReducer.js"
-// import sharedTeacherDashboardVideosReducer from "../features/dashboardSharedApi/teacherDashboardSharedApiReducer.js"
+import sharedTeacherDashboardOnlineClassReducer from "../features/dashboardSharedApi/teacherDashboardSharedApiReducer.js"
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -25,7 +25,7 @@ const rootReducer = combineReducers({
     studentDashboardNewVideosSharedApi : sharedStudentDashboardVideosReducer,
     teacherDashboardAssignQsnSharedApi : sharedTeacherDashboardAssignQsnReducer,
     teacherDashboardAssignQsnSharedApi : sharedTeacherDashboardAssignQsnReducer,
-    // teacherDashboardVideosSharedApi : sharedTeacherDashboardVideosReducer
+    teacherDashboardOnlineClassSharedApi : sharedTeacherDashboardOnlineClassReducer
 });
 
 export default rootReducer;
