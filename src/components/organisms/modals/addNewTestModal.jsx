@@ -3,44 +3,49 @@ import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 import { Icons } from "../../../assets/icons";
-import { addNewAssignmentSchema } from "../../common/validationSchema";
+import { addNewTestSchema } from "../../common/validationSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import capitalize from "lodash/capitalize";
 import {
-  addAssign,
-  editAssign,
-} from "../../../features/dashboardSharedApi/teacherDashboardAssignReducer";
+  addTest,
+  editTest,
+  getTestForTeacher
+} from "../../../features/dashboardSharedApi/teacherDashboardTestReducer";
 import LevelDropdown from "../../molecules/levelDropdown";
 import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
 import ClassTypeDropdown from "../../molecules/classTypeDropdown";
-import AddNewAssignmentQsnModal from "./addNewAssignQsnModal";
-import { getAssignForTeacher } from "../../../features/dashboardSharedApi/teacherDashboardAssignReducer";
+import AddNewTestQsnModal from "./addNewTestQsnModal";
+import StudentDropdown from "../../molecules/studentDropdown";
 
-const AddNewAssignmentModal = ({
+const AddNewTestModal = ({
   visible,
   setVisible,
   mode = "add",
   initialData = {},
 }) => {
   const [formData, setFormData] = useState({
-    id: "",
+    id: initialData?.id || "",
     subject: "",
     chapter: "",
     topic: "",
     Class: "",
-    assignedTo: [],
+    assignedTo: [], // Initialize as an empty array
     level: "",
-    assignFile: "",
     startDate: "",
-    endDate: "",
-    ...initialData,
+    startTime: "",
+    endTime: "",
   });
+  
+
+  console.log("initialDataTest:", initialData);
+
   const [errors, setErrors] = useState({});
   const [isSuccess, setIsSuccess] = useState(false); // Track success state
   const [filteredReports, setFilteredReports] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false); // For question modal
+  console.log("validationError:", errors);
 
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector(
@@ -50,117 +55,108 @@ const AddNewAssignmentModal = ({
 
   useEffect(() => {
     // Fetch reports on mount
-    dispatch(getAssignForTeacher({ classId: `${studentClass?.Class}-${studentClass?.section}` }))
+    dispatch(getTestForTeacher({ classId: `${studentClass?.Class}-${studentClass?.section}` }))
       .unwrap()
-      .then((response) => setFilteredReports(response.assignments)) // Initialize local state
+      .then((response) => setFilteredReports(response.tests)) // Initialize local state
       .catch((error) => {
         toast.error(error || "Failed to fetch reports");
       });
   }, [dispatch]);
 
   const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
-
-    if (name === "startDate" || name === "endDate") {
-      // Keep the input value in yyyy-MM-dd format
+    const { name, value } = e.target;
+  
+    if (name === "assignedTo") {
+      // Ensure assignedTo is always a flat array
       setFormData({
         ...formData,
-        [name]: value,
+        [name]: value === "allStudent" ? ["All Students"] : [value],
       });
     } else {
       setFormData({
         ...formData,
         [name]:
-          files && files.length > 0
-            ? files[0]
-            : ["chapter", "subject", "topic", "assignedTo"].includes(name)
+          ["chapter", "subject", "topic"].includes(name)
             ? capitalize(value)
-            : value,
+            : value, // No files handling here
       });
     }
   };
-
+  
+  
+  
+  
   const handleAdd = async () => {
     try {
       // Validate the form data with Yup
-      await addNewAssignmentSchema.validate(formData, { abortEarly: false });
-      setErrors({}); // Clear previous errors
+      // await addNewTestSchema.validate(formData, { abortEarly: false });
+      // setErrors({}); // Clear previous errors
 
       // Format the startDate and endDate as DD-MM-YYYY
-      const formattedStartDate = formData.startDate
-        ? formData.startDate.split("-").reverse().join("-")
-        : "";
-      const formattedEndDate = formData.endDate
-        ? formData.endDate.split("-").reverse().join("-")
-        : "";
+      const formattedStartDate =
+        formData.startDate && formData.startDate.includes("-")
+          ? formData.startDate.split("-").reverse().join("-")
+          : "";
 
-      const formDataToSend = new FormData();
-      console.log("formDataToSend:", formDataToSend);
-
-      Object.keys(formData).forEach((key) => {
-        if (key === "startDate") {
-          formDataToSend.append("startDate", formattedStartDate);
-        } else if (key === "endDate") {
-          formDataToSend.append("endDate", formattedEndDate);
-        } else if (key === "assignFile" && formData[key]) {
-          formDataToSend.append("assignFile", formData[key]);
-        } else {
-          formDataToSend.append(key, formData[key]);
-        }
-      });
-
+          const payload = {
+            subject: formData.subject,
+            Class: formData.Class,
+            chapter: formData.chapter,
+            topic: formData.topic,
+            assignedTo: formData.assignedTo, // This will now be ["All Students"]
+            level: formData.level,
+            startDate: formattedStartDate,
+            startTime: formData.startTime,
+            endTime: formData.endTime,
+          };
+          
+          console.log("Payload to be sent:", payload);
+          
+          console.log("Payload to be sent:", payload);
       let resultAction;
       if (mode === "add") {
-        // Dispatch 'addAssign' action and await the result
-        resultAction = await dispatch(
-          addAssign({ payload: formDataToSend })
-        ).unwrap();
+        resultAction = await dispatch(addTest({ payload })).unwrap();
       } else if (mode === "edit") {
-        resultAction = await dispatch(
-          editAssign({ id: initialData?.id, payload: formDataToSend })
-        ).unwrap();
+        resultAction = await dispatch(editTest({ id: initialData?.id, payload })).unwrap();
       }
+
       console.log("resultAction:", resultAction);
 
       // Check for success after the dispatch
       if (resultAction?.status === 200) {
-        toast.success(
-          resultAction?.message || "Assignment added successfully!"
-        );
-        setIsSuccess(true); // Mark as successful
+        toast.success(resultAction?.message || "Test added successfully!");
+        setIsSuccess(true);
+        setVisible(false); // Close modal
       } else {
-        throw new Error(resultAction?.message || "Failed to add assignment.");
+        throw new Error(resultAction?.message || "Failed to add test.");
       }
 
-      // Reset the form data after successful add or edit
+      // Reset the form data
       setFormData({
-        id: "",
         subject: "",
         chapter: "",
         topic: "",
         Class: "",
         assignedTo: "",
         level: "",
-        assignFile: "",
         startDate: "",
-        endDate: "",
+        startTime: "",
+        endTime: "",
       });
     } catch (err) {
-      // Handle Yup validation errors
       if (err?.inner) {
         const validationErrors = {};
         err.inner.forEach((e) => {
           validationErrors[e.path] = e.message;
         });
-        setErrors(validationErrors); // Set validation errors in the state
+        setErrors(validationErrors);
         toast.error("Validation failed. Please fix the errors.");
       } else {
-        toast.error(
-          err?.message || "Failed to add Assignment. Please try again."
-        );
+        toast.error(err?.message || "Failed to add Test. Please try again.");
       }
     }
   };
+
 
   const handleOpenModal = () => {
     console.log("Opening modal..."); // Debug log
@@ -181,7 +177,7 @@ const AddNewAssignmentModal = ({
       <div>
         <div className="bg-white m-4">
           <h1 className="font-medium text-2xl my-2">
-            {mode === "add" ? "Add New Assignment" : "Edit New Assignment"}{" "}
+            {mode === "add" ? "Add New Test" : "Edit New Test"}
           </h1>
           <hr className="mb-8 border-gray-300" />
           <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
@@ -254,16 +250,17 @@ const AddNewAssignmentModal = ({
                 </p>
               )}
             </div>
+         
             <div className="relative">
-              <InputFieldWithLabel
+            <InputFieldWithLabel
                 type="text"
                 labelText="Select Students"
                 name="assignedTo"
-                placeholder="Select Students"
+                placeholder="Enter Select Students"
                 value={formData.assignedTo}
                 onChange={handleInputChange}
               />
-              {errors.assignedTo && (
+              {errors?.assignedTo && (
                 <p
                   className="text-rose-600 text-md  absolute left-0 "
                   style={{ bottom: "-22px" }}
@@ -309,38 +306,39 @@ const AddNewAssignmentModal = ({
 
             <div className="relative">
               <InputFieldWithLabel
-                labelText="End Date"
-                name="endDate"
-                type="date"
+                labelText="Start Time"
+                name="startTime"
+                type="time"
                 //  placeholder="Enter something"
-                value={formData.endDate}
+                value={formData.startTime}
                 onChange={handleInputChange}
-                error={errors.endDate}
+                error={errors.startTime}
               />
-              {errors.endDate && (
+              {errors.startTime && (
                 <p
                   className="text-rose-600 text-md  absolute left-0 "
                   style={{ bottom: "-22px" }}
                 >
-                  {errors?.endDate}
+                  {errors?.startTime}
                 </p>
               )}
             </div>
             <div className="relative">
               <InputFieldWithLabel
-                type="file"
-                labelText="Upload Assignment"
-                name="assignFile"
-                placeholder="Upload Assignment"
-                onChange={handleInputChange} // Handle file input change
+                labelText="End Time"
+                name="endTime"
+                type="time"
+                //  placeholder="Enter something"
+                value={formData.endTime}
+                onChange={handleInputChange}
+                error={errors.endTime}
               />
-
-              {errors.assignFile && (
+              {errors.endTime && (
                 <p
                   className="text-rose-600 text-md  absolute left-0 "
                   style={{ bottom: "-22px" }}
                 >
-                  {errors?.assignFile}
+                  {errors?.endTime}
                 </p>
               )}
             </div>
@@ -350,18 +348,17 @@ const AddNewAssignmentModal = ({
               label="Cancel"
               backgroundColor="#FF8A00"
               onClick={() => setVisible(false)}
-              // icon ={Icons.cancelIcon}
+            // icon ={Icons.cancelIcon}
             />
             <Button
-              label={
-                loading ? (
-                  <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
-                ) : mode === "add" ? (
-                  "Add"
-                ) : (
-                  "Update"
-                )
-              }
+              label={loading ? (
+                <div className="spinner"></div>
+              ) : mode === "add" ? (
+                "Add"
+              ) : (
+                "Update"
+              )}
+              
               backgroundColor="#00A943"
               onClick={handleAdd}
             />
@@ -372,10 +369,10 @@ const AddNewAssignmentModal = ({
               icon={Icons.rightArrow}
             />
             {isModalOpen && (
-              <AddNewAssignmentQsnModal
+              <AddNewTestQsnModal
                 visible={isModalOpen}
                 onClose={handleCloseModal}
-                assignmentId={formData.id}
+                testId={formData.id}
               />
             )}
           </div>
@@ -385,4 +382,4 @@ const AddNewAssignmentModal = ({
   );
 };
 
-export default AddNewAssignmentModal;
+export default AddNewTestModal;

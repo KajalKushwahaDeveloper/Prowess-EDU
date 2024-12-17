@@ -5,9 +5,11 @@ import Pagination from "../../components/common/pagination"; // Import the reusa
 import AddNewAssignmentModal from "../../components/organisms/modals/addNewAssignmentModal";
 import AssignmentTable from "../../components/organisms/tables/assignmentTable";
 import TestTable from "../../components/organisms/tables/testTable";
+import AddNewTestModal from "../../components/organisms/modals/addNewTestModal";
 
 const TeacherDashboardAssignment = () => {
-  const [visible, setVisible] = useState(false);
+  const [assignmentVisible, setAssignmentVisible] = useState(false);
+  const [testVisible, setTestVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("Assignment");
   const [modalMode, setModalMode] = useState("add"); // Default to "add"
@@ -17,9 +19,11 @@ const TeacherDashboardAssignment = () => {
   const studentsData = []; // Replace this with your actual data array
 
   const handleCreateAssignment = () => {
-    setVisible(true);
+    setAssignmentVisible(true);
   };
-
+  const handleCreateTest = () => {
+    setTestVisible(true);
+  }
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
@@ -40,7 +44,7 @@ const TeacherDashboardAssignment = () => {
             activeTab === "Test"
               ? <Button
                 icon={Icons.plusIcon}
-                onClick={handleAddStudent}
+                onClick={handleCreateTest}
                 label="Create Test"
               />
               : <Button
@@ -73,9 +77,8 @@ const TeacherDashboardAssignment = () => {
       {/* Tab Content */}
       <div className="w-full mx-auto p-6 bg-gray-50">
         {activeTab === "Assignment" && <AssignmentTable setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />}
-        {activeTab === "Test" && <TestTable />}
+        {activeTab === "Test" && <TestTable setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />}
       </div>
-
 
       {/* Pagination Component */}
       <div className="flex items-center justify-center">
@@ -85,7 +88,12 @@ const TeacherDashboardAssignment = () => {
           onPageChange={handlePageChange}
         />
       </div>
-      <AddNewAssignmentModal visible={visible} setVisible={setVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
+      {
+        assignmentVisible && <AddNewAssignmentModal visible={assignmentVisible} setVisible={setAssignmentVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
+      }
+      {
+        testVisible && <AddNewTestModal visible={testVisible} setVisible={setTestVisible} setModalMode={setModalMode} modalMode={modalMode} initialData={currentStudent} setCurrentStudent={setCurrentStudent} />
+      }
 
     </div>
   );

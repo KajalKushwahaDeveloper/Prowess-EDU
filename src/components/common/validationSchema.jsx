@@ -77,11 +77,11 @@ export const addNewAssignmentSchema = Yup.object().shape({
         .required('Topic Name is required')
         .max(50, 'Topic Name must be less than 50 characters'),
 
-    Class: Yup.string()
-        .required('Class is required')
-        .matches(/^\d+$/, 'Class must be a valid number'),
-
-    assignedTo: Yup.string().required('Assigned To is required'),
+    Class: Yup.string().required("Class is required"),
+    assignedTo: Yup.array()
+    .of(Yup.string().required("Each student must be valid"))
+    .min(1, "At least one student must be assigned")
+    .required("Assigned To is required"),
 
     level: Yup.string()
         .required('Level is required')
@@ -104,12 +104,45 @@ export const addNewAssignmentSchema = Yup.object().shape({
         .transform((value, originalValue) => (originalValue === "" ? null : value)) // Transform empty strings to null
         .required("Start date is required")
         .min(new Date(), "Start date must be today or later"),
-    endDate: Yup.date()
+    startTime: Yup.date()
         .transform((value, originalValue) => (originalValue === "" ? null : value)) // Transform empty strings to null
         .required("End date is required")
         .min(Yup.ref("startDate"), "End date must be after the start date"),
 });
+export const addNewTestSchema = Yup.object().shape({
+    subject: Yup.string()
+        .required('Subject is required')
+        .max(50, 'Subject must be less than 50 characters'),
 
+    chapter: Yup.string()
+        .required('Chapter is required')
+        .max(50, 'Chapter must be less than 50 characters'),
+
+    topic: Yup.string()
+        .required('Topic Name is required')
+        .max(50, 'Topic Name must be less than 50 characters'),
+
+    Class: Yup.string().required("Class is required"),
+    assignedTo: Yup.array()
+    .of(Yup.string().required("Student name is required"))
+    .min(1, "At least one student must be assigned")
+    .required("Assigned To is required"),
+  
+    level: Yup.string()
+        .required('Level is required')
+        .oneOf(['Easy', 'Medium', 'Hard'], 'Level must be valid'),
+
+    startDate: Yup.date()
+        .transform((value, originalValue) => (originalValue === "" ? null : value)) // Transform empty strings to null
+        .required("Start date is required")
+        .min(new Date(), "Start date must be today or later"),
+    startTime: Yup.string()
+        .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH:MM format")
+        .required("Start time is required"),
+    endTime: Yup.string()
+        .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "End time must be in HH:MM format")
+        .required("End time is required"),
+});
 export const createOnlineClassSchema = Yup.object().shape({
     Class: Yup.string().required("Class is required"),
     subject: Yup.string().required("Subject is required"),
@@ -148,4 +181,4 @@ export const videoValidationSchema = Yup.object().shape({
     topic: Yup.string().required("Topic is required").trim(),
     Class: Yup.string().required("Class is required").trim(),
     videoFile: Yup.mixed().required("Video file is required"),
-  });
+});

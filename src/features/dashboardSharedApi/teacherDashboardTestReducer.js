@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import {  T_D_GET_ONLINE_CLASSES_FOR_TEACHER, T_D_ADD_ONLINE_CLASSES, T_D_UPDATE_ONLINE_CLASSES, T_D_DELETE_ONLINE_CLASSES} from "../../constants/apiConfig";
+import { T_D_GET_TEST_FOR_TEACHER, T_D_ADD_TEST, T_D_EDIT_TEST, T_D_DELETE_TEST } from "../../constants/apiConfig";
 
-//get getAssignQsnsForTeacher api
-export const getOnlineClassesForTeacher = createAsyncThunk(
-    "dashboard/getOnlineClassesForTeacher",
-    async ( { rejectWithValue }) => {
+// get api
+export const getTestForTeacher = createAsyncThunk(
+    "dashboard/getTestForTeacher",
+    async (_, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token"); // Corrected token retrieval
             if (!token) {
@@ -18,8 +18,10 @@ export const getOnlineClassesForTeacher = createAsyncThunk(
                 },
             };
 
-            const response = await axios.get(T_D_GET_ONLINE_CLASSES_FOR_TEACHER, config);
-            return response?.data?.data || []; // Safeguard for undefined data
+            const response = await axios.get(T_D_GET_TEST_FOR_TEACHER, config);
+            console.log("getAssignForTeacherResponse:", response);
+            
+            return response?.data || []; // Safeguard for undefined data
         } catch (error) {
             console.error("API Error:", error);
             return rejectWithValue(error.response?.data?.message || "Get failed");
@@ -27,9 +29,34 @@ export const getOnlineClassesForTeacher = createAsyncThunk(
     }
 );
 
+
 // post api  
-export const addOnlineClass = createAsyncThunk(
-    "dashboard/addOnlineClass",
+export const addTest = createAsyncThunk(
+    "dashboard/addTest",
+    async ({ payload }, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                return rejectWithValue("Unauthorized - Missing Token");
+            }
+
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+            const response = await axios.post(T_D_ADD_TEST, payload, config);
+            return response || [];
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || "Failed to add assignment");
+        }
+    }
+);
+
+
+// put api
+export const editTest = createAsyncThunk(
+    "dashboard/editTest",
     async ({ id, payload }, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
@@ -42,31 +69,8 @@ export const addOnlineClass = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.post(T_D_ADD_ONLINE_CLASSES(id), payload, config);
-            return response?.data?.data || [];
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || "Failed to add assignment");
-        }
-    }
-);
-
-// put api
-export const editOnlineClass = createAsyncThunk(
-    "dashboard/editOnlineClass",
-    async ({ id, payload }, { rejectWithValue }) => {
-        try {
-            const token = localStorage.getItem("token"); 
-            if (!token) {
-                return rejectWithValue("Unauthorized - Missing Token");
-            }
-            
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            };
             // Change DELETE to PUT for editing reports
-            const response = await axios.put(T_D_UPDATE_ONLINE_CLASSES(id),payload,config);
+            const response = await axios.put(T_D_EDIT_TEST(id), payload, config);
 
             return response?.data?.data || []; // Return the updated report data
         } catch (error) {
@@ -76,12 +80,12 @@ export const editOnlineClass = createAsyncThunk(
 );
 
 // delete api
-export const deleteOnlineClass = createAsyncThunk(
-    "dashboard/deleteOnlineClass",
+export const deleteTest = createAsyncThunk(
+    "dashboard/deleteTest",
     async ({ id }, { rejectWithValue }) => {
-        console.log("Received id in thunk:", id); // Check the ID here
+        console.log("Received id in thunk:", id);
         try {
-            const token = localStorage.getItem("token"); 
+            const token = localStorage.getItem("token");
             if (!token) {
                 return rejectWithValue("Unauthorized - Missing Token");
             }
@@ -91,7 +95,7 @@ export const deleteOnlineClass = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.delete(T_D_DELETE_ONLINE_CLASSES(id), config);
+            const response = await axios.delete(T_D_DELETE_TEST(id), config);
             console.log("ID passed to API utility:", response?.data); // Debug log
 
             return response?.data?.data || [];
@@ -101,9 +105,8 @@ export const deleteOnlineClass = createAsyncThunk(
     }
 );
 
-
-const sharedTeacherDashboardOnlineClassReducer = createSlice({
-    name: "teacherDashboardOnlineClassSharedApi",
+const sharedTeacherDashboardTestReducer = createSlice({
+    name: "teacherDashboardTestSharedApi",
     initialState: {
         data: [],
         loading: false,
@@ -112,62 +115,64 @@ const sharedTeacherDashboardOnlineClassReducer = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-        // Get Items
-        .addCase(getOnlineClassesForTeacher.pending, (state) => {
-            state.loading = true;
-            state.error = null;
-        })
-        .addCase(getOnlineClassesForTeacher.fulfilled, (state, action) => {  
-            state.loading = false;
-                state.data = action.payload || [];  
+            // Get Items
+            .addCase(getTestForTeacher.pending, (state) => {
+                state.loading = true;
+                state.error = null;
             })
-            .addCase(getOnlineClassesForTeacher.rejected, (state, action) => {
+            .addCase(getTestForTeacher.fulfilled, (state, action) => {
+                state.loading = false;
+                state.data = action.payload || [];
+                console.log("stateAssignment:", state.data)
+            })
+
+            .addCase(getTestForTeacher.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
             // Add Items
-            .addCase(addOnlineClass.pending, (state) => {
+            .addCase(addTest.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(addOnlineClass.fulfilled, (state, action) => {
+            .addCase(addTest.fulfilled, (state, action) => {
                 state.loading = false;
                 state.data = action.payload;
             })
-            .addCase(addOnlineClass.rejected, (state, action) => {
+            .addCase(addTest.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message || "Failed to add online class";
+                state.error = action.payload;
             })
             // Edit Items
-            .addCase(editOnlineClass.pending, (state) => {
+            .addCase(editTest.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(editOnlineClass.fulfilled, (state, action) => {
+            .addCase(editTest.fulfilled, (state, action) => {
                 state.loading = false;
                 // const index = state.data.findIndex((item) => item.id === action.payload.id);
                 // if (index !== -1) state.data[index] = action.payload;
             })
-            .addCase(editOnlineClass.rejected, (state, action) => {
+            .addCase(editTest.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
             // Delete Items
-            .addCase(deleteOnlineClass.pending, (state) => {
+            .addCase(deleteTest.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(deleteOnlineClass.fulfilled, (state, action) => {
+            .addCase(deleteTest.fulfilled, (state, action) => {
                 state.loading = false;
                 // state.data = state?.data?.filter((item) => item.id !== action.payload.id);
                 console.log("state:", state.data);
             })
-            .addCase(deleteOnlineClass.rejected, (state, action) => {
+            .addCase(deleteTest.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
     },
 });
 
-export default sharedTeacherDashboardOnlineClassReducer.reducer;
+export default sharedTeacherDashboardTestReducer.reducer;
 

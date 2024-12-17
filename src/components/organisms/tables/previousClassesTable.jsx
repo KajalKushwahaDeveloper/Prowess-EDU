@@ -2,20 +2,22 @@ import { useDispatch } from "react-redux";
 import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import {deleteOnlineClass,getOnlineClassesForTeacher } from "../../../features/dashboardSharedApi/teacherDashboardSharedApiReducer"
+import { deleteOnlineClass, getOnlineClassesForTeacher } from "../../../features/dashboardSharedApi/teacherDashboardSharedApiReducer"
+import CreateOnlineClassModal from "../modals/createOnlineClassModal";
 
-const PreviousClassesTable = ({onlineClass, setOnlineClass,    visible,
+const PreviousClassesTable = ({ onlineClass, setOnlineClass, visible,
     setVisible,
     setModalMode,
-    modalMode,setCurrentClass}) => {
+    modalMode, setCurrentClass,currentClass }) => {
+    // const [visible, setVisible] = useState(false);
 
     const dispatch = useDispatch();
     const studentData = JSON.parse(localStorage.getItem("data"));
 
-  useEffect(() => {
+    useEffect(() => {
         dispatch(getOnlineClassesForTeacher(studentData?.id))
             .unwrap()
             .then((response) => {
@@ -39,7 +41,7 @@ const PreviousClassesTable = ({onlineClass, setOnlineClass,    visible,
             toast.error(error || "Failed to delete student. Please fix errors.");
         }
     };
-    
+
 
     const handleEdit = (rowData) => {
         setVisible(true);
@@ -47,7 +49,7 @@ const PreviousClassesTable = ({onlineClass, setOnlineClass,    visible,
         setCurrentClass(rowData);
     };
 
-    
+
     const columns = [
         {
             field: "serialNo",
@@ -59,7 +61,7 @@ const PreviousClassesTable = ({onlineClass, setOnlineClass,    visible,
         { field: "topic", header: "Topic" },
         { field: "class", header: "Class" },
         { field: "date", header: "Date" },
-        { field: "studentJoined", header: "Student joined" ,  body: (rowData) => rowData.studentJoined || "N/A"},
+        { field: "studentJoined", header: "Student joined", body: (rowData) => rowData.studentJoined || "N/A" },
         {
             field: "Action",
             header: "Action",
@@ -67,16 +69,16 @@ const PreviousClassesTable = ({onlineClass, setOnlineClass,    visible,
                 return (
                     <div className="flex space-x-2">
                         <Button
-                        backgroundColor="#FF8A00"
-                        icon={Icons.editIcon}
-                        onClick={() => handleEdit(rowData)}
-                    />
-                 
-                    <Button
-                        backgroundColor="#FF4D00"
-                        icon={Icons.deleteIcon}
-                        onClick={() => handleDelete(rowData)}
-                    />
+                            backgroundColor="#FF8A00"
+                            icon={Icons.editIcon}
+                            onClick={() => handleEdit(rowData)}
+                        />
+
+                        <Button
+                            backgroundColor="#FF4D00"
+                            icon={Icons.deleteIcon}
+                            onClick={() => handleDelete(rowData)}
+                        />
 
                     </div>
                 );
@@ -85,11 +87,24 @@ const PreviousClassesTable = ({onlineClass, setOnlineClass,    visible,
     ];
 
     return (
+        <>
         <Table
             data={onlineClass}
             columns={columns}
-            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
+            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
         />
+        {
+        visible && (
+            <CreateOnlineClassModal
+                visible={visible}
+                setVisible={setVisible}
+                mode={modalMode}
+                initialData={currentClass}
+                onHide={() => setVisible(false)}
+            />
+        )
+    }
+    </>
     );
 };
 

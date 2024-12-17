@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
 import CreateReportModal from "../../components/organisms/modals/createReportModal";
-import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
+import Pagination from "../../components/common/pagination";
 import TeacherDashboardStudentReportTable from "../../components/organisms/tables/teacherDashboardStudentReportTable";
 
 const TeacherDashboardStudents = () => {

@@ -29,9 +29,9 @@ const TeacherDashboardOnlineClass = () => {
             });
     }, [dispatch]);
 
-    // FF8A00
+    
     const handleAddClass = (chapter) => {
-        console.log("Add class clicked", chapter); // Log chapter to see if it's being passed
+        console.log("Add class clicked", chapter); 
         setSelectedChapter(chapter);
         setIsModalVisible(true);
         setCurrentStudent(null);
@@ -78,7 +78,7 @@ const TeacherDashboardOnlineClass = () => {
             <div>
                 <h2 className="font-bold text-xl text-xl my-4">Previous Classes</h2>
                 <hr className="mb-8" />
-                <PreviousClassesTable onlineClass={onlineClass} setOnlineClass={setOnlineClass} setModalMode={setModalMode} modalMode={modalMode} setCurrentClass={setCurrentClass} setVisible={setIsModalVisible} />
+                <PreviousClassesTable onlineClass={onlineClass} setOnlineClass={setOnlineClass} setModalMode={setModalMode} modalMode={modalMode} setCurrentClass={setCurrentClass} setVisible={setIsModalVisible} currentClass={currentClass} />
             </div>
 
             {/* Assignment Modal */}
@@ -86,9 +86,9 @@ const TeacherDashboardOnlineClass = () => {
             <CreateOnlineClassModal
                 visible={isModalVisible}
                 setVisible={setIsModalVisible}
-                newAssignment={selectedChapter}
+                newChapter={selectedChapter}
                 setModalMode={setModalMode}
-                mode={modalMode}
+                modalMode={modalMode}
                 initialData={currentClass}
             />
         </div>

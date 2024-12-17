@@ -14,7 +14,7 @@ import { addOnlineClass, editOnlineClass } from "../../../features/dashboardShar
 
 function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = "add" }) {
     const [formData, setFormData] = useState({
-        id: initialData?.id,
+        id: initialData?.id || "",
         Class: "",
         subject: "",
         chapter: "",
@@ -30,7 +30,6 @@ function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = 
     const dispatch = useDispatch();
 
     console.log("initialDataformData:", initialData);
-
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -55,8 +54,8 @@ function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = 
             // Handle adding video logic
             if (mode === "add") {
                 console.log("Calling addOnlineClass API with payload:", formData);
-                await dispatch(addOnlineClass({ payload: formData, id:initialData.id })).unwrap();
-                const response = await dispatch(addOnlineClass({ payload: formData })).unwrap();
+                await dispatch(addOnlineClass({ payload: formData })).unwrap();
+
                 console.log("API response:", response);
                 toast.success(data?.data?.message || "Online class added successfully!");
             } else if (mode === "edit") {
@@ -77,25 +76,20 @@ function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = 
             });
             setVisible(false);
         } catch (error) {
-            // Handle validation errors
             if (error?.inner) {
                 const formattedErrors = {};
-                error?.inner?.forEach((err) => {
+                error.inner.forEach((err) => {
                     formattedErrors[err.path] = err.message;
                 });
                 setErrors(formattedErrors);
-            }
-
-            // Handle API errors
-            if (error?.response?.data) {
-                toast.error(error.response.data.message || "Failed to add online class. Please fix errors.");
+                console.log("Validation errors:", formattedErrors);
+                toast.error("Validation failed. Please check all fields.");
             } else {
-                toast.error(error || "An unknown error occurred.");
+                console.error("Unhandled error:", error);
+                toast.error("An unexpected error occurred.");
             }
-
-            console.log("Validation or API errors:", error);
         }
-    };
+    }
 
     return (
         <Modal

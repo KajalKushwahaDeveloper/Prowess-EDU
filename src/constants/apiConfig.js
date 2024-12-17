@@ -47,6 +47,12 @@ export const T_D_ADD_ASSIGN_QNSN = (id) => `${BASE_URL}/addAssignQsn/${id}`;
 export const T_D_EDIT_ASSIGN_QNSN = (id) => `${BASE_URL}/editAssignQsn/${id}`;
 export const T_D_DELETE_ASSIGN_QNSN = (id) => `${BASE_URL}/deleteAssignQsn/${id}`;
 
+//test 
+export const T_D_GET_TEST_FOR_TEACHER = BASE_URL + "/getTestForTeacher";
+export const T_D_ADD_TEST = BASE_URL + "/addTest";
+export const T_D_EDIT_TEST = (id) => `${BASE_URL}/editTest/${id}`;
+export const T_D_DELETE_TEST = (id) => `${BASE_URL}/deleteTest/${id}`;
+
 // Online Classes For Teacher
 export const T_D_GET_ONLINE_CLASSES_FOR_TEACHER = BASE_URL + "/getOnlineClassesForTeacher";
 export const T_D_ADD_ONLINE_CLASSES = BASE_URL + "/addOnlineClass";
