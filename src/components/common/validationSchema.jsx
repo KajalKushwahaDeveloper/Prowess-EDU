@@ -149,7 +149,9 @@ export const createOnlineClassSchema = Yup.object().shape({
     chapter: Yup.string().required("Chapter is required"),
     topic: Yup.string().required("Topic name is required"),
     date: Yup.string().required("Please select a date"),
-    link: Yup.string().required("Link is required"),
+    time:Yup.string()
+    .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH:MM format")
+    .required("Start time is required"),
 });
 
 export const createTimeTableSchema = Yup.object().shape({

@@ -30,7 +30,7 @@ export const getAssignQnsnForTeacher = createAsyncThunk(
 // post api  
 export const addAssignQsn = createAsyncThunk(
     "dashboard/addAssignQsn",
-    async ({ id, payload }, { rejectWithValue }) => {
+    async ({ assignmentId, payload }, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
             if (!token) {
@@ -42,7 +42,7 @@ export const addAssignQsn = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.post(T_D_ADD_ASSIGN_QNSN(id), payload, config);
+            const response = await axios.post(`${T_D_ADD_ASSIGN_QNSN}?assignmentId=${assignmentId}`, payload, config);
             return response?.data?.data || [];
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Failed to add assignment");

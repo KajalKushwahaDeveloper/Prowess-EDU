@@ -43,7 +43,7 @@ export const T_D_ADD_ASSIGNMENT = BASE_URL + "/addAssign";
 export const T_D_EDIT_ASSIGNMENT = (id) => `${BASE_URL}/editAssign/${id}`;
 export const T_D_DELETE_ASSIGNMENT = (id) => `${BASE_URL}/deleteAssign/${id}`;
 export const T_D_GET_ASSIGN_QSNS_FOR_TEACHER = BASE_URL + "/getAssignQsnsForTeacher";
-export const T_D_ADD_ASSIGN_QNSN = (id) => `${BASE_URL}/addAssignQsn/${id}`;
+export const T_D_ADD_ASSIGN_QNSN = BASE_URL + "/addAssignQsn";
 export const T_D_EDIT_ASSIGN_QNSN = (id) => `${BASE_URL}/editAssignQsn/${id}`;
 export const T_D_DELETE_ASSIGN_QNSN = (id) => `${BASE_URL}/deleteAssignQsn/${id}`;
 

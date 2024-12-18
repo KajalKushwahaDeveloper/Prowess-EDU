@@ -9,9 +9,7 @@ import { deleteOnlineClass, getOnlineClassesForTeacher } from "../../../features
 import CreateOnlineClassModal from "../modals/createOnlineClassModal";
 
 const PreviousClassesTable = ({ onlineClass, setOnlineClass, visible,
-    setVisible,
-    setModalMode,
-    modalMode, setCurrentClass,currentClass }) => {
+    setVisible, modalMode,  currentClass }) => {
     // const [visible, setVisible] = useState(false);
 
     const dispatch = useDispatch();
@@ -43,13 +41,6 @@ const PreviousClassesTable = ({ onlineClass, setOnlineClass, visible,
     };
 
 
-    const handleEdit = (rowData) => {
-        setVisible(true);
-        setModalMode("edit");
-        setCurrentClass(rowData);
-    };
-
-
     const columns = [
         {
             field: "serialNo",
@@ -59,20 +50,15 @@ const PreviousClassesTable = ({ onlineClass, setOnlineClass, visible,
         { field: "subject", header: "Subject" },
         { field: "chapter", header: "Chapter" },
         { field: "topic", header: "Topic" },
-        { field: "class", header: "Class" },
+        { field: "Class", header: "Class" },
         { field: "date", header: "Date" },
-        { field: "studentJoined", header: "Student joined", body: (rowData) => rowData.studentJoined || "N/A" },
+        { field: "studentJoined", header: "Student joined", body: (rowData) => rowData.onlineClassStatus && rowData.onlineClassStatus.length || "N/A" },
         {
             field: "Action",
             header: "Action",
             body: (rowData) => {
                 return (
                     <div className="flex space-x-2">
-                        <Button
-                            backgroundColor="#FF8A00"
-                            icon={Icons.editIcon}
-                            onClick={() => handleEdit(rowData)}
-                        />
 
                         <Button
                             backgroundColor="#FF4D00"
@@ -88,23 +74,23 @@ const PreviousClassesTable = ({ onlineClass, setOnlineClass, visible,
 
     return (
         <>
-        <Table
-            data={onlineClass}
-            columns={columns}
-            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
-        />
-        {
-        visible && (
-            <CreateOnlineClassModal
-                visible={visible}
-                setVisible={setVisible}
-                mode={modalMode}
-                initialData={currentClass}
-                onHide={() => setVisible(false)}
+            <Table
+                data={onlineClass}
+                columns={columns}
+                tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
             />
-        )
-    }
-    </>
+            {
+                visible && (
+                    <CreateOnlineClassModal
+                        visible={visible}
+                        setVisible={setVisible}
+                        mode={modalMode}
+                        initialData={currentClass}
+                        onHide={() => setVisible(false)}
+                    />
+                )
+            }
+        </>
     );
 };
 

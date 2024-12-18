@@ -23,9 +23,11 @@ const AddNewAssignmentModal = ({
   setVisible,
   mode = "add",
   initialData = {},
+  assignmentId
 }) => {
+  
   const [formData, setFormData] = useState({
-    id: "",
+    id: assignmentId,
     subject: "",
     chapter: "",
     topic: "",
@@ -37,6 +39,9 @@ const AddNewAssignmentModal = ({
     endDate: "",
     ...initialData,
   });
+
+  console.log("assignmentFormdata:",formData.id,"AssignmentId:",  assignmentId);
+  
   const [errors, setErrors] = useState({});
   const [isSuccess, setIsSuccess] = useState(false); // Track success state
   const [filteredReports, setFilteredReports] = useState([]);
@@ -83,8 +88,8 @@ const AddNewAssignmentModal = ({
   const handleAdd = async () => {
     try {
       // Validate the form data with Yup
-      await addNewAssignmentSchema.validate(formData, { abortEarly: false });
-      setErrors({}); // Clear previous errors
+      // await addNewAssignmentSchema.validate(formData, { abortEarly: false });
+      // setErrors({}); // Clear previous errors
 
       // Format the startDate and endDate as DD-MM-YYYY
       const formattedStartDate = formData.startDate

@@ -7,25 +7,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import AddNewAssignmentModal from "../modals/addNewAssignmentModal";
 
-const AssignmentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
+const AssignmentTable = ({ setModalMode, modalMode, currentAssignment, setCurrentAssignment }) => {
     const [visible, setVisible] = useState(false);
-    const [filteredReports, setFilteredReports] = useState([]); // For local filtering
-    console.log("AssignmentTable:", filteredReports);
+    // const [filteredReports, setFilteredReports] = useState([]); // For local filtering
+    console.log("AssignmentTable:", currentAssignment);
 
     const dispatch = useDispatch();
     const { data, loading, error } = useSelector((state) => state.teacherDashboardAssignSharedApi);
 
-    useEffect(() => {
-        // Fetch reports on mount
-        dispatch(getAssignForTeacher())
-            .unwrap()
-            .then((response) => setFilteredReports(response?.data?.assignments)
+    // useEffect(() => {
+    //     // Fetch reports on mount
+    //     dispatch(getAssignForTeacher())
+    //         .unwrap()
+    //         .then((response) => setFilteredReports(response?.data?.assignments)
         
-        ) // Initialize local state
-            .catch((err) => {
-                toast.error(error || "Failed to fetch reports");
-            });
-    }, [dispatch]);
+    //     ) // Initialize local state
+    //         .catch((err) => {
+    //             toast.error(error || "Failed to fetch reports");
+    //         });
+    // }, [dispatch]);
 
     const handleDelete = async (rowData) => {
         console.log("rowdata:", rowData);
@@ -34,7 +34,7 @@ const AssignmentTable = ({ setModalMode, modalMode, currentStudent, setCurrentSt
             await dispatch(deleteAssign({ id: rowData.id })).unwrap();
 
             // Remove the deleted row from local state
-            setFilteredReports((preAssignments) =>
+            setCurrentAssignment((preAssignments) =>
                 preAssignments.filter((assignments) => assignments.id !== rowData.id)
             );
 
@@ -49,18 +49,13 @@ const AssignmentTable = ({ setModalMode, modalMode, currentStudent, setCurrentSt
         console.log("edit button click:", rowData);
         setVisible(true);
         setModalMode("edit");
-        setCurrentStudent(rowData);
+        setCurrentAssignment(rowData);
     };
 
     const handleReload = () => {
         // Reload data from the API
         dispatch(getAssignForTeacher())
-            .unwrap()
-            .then((response) => {
-                setFilteredReports(response?.assignments); // Ensure you're setting the correct data
-                toast.info("Data reloaded successfully!");
-            })
-            .catch((err) => toast.error("Failed to reload data"));
+        toast.info("Data reloaded successfully!");
     };
 
     const columns = [
@@ -106,7 +101,7 @@ const AssignmentTable = ({ setModalMode, modalMode, currentStudent, setCurrentSt
     return (
         <>
             <Table
-                data={filteredReports}
+                data={currentAssignment}
                 columns={columns}
                 tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
             />
@@ -116,7 +111,7 @@ const AssignmentTable = ({ setModalMode, modalMode, currentStudent, setCurrentSt
                         visible={visible}
                         setVisible={setVisible}
                         mode={modalMode}
-                        initialData={currentStudent}
+                        initialData={currentAssignment}
                         onHide={() => setVisible(false)}
                     />
                 )

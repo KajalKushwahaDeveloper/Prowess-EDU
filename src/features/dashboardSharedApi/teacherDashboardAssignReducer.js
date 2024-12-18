@@ -19,9 +19,8 @@ export const getAssignForTeacher = createAsyncThunk(
             };
 
             const response = await axios.get(T_D_GET_ASIGNMENT_FOR_TEACHER, config);
-            console.log("getAssignForTeacherResponse:", response);
 
-            
+            // Return only the data part of the response
             return response?.data || []; // Safeguard for undefined data
         } catch (error) {
             console.error("API Error:", error);
@@ -29,6 +28,7 @@ export const getAssignForTeacher = createAsyncThunk(
         }
     }
 );
+
 
 
 // post api  

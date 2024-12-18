@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
@@ -10,11 +10,11 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import capitalize from 'lodash/capitalize';
 import { addOnlineClass, editOnlineClass } from "../../../features/dashboardSharedApi/teacherDashboardSharedApiReducer";
+import { getOnlineClassesForTeacher } from "../../../features/dashboardSharedApi/teacherDashboardSharedApiReducer";
 
-
-function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = "add" }) {
+function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = "add", onlineClassId }) {
     const [formData, setFormData] = useState({
-        id: initialData?.id || "",
+        id: onlineClassId,
         Class: "",
         subject: "",
         chapter: "",
@@ -25,42 +25,54 @@ function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = 
         ...initialData,
     });
     const [errors, setErrors] = useState({});
-
+    const [filteredReports, setFilteredReports] = useState([]);
     const { data, loading, error } = useSelector((state) => state.teacherDashboardOnlineClassSharedApi);
     const dispatch = useDispatch();
+    const studentClass = JSON.parse(localStorage.getItem("data"));
 
-    console.log("initialDataformData:", initialData);
+    console.log("FormData before dispatch:", formData);
 
+    useEffect(() => {
+        dispatch(getOnlineClassesForTeacher({ classId: `${studentClass?.Class}-${studentClass?.section}` }))
+            .unwrap()
+            .then((response) => {
+                setFilteredReports(response?.onlineClasses);
+            })
+            .catch(() => {
+                toast.error("Failed to fetch questions");
+            });
+    }, [dispatch]);
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]:
-                ["topic"].includes(name)
-                    ? capitalize(value) // Use lodash capitalize for these fields
-                    : value, // Use raw value for other fields
-        });
-    };
+        if (name === "date") {
+            // Format the date as DD-MM-YYYY
+            const formattedDate = value.split("-").reverse().join("-");
+            setFormData({ ...formData, [name]: formattedDate });
+        } else {
 
+            setFormData({
+                ...formData,
+                [name]:
+                    ["topic"].includes(name)
+                        ? capitalize(value) // Use lodash capitalize for these fields
+                        : value, // Use raw value for other fields
+            });
+        }
+    };
 
     const handleAdd = async () => {
         try {
-            console.log("Validating form data:", formData);
-            // Validate formData
+            // Validate the form data
             await createOnlineClassSchema.validate(formData, { abortEarly: false });
-            console.log("Form validated"); // Ensure validation is passingP
             setErrors({}); // Clear previous errors if validation passes
 
-            // Handle adding video logic
+            // Handle adding or updating the class
             if (mode === "add") {
-                console.log("Calling addOnlineClass API with payload:", formData);
                 await dispatch(addOnlineClass({ payload: formData })).unwrap();
-
-                console.log("API response:", response);
-                toast.success(data?.data?.message || "Online class added successfully!");
+                toast.success("Online class added successfully!");
             } else if (mode === "edit") {
                 await dispatch(editOnlineClass({ id: initialData?.id, payload: formData })).unwrap();
-                toast.success(data?.data?.message || "Online class updated successfully!");
+                toast.success("Online class updated successfully!");
             }
 
             // Reset form data after successful submission
@@ -74,7 +86,7 @@ function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = 
                 time: "",
                 link: "",
             });
-            setVisible(false);
+            setVisible(false); // Close the modal
         } catch (error) {
             if (error?.inner) {
                 const formattedErrors = {};
@@ -82,14 +94,13 @@ function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = 
                     formattedErrors[err.path] = err.message;
                 });
                 setErrors(formattedErrors);
-                console.log("Validation errors:", formattedErrors);
                 toast.error("Validation failed. Please check all fields.");
             } else {
-                console.error("Unhandled error:", error);
                 toast.error("An unexpected error occurred.");
             }
         }
-    }
+    };
+
 
     return (
         <Modal
@@ -156,14 +167,33 @@ function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = 
                     <div className="relative">
                         <InputFieldWithLabel
                             type="date"
-                            labelText="Date & time"
+                            labelText="Date "
                             name="date"
-                            placeholder="Enter Date & time"
-                            value={formData.date}
+                            placeholder="Enter Date"
+                            value={formData?.date.split("-").reverse().join("-")}
                             onChange={handleInputChange}
                         />
                         {errors.date && (
                             <p className="text-rose-600 text-md  absolute left-0 " style={{ bottom: '-22px' }}>{errors?.date}</p>
+                        )}
+                    </div>
+                    <div className="relative">
+                        <InputFieldWithLabel
+                            labelText="Time"
+                            name="time"
+                            type="time"
+                            //  placeholder="Enter something"
+                            value={formData.time}
+                            onChange={handleInputChange}
+                            error={errors.time}
+                        />
+                        {errors.time && (
+                            <p
+                                className="text-rose-600 text-md  absolute left-0 "
+                                style={{ bottom: "-22px" }}
+                            >
+                                {errors?.time}
+                            </p>
                         )}
                     </div>
                     <div className="relative">
@@ -203,6 +233,7 @@ function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = 
                         backgroundColor="#00A943"
                         onClick={handleAdd}
                     />
+
                 </div>
             </div>
         </Modal>

@@ -14,10 +14,11 @@ import {
 const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {}, assignmentId }) => {
   const [assignmentQuestions, setAssignmentQuestions] = useState([]);
   const [formData, setFormData] = useState({
-    id: null, // Track the ID for editing
+    id: assignmentId, // Track the ID for editing
     question: "",
     ...initialData,
-  });
+  }); 
+console.log("assignmentId56:", assignmentId);
 
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector(
@@ -25,10 +26,10 @@ const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {}, assignme
   );
 
   useEffect(() => {
-    dispatch(getAssignQnsnForTeacher({ assignmentId: assignmentId }))
+    dispatch(getAssignQnsnForTeacher({ assignmentId }))
       .unwrap()
       .then((response) => {
-        setAssignmentQuestions(response);
+        setAssignmentQuestions(response?.data?.questions);
       })
       .catch(() => {
         toast.error("Failed to fetch questions");
@@ -51,7 +52,7 @@ const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {}, assignme
 
     if (formData.id) {
       // Edit existing question
-      dispatch(editAssignQsn({ id: assignmentId, payload: { question: formData.question, assignmentId: formData.id } }))
+      dispatch(editAssignQsn({ assignmentId, payload: { question: formData.question, assignmentId: assignmentId } }))
 
         .unwrap()
         .then(() => {
@@ -111,7 +112,7 @@ const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {}, assignme
             {/* <Modal visible={true} onHide={onClose}> */}
             <div className="p-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-                    {assignmentQuestions.map((currentData, index) => (
+                    {assignmentQuestions?.map((currentData, index) => (
                         <div key={index} className="flex flex-col space-y-1">
                             <h2 className="font-semibold">{currentData.questionNumber}</h2>
                             <div className="border shadow-lg p-4 rounded-lg flex items-center justify-between gap-1">

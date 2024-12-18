@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import {  T_D_GET_ONLINE_CLASSES_FOR_TEACHER, T_D_ADD_ONLINE_CLASSES, T_D_UPDATE_ONLINE_CLASSES, T_D_DELETE_ONLINE_CLASSES} from "../../constants/apiConfig";
-
+import { toast } from "react-toastify";
 //get getAssignQsnsForTeacher api
 export const getOnlineClassesForTeacher = createAsyncThunk(
     "dashboard/getOnlineClassesForTeacher",
@@ -30,7 +30,7 @@ export const getOnlineClassesForTeacher = createAsyncThunk(
 // post api  
 export const addOnlineClass = createAsyncThunk(
     "dashboard/addOnlineClass",
-    async ({ id, payload }, { rejectWithValue }) => {
+    async ({  payload }, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token");
             if (!token) {
@@ -42,11 +42,17 @@ export const addOnlineClass = createAsyncThunk(
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const response = await axios.post(T_D_ADD_ONLINE_CLASSES(id), payload, config);
+            const response = await axios.post(T_D_ADD_ONLINE_CLASSES, payload, config);
             return response?.data?.data || [];
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || "Failed to add assignment");
+            if (error?.response?.data) {
+                toast.error(`Failed to add class: ${error.response.data.message}`);
+            } else {
+                toast.error("An unexpected error occurred.");
+            }
+            console.error("Error during API call:", error?.response?.data || error.message);
         }
+        
     }
 );
 
