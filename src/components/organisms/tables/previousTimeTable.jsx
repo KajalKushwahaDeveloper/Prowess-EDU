@@ -1,45 +1,47 @@
-import { Icons } from "../../../assets/icons";
-import Button from "../../atoms/button";
+// import { Icons } from "../../../assets/icons";
+// import Button from "../../atoms/button";
 import Table from "../../common/Table";
-import { useState } from "react";
 
-const PreviousTimeTable = () => {
-    const [products, setProducts] = useState("");
+const PreviousTimeTable = ({ timeTable  }) => {
 
     const columns = [
-        { field: "id", header: "Id" },
+        {
+            field: "serialNo",
+            header: "S.No",
+            body: (rowData, options) => options.rowIndex + 1,
+        },
         { field: "teacherName", header: "Teacher Name" },
         { field: "subject", header: "Subject" },
-        { field: "class", header: "Class" },
+        { field: "Class", header: "Class" },
         { field: "date", header: "Date" },
-        {
-            field: "Action",
-            header: "Action",
-            body: () => {
-                return (
-                    <div className="flex space-x-2">
-                        <Button
-                            // label="edit"
-                            // onClick={() => handleEdit(rowData)}
-                            backgroundColor="#FF8A00"
-                            icon={Icons.editIcon}
-                        />
-                        <Button
-                            // label="delete"
-                            // onClick={() => handleEdit(rowData)}
-                            backgroundColor="#FF4D00"
-                            icon={Icons.deleteIcon}
-                        />
-                    </div>
-                );
-            },
-        },
+        // {
+        //     field: "Action",
+        //     header: "Action",
+        //     body: () => {
+        //         return (
+        //             <div className="flex space-x-2">
+        //                 <Button
+        //                     // label="edit"
+        //                     // onClick={() => handleEdit(rowData)}
+        //                     backgroundColor="#FF8A00"
+        //                     icon={Icons.editIcon}
+        //                 />
+        //                 <Button
+        //                     // label="delete"
+        //                     // onClick={() => handleEdit(rowData)}
+        //                     backgroundColor="#FF4D00"
+        //                     icon={Icons.deleteIcon}
+        //                 />
+        //             </div>
+        //         );
+        //     },
+        // },
     ];
 
 
     return (
         <Table
-            data={products}
+            data={timeTable}
             columns={columns}
             tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
         />

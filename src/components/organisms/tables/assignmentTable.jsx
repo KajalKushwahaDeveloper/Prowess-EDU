@@ -15,18 +15,10 @@ const AssignmentTable = ({ setModalMode, modalMode, currentAssignment, setCurren
     const dispatch = useDispatch();
     const { data, loading, error } = useSelector((state) => state.teacherDashboardAssignSharedApi);
 
-    // useEffect(() => {
-    //     // Fetch reports on mount
-    //     dispatch(getAssignForTeacher())
-    //         .unwrap()
-    //         .then((response) => setFilteredReports(response?.data?.assignments)
-        
-    //     ) // Initialize local state
-    //         .catch((err) => {
-    //             toast.error(error || "Failed to fetch reports");
-    //         });
-    // }, [dispatch]);
-
+    useEffect(() => {
+        dispatch(getAssignForTeacher());
+      }, [dispatch]);
+    
     const handleDelete = async (rowData) => {
         console.log("rowdata:", rowData);
 

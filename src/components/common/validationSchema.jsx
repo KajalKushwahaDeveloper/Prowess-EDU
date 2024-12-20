@@ -79,9 +79,9 @@ export const addNewAssignmentSchema = Yup.object().shape({
 
     Class: Yup.string().required("Class is required"),
     assignedTo: Yup.array()
-    .of(Yup.string().required("Each student must be valid"))
-    .min(1, "At least one student must be assigned")
-    .required("Assigned To is required"),
+        .of(Yup.string().required("Each student must be valid"))
+        .min(1, "At least one student must be assigned")
+        .required("Assigned To is required"),
 
     level: Yup.string()
         .required('Level is required')
@@ -124,10 +124,10 @@ export const addNewTestSchema = Yup.object().shape({
 
     Class: Yup.string().required("Class is required"),
     assignedTo: Yup.array()
-    .of(Yup.string().required("Student name is required"))
-    .min(1, "At least one student must be assigned")
-    .required("Assigned To is required"),
-  
+        .of(Yup.string().required("Student name is required"))
+        .min(1, "At least one student must be assigned")
+        .required("Assigned To is required"),
+
     level: Yup.string()
         .required('Level is required')
         .oneOf(['Easy', 'Medium', 'Hard'], 'Level must be valid'),
@@ -149,19 +149,22 @@ export const createOnlineClassSchema = Yup.object().shape({
     chapter: Yup.string().required("Chapter is required"),
     topic: Yup.string().required("Topic name is required"),
     date: Yup.string().required("Please select a date"),
-    time:Yup.string()
-    .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH:MM format")
-    .required("Start time is required"),
+    time: Yup.string()
+        .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH:MM format")
+        .required("Start time is required"),
 });
 
 export const createTimeTableSchema = Yup.object().shape({
     teacherName: Yup.string().required("Teacher name is required"),
     subject: Yup.string().required("Subject is required"),
-    class: Yup.array()
-        .of(Yup.string().required("Each class must be valid"))
-        .min(1, "Please select at least one class")
-        .required("Classes you can teach are required"),
+    Class: Yup.string().required("Class is required"),
     date: Yup.string().required("Please select a date"),
+    startTime: Yup.string()
+        .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "Start time must be in HH:MM format")
+        .required("Start time is required"),
+    endTime: Yup.string()
+        .matches(/^([0-1]\d|2[0-3]):([0-5]\d)$/, "End time must be in HH:MM format")
+        .required("End time is required"),
 });
 
 export const createReportSchema = Yup.object().shape({

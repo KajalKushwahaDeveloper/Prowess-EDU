@@ -1,35 +1,48 @@
 import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { deleteTimeTable } from "../../../features/dashboardSharedApi/teacherTimeTableReducer";
 
-const TimeTable = () => {
-    const [products, setProducts] = useState("");
+const TimeTable = ({ timeTable, mode = "add", setCurrentTimeTable }) => {
+    const { data, loading, error } = useSelector((state) => state.teacherDashboardTimeTableSharedApi);
+    const dispatch = useDispatch();
+    const handleDelete = async (rowData) => {
+        console.log("timeTablerowdata:", rowData);
 
+        try {
+            await dispatch(deleteTimeTable({ id: rowData.id })).unwrap();
+
+            // Remove the deleted row from local state
+            setCurrentTimeTable((preTimeTable) =>
+                preTimeTable.filter((timeTable) => timeTable.id !== rowData.id)
+            );
+
+            toast.success("Time Table deleted successfully!");
+        } catch (error) {
+            console.error("Error deleting Time Table:", error);
+            toast.error(error || "Failed to delete Time Table. Please fix errors.");
+        }
+    };
     const columns = [
-        { field: "id", header: "Id" },
+        {
+            field: "serialNo",
+            header: "S.No",
+            body: (rowData, options) => options.rowIndex + 1,
+        },
         { field: "teacherName", header: "Teacher Name" },
         { field: "subject", header: "Subject" },
-        { field: "class", header: "Class" },
+        { field: "Class", header: "Class" },
         { field: "date", header: "Date" },
         {
             field: "Action",
             header: "Action",
-            body: () => {
+            body: (rowData) => {
                 return (
                     <div className="flex space-x-2">
-                        <Button
-                            // label="edit"
-                            // onClick={() => handleEdit(rowData)}
-                            backgroundColor="#FF8A00"
-                            icon={Icons.editIcon}
-                        />
-                        <Button
-                            // label="delete"
-                            // onClick={() => handleEdit(rowData)}
-                            backgroundColor="#FF4D00"
-                            icon={Icons.deleteIcon}
-                        />
+                        <Button icon={Icons.editIcon} backgroundColor="#FF8A00" />
+                        <Button icon={Icons.deleteIcon} backgroundColor="#FF4D00" onClick={() => handleDelete(rowData)} />
                     </div>
                 );
             },
@@ -38,9 +51,9 @@ const TimeTable = () => {
 
     return (
         <Table
-            data={products}
+            data={timeTable}
             columns={columns}
-            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem"}}
+            tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
         />
     );
 };

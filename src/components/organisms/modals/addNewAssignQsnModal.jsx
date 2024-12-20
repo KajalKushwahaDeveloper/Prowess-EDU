@@ -11,14 +11,14 @@ import {
   deleteAssignQsn,
 } from "../../../features/dashboardSharedApi/teacherDashboardAssignQsnReducer";
 
-const AddNewAssignmentQsnModal = ({ visible, onClose, initialData = {}, assignmentId }) => {
+const AddNewAssignmentQsnModal = ({ visible, setVisible, onClose, initialData = {}, assignmentId }) => {
   const [assignmentQuestions, setAssignmentQuestions] = useState([]);
   const [formData, setFormData] = useState({
     id: assignmentId, // Track the ID for editing
     question: "",
     ...initialData,
   }); 
-console.log("assignmentId56:", assignmentId);
+console.log("assignmentId56:", assignmentId, "AssignmentformData:",formData.id);
 
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector(
@@ -69,7 +69,7 @@ console.log("assignmentId56:", assignmentId);
         });
     } else {
       // Add new question
-      dispatch(addAssignQsn({ id: assignmentId, payload: { question: formData.question } }))
+      dispatch(addAssignQsn({ id: formData.id, payload: { question: formData.question } }))
         .unwrap()
         .then((newQuestion) => {
           setAssignmentQuestions((prev) => [...prev, newQuestion]);
@@ -104,7 +104,7 @@ console.log("assignmentId56:", assignmentId);
     return (
         <Modal
             visible={visible}
-            // setVisible={setVisible}
+            setVisible={setVisible}
             style={{ width: "50vw", maxWidth: "700px", margin: "1rem" }}
             onHide={onClose}
             className="rounded-lg"

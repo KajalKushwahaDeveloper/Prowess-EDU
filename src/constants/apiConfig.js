@@ -59,5 +59,11 @@ export const T_D_ADD_ONLINE_CLASSES = BASE_URL + "/addOnlineClass";
 export const T_D_UPDATE_ONLINE_CLASSES = (id) => `${BASE_URL}/editOnlineClass/${id}`;
 export const T_D_DELETE_ONLINE_CLASSES = (id) => `${BASE_URL}/deleteOnlineClass/${id}`;
 
+// time table 
+export const T_D_GET_TIME_TABLE_FOR_TEACHER = BASE_URL + "/getTimeTableForTeacher";
+export const T_D_ADD_TIME_TABLE = BASE_URL + "/addTimeTable";
+export const T_D_UPDATE_TIME_TABLE = (id) => `${BASE_URL}/editTimeTable/${id}`;
+export const T_D_DELETE_TIME_TABLE = (id) => `${BASE_URL}/deleteTimeTable/${id}`;
+
 // PARENT DASHBOARD
 export const LOGIN_PARENT = BASE_URL + "/parentLogin";

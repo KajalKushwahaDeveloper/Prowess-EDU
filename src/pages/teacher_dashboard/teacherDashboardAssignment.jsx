@@ -23,21 +23,19 @@ const TeacherDashboardAssignment = () => {
   const studentsData = []; // Replace this with your actual data array
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.teacherDashboardAssignSharedApi);
-const assignmentId = JSON.parse(localStorage.getItem("data"))
+  const assignmentId = JSON.parse(localStorage.getItem("data"))
 
+  useEffect(() => {
+    // Fetch reports on mount
+    dispatch(getAssignForTeacher())
+      .unwrap()
+      .then((response) => setCurrentAssignment(response?.data?.assignments)
 
-
-      useEffect(() => {
-          // Fetch reports on mount
-          dispatch(getAssignForTeacher())
-              .unwrap()
-              .then((response) => setCurrentAssignment(response?.data?.assignments)
-          
-          ) // Initialize local state
-              .catch((err) => {
-                  toast.error(error || "Failed to fetch reports");
-              });
-      }, [dispatch]);
+      ) // Initialize local state
+      .catch((err) => {
+        toast.error(error || "Failed to fetch reports");
+      });
+  }, [dispatch]);
 
   const handleCreateAssignment = () => {
     setAssignmentVisible(true);

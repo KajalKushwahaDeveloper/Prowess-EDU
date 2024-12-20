@@ -25,7 +25,7 @@ const AddNewAssignmentModal = ({
   initialData = {},
   assignmentId
 }) => {
-  
+
   const [formData, setFormData] = useState({
     id: assignmentId,
     subject: "",
@@ -40,8 +40,8 @@ const AddNewAssignmentModal = ({
     ...initialData,
   });
 
-  console.log("assignmentFormdata:",formData.id,"AssignmentId:",  assignmentId);
-  
+  console.log("assignmentFormdata:", formData.id, "AssignmentId:", assignmentId);
+
   const [errors, setErrors] = useState({});
   const [isSuccess, setIsSuccess] = useState(false); // Track success state
   const [filteredReports, setFilteredReports] = useState([]);
@@ -79,8 +79,8 @@ const AddNewAssignmentModal = ({
           files && files.length > 0
             ? files[0]
             : ["chapter", "subject", "topic", "assignedTo"].includes(name)
-            ? capitalize(value)
-            : value,
+              ? capitalize(value)
+              : value,
       });
     }
   };
@@ -178,7 +178,7 @@ const AddNewAssignmentModal = ({
   return (
     <Modal
       visible={visible}
-      setVisible={setVisible}
+      setVisible={setVisible} // Pass setVisible as a function
       style={{ width: "50vw", maxWidth: "700px" }}
       onHide={() => setVisible(false)}
       className="rounded-lg"
@@ -355,7 +355,6 @@ const AddNewAssignmentModal = ({
               label="Cancel"
               backgroundColor="#FF8A00"
               onClick={() => setVisible(false)}
-              // icon ={Icons.cancelIcon}
             />
             <Button
               label={
@@ -375,15 +374,18 @@ const AddNewAssignmentModal = ({
               backgroundColor="#0069A4"
               onClick={handleOpenModal}
               icon={Icons.rightArrow}
+              disabled={!isSuccess} // Disable unless successful
             />
             {isModalOpen && (
               <AddNewAssignmentQsnModal
                 visible={isModalOpen}
                 onClose={handleCloseModal}
-                assignmentId={formData.id}
+                assignmentId={assignmentId}
+                setVisible={setVisible} 
               />
             )}
           </div>
+
         </div>
       </div>
     </Modal>
