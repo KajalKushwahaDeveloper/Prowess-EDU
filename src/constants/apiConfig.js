@@ -23,6 +23,12 @@ export const S_D_GET_NEW_TEST_FOR_STUDENT =  BASE_URL + "/getNewTestForStudent";
 export const S_D_GET_TEST_QSNS_FOR_STUDENT =  BASE_URL + "/getTestQsnsForStudent";
 export const S_D_GET_ONLINE_CLASSES_FOR_STUDENT =  BASE_URL + "/getOnlineClassesForStudent";
 export const S_D_UPDATE_ONLINE_CLASSES_FOR_STUDENT = (id) => `${BASE_URL}/updateOnlineClassStatusn/${id}`;
+//faq and feedback
+export const S_D_GET_FAQ_FOR_STUDENT =  BASE_URL + "/getFaqsForStudent";
+export const S_D_ADD_FAQ_FOR_STUDENT =  BASE_URL + "/addFaq";
+export const S_D_GET_FEEDBACK_FOR_STUDENT =  BASE_URL + "/getFeedbackForStudent";
+export const S_D_ADD_FEEDBACK_FOR_STUDENT =  BASE_URL + "/addFeedback";
+export const S_D_GET_TEACHER_FOR_STUDENT =  BASE_URL + "/getTeachersForStudent";
 
 // TEACHER DASHBOARD
 export const LOGIN_TEACHER = BASE_URL + "/teacherLogin";
@@ -64,6 +70,7 @@ export const T_D_GET_TIME_TABLE_FOR_TEACHER = BASE_URL + "/getTimeTableForTeache
 export const T_D_ADD_TIME_TABLE = BASE_URL + "/addTimeTable";
 export const T_D_UPDATE_TIME_TABLE = (id) => `${BASE_URL}/editTimeTable/${id}`;
 export const T_D_DELETE_TIME_TABLE = (id) => `${BASE_URL}/deleteTimeTable/${id}`;
+
 
 // PARENT DASHBOARD
 export const LOGIN_PARENT = BASE_URL + "/parentLogin";

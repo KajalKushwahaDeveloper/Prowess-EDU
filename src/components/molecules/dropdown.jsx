@@ -1,6 +1,24 @@
 import React from 'react';
+import {  getTeachersForStudent } from "../../features/dashboardSharedApi/studentDashboardFeedbackReducer";
 
 const Dropdown = ({ label, id, options = [], onChange, selectedOption, className = '' }) => {
+  const [teacherForStudent, setTeacherForStudent] = useState([]);
+  const studentClass = JSON.parse(localStorage.getItem("data"));
+
+  useEffect(() => {
+    // Fetch reports on mount
+    dispatch(getTeachersForStudent(`${studentClass?.Class}-${studentClass?.section}`))
+      .unwrap()
+      .then((response) => {
+        setTeacherForStudent(response || []);
+      })
+      .catch((error) => {
+        toast.error(error || "Failed to fetch FAQs");
+      });
+    console.log("getAssign1") // Log the response to check its structure
+
+  }, [dispatch]);
+
   return (
     <form className="max-w-sm mx-auto">
       <select

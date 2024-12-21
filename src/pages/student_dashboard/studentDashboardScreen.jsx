@@ -18,6 +18,7 @@ function StudentDashboard() {
     (state) => state.studentDashboardNewVideosSharedApi
   );
   const studentClass = JSON.parse(localStorage.getItem("data"));
+console.log("newAssignment:",newAssignment);
 
   useEffect(() => {
     // Fetch reports on mount
@@ -33,7 +34,7 @@ function StudentDashboard() {
     // Fetch reports on mount
     dispatch(getNewAssignForStudent(`${studentClass?.Class}-${studentClass?.section}`))
       .unwrap()
-      .then((response) => setNewAssigment(response?.data?.assignments))
+      .then((response) => setNewAssigment(response?.assignments))
       .catch((error) => {
         toast.error(error || "Failed to fetch reports");
       });
