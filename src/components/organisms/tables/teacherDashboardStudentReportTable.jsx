@@ -20,13 +20,13 @@ const TeacherDashboardStudentReportTable = ({ setModalMode, modalMode, currentSt
             .unwrap()
             .then((response) => setFilteredReports(response.reports)) // Initialize local state
             .catch((err) => {
-                toast.error(error || "Failed to fetch reports");
+                toast.error(err || "Failed to fetch reports");
             });
     }, [dispatch]);
 
     const handleDelete = async (rowData) => {
         try {
-            await dispatch(deleteReport({ role: "student", id: rowData.id })).unwrap();
+            await dispatch(deleteReport({ id: rowData.id })).unwrap();
 
             // Remove the deleted row from local state
             setFilteredReports((prevReports) =>

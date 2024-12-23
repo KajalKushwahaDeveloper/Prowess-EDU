@@ -8,6 +8,7 @@ import TestTable from "../../components/organisms/tables/testTable";
 import AddNewTestModal from "../../components/organisms/modals/addNewTestModal";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAssign, getAssignForTeacher } from "../../features/dashboardSharedApi/teacherDashboardAssignReducer";
+import  Spinner  from "../../components/atoms/Loader"; // Assuming you have a Spinner component
 
 
 const TeacherDashboardAssignment = () => {

@@ -16,25 +16,30 @@ const SharedLayout = () => {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
-
-  const links = studentLinks;
-  //   let links;
-  //   switch (userRole) {
-  //     case "admin":
-  //       links = adminLinks;
-  //       break;
-  //     case "parent":
-  //       links = parentLinks;
-  //       break;
-  //     case "student":
-  //       links = studentLinks;
-  //       break;
-  //     case "teacher":
-  //       links = teacherLinks;
-  //       break;
-  //     default:
-  //       links = []; // No links for unknown roles
-  //   }
+  const userData = JSON.parse(localStorage.getItem("data"));
+  const userRole = userData.type; // Get the type from user data
+  
+  let links;
+  
+  switch (userRole) {
+    case 1: // student
+      links = studentLinks;
+      break;
+    case 2: // parent
+      links = parentLinks;
+      break;
+    case 3: // teacher
+      links = teacherLinks;
+      break;
+    case 4: // admin
+      links = adminLinks;
+      break;
+    default:
+      links = []; // No links for unknown types
+  }
+  
+  console.log("Selected links:", links); // For debugging
+  
   return (
     <div className="layout">
       <Header

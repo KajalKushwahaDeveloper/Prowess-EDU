@@ -14,7 +14,7 @@ function AdminDashboardStudent() {
   const [modalMode, setModalMode] = useState("add"); // "add" or "edit"
   const [currentStudent, setCurrentStudent] = useState(null); // For editing
   const { error,loading } = useSelector(
-    (state) => state.studentDashboardFaqSharedApi
+    (state) => state.sharedApi
   );
   const pageSize = 10; // Define how many students to show per page
   const studentsData = []; // Replace this with your actual data array
@@ -34,12 +34,12 @@ function AdminDashboardStudent() {
   );
 
   return (
-    <>
-    {loading ? ( // Show loader while loading
-        <div className="flex justify-center items-center h-45">
-        <Spinner /> {/* Replace with your actual spinner component */}
-      </div>
-    ) : (
+    // <>
+    // {loading ? ( // Show loader while loading
+    //     <div className="flex justify-center items-center h-45">
+    //     <Spinner /> {/* Replace with your actual spinner component */}
+    //   </div>
+    // ) : (
     <div className="admin-dashboard m-6 dashboard">
       <div className="my-4 flex justify-between md:items-center items-start md:flex-row flex-col">
         <h1 className="text-black font-bold text-2xl mb-4">Students</h1>
@@ -74,8 +74,8 @@ function AdminDashboardStudent() {
       </div>
       <AddNewStudentModal visible={visible} setVisible={setVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
     </div>
-    )}
-    </>
+    // )}
+    // </>
   );
 }
 

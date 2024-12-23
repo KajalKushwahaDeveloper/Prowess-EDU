@@ -5,8 +5,9 @@ import { useState } from "react";
 import { data } from "./data";
 import ViewAll from "../../common/viewAllFunctionality";
 import ViewTDAssignModal from "../modals/viewTDAssignmentModal";
+import  Spinner  from "../../atoms/Loader"; // Assuming you have a Spinner component
 
-const TeacherDashboardNewAssignmentsTable = ({ newAssignment }) => {
+const TeacherDashboardNewAssignmentsTable = ({ newAssignment , loading}) => {
     const [selectedAssignment, setSelectedAssignment] = useState("");
     const [showAll, setShowAll] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -51,6 +52,12 @@ const TeacherDashboardNewAssignmentsTable = ({ newAssignment }) => {
 
     return (
         <>
+        {loading ? ( // Show loader while loading
+            <div className="flex justify-center items-center h-64">
+              <Spinner /> {/* Replace with your actual spinner component */}
+            </div>
+          ) : (
+        <>
             <Table
                 data={displayedData}
                 columns={columns}
@@ -65,6 +72,8 @@ const TeacherDashboardNewAssignmentsTable = ({ newAssignment }) => {
                 />
             )}
         </>
+          )}
+          </>
     );
 };
 

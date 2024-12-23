@@ -5,6 +5,9 @@ import "primeicons/primeicons.css";
 // import Dashboard from "./Dashboard";
 
 function Header({ isOpen, toggleSidebar }) {
+  const user = JSON.parse(localStorage.getItem("data"));
+  console.log("userName:", user.name);
+  
   return (
     <div>
 
@@ -33,8 +36,9 @@ function Header({ isOpen, toggleSidebar }) {
             </Link>
           </div>
 
-          <div className="pt-3 hidden md:block">
-            <h1 className="text-lg font-semibold">User Name</h1>
+          <div className="pt-3  md:block">
+            <h1 className="text-lg font-semibold">{user.name}</h1>
+            
             <p className="text-zinc-500 text-xs">Master admin</p>
           </div>
         </div>

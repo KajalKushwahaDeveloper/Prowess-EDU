@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
 import ParentTable from "../../components/organisms/tables/parentTable";
@@ -6,6 +6,7 @@ import AddNewParentModal from "../../components/organisms/modals/addNewParentMod
 import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
 import { useDispatch , useSelector} from "react-redux";
 import  Spinner  from "../../components/atoms/Loader";
+import {getItem} from "../../features/dashboardSharedApi/sharedReducer"
 
 function AdminDashboardParent() {
   const [visible, setVisible] = useState(false);
@@ -14,10 +15,8 @@ function AdminDashboardParent() {
   const [currentStudent, setCurrentStudent] = useState(null); // For editing
   const pageSize = 10; // Define how many students to show per page
   const studentsData = [];
-
-  const { error,loading } = useSelector(
-    (state) => state.studentDashboardFaqSharedApi
-  );
+const dispatch = useDispatch();
+  // const { loading, parents } = useSelector((state) => state.sharedApi);
   const handleAddParent = () => {
     setVisible(true);
   };
@@ -29,14 +28,19 @@ function AdminDashboardParent() {
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
+  // const { loading, parentData } = useSelector((state) => state.sharedApi);
+  useEffect(() => {
+    // Dispatch the getItem action to fetch parent data
+    dispatch(getItem({ role: "parent" }));
+  }, [dispatch]);
 
   return (
-    <>
-    {loading ? ( // Show loader while loading
-        <div className="flex justify-center items-center h-45">
-        <Spinner /> {/* Replace with your actual spinner component */}
-      </div>
-    ) : (
+    // <>
+    // {loading ? ( // Show loader while loading
+    //     <div className="flex justify-center items-center h-45">
+    //     <Spinner /> {/* Replace with your actual spinner component */}
+    //   </div>
+    // ) : (
     <div className="admin-dashboard m-6 dashboard">
       <div className="my-4 flex justify-between md:items-center items-start md:flex-row flex-col">
         <h1 className="text-black font-bold text-2xl mb-4">Parent</h1>
@@ -66,8 +70,8 @@ function AdminDashboardParent() {
       </div>
       <AddNewParentModal visible={visible} setVisible={setVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
     </div>
-    )}
-    </>
+    // )}
+    // </>
   );
 }
 

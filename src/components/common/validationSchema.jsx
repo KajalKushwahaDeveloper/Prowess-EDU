@@ -8,10 +8,7 @@ export const addStudentSchema = Yup.object().shape({
         .matches(/^[0-9]+$/, "Phone number must be digits")
         .min(10, "Phone number must be at least 10 digits"),
     email: Yup.string().email("Invalid email format").required("Email is required"),
-    dob: Yup.date()
-        .typeError("Date of Birth must be a valid date")
-        .nullable() // Allows an empty value until the user selects a date
-        .required("Date of Birth is required"),
+    dob: Yup.string().required("Please select a date"),
     gender: Yup.string().required("Gender is required"),
     section: Yup.string().required("Section is required"),
     Class: Yup.string().required("Classes you can teach are required"),
@@ -29,10 +26,7 @@ export const addTeacherSchema = Yup.object().shape({
         .matches(/^\d+$/, "Phone number must contain only digits")
         .required("Phone number is required"),
     qualification: Yup.string().required("Qualification is required"),
-    dob: Yup.date()
-        .typeError("Date of Birth must be a valid date")
-        .nullable() // Allows an empty value until the user selects a date
-        .required("Date of Birth is required"),
+    dob: Yup.string().required("Please select a date"),
     gender: Yup.string().required("Gender is required"),
     address: Yup.string().required("Address is required"),
     classesCanTeach
@@ -171,9 +165,9 @@ export const createReportSchema = Yup.object().shape({
     studentName: Yup.string().required("Student name is required"),
     sID: Yup.string().required("sID is required"),
     subject: Yup.string().required("Subject is required"),
-    marks: Yup.string().required("Marks is required").matches(/^[0-9]+$/, "Phone number must be digits"),
-    assignmentMarks: Yup.string().required("AssignmentMarks is required").matches(/^[0-9]+$/, "Phone number must be digits"),
-    testMarks: Yup.string().required("TestMarks is required").matches(/^[0-9]+$/, "Phone number must be digits"),
+    marks: Yup.string().required("Marks is required").matches(/^[0-9]+$/, "Marks must be digits"),
+    assignmentMarks: Yup.string().required("AssignmentMarks is required").matches(/^[0-9]+$/, "Assignment Marks must be digits"),
+    testMarks: Yup.string().required("TestMarks is required").matches(/^[0-9]+$/, "Test Marks must be digits"),
     grade: Yup.string().required("Grade is required"),
     level: Yup.string().required("Level is required"),
     recommendation: Yup.string().required("Recommendation is required"),

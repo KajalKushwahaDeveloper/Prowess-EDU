@@ -6,8 +6,8 @@ import TeachersTable from "../../components/organisms/tables/teachersTable";
 import StudentsTable from "../../components/organisms/tables/studentTable";
 import AddNewTeacherModal from "../../components/organisms/modals/addNewTeacherModal";
 import AddNewStudentModal from "../../components/organisms/modals/addNewStudentModal";
-import { useDispatch , useSelector} from "react-redux";
-import  Spinner  from "../../components/atoms/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import Spinner from "../../components/atoms/Loader";
 
 function AdminDashboard() {
   const [addTeacherModalVisible, setAddTeacherModalVisible] = useState(false);
@@ -15,20 +15,21 @@ function AdminDashboard() {
   const [modalMode, setModalMode] = useState("add"); // "add" or "edit"
   const [currentTeacher, setCurrentTeacher] = useState(null); // For editing
   const [currentStudent, setCurrentStudent] = useState(null); // For editing
-  const { error,loading } = useSelector(
-    (state) => state.studentDashboardFaqSharedApi
-  );
-  console.log("currentStudent:", currentStudent);
 
+  const { teacherData, studentData  } = useSelector((state) => state.sharedApi);
+  console.log("currentStudent:", teacherData);
+ // Get the count of teachers and parents
+ const teachersCount = teacherData?.teachersCount || 0; // Default to 0 if no data
+ const studentsCount = studentData?.studentsCount || 0; // Assuming parentData is an array
   const cardDetails = [
     {
       cardHeading: "Total Teachers",
-      totalNumber: "30",
+      totalNumber: teachersCount,
       cardStyle: { backgroundColor: "#EEDFF7" },
     },
     {
       cardHeading: "Total Students",
-      totalNumber: "550",
+      totalNumber: studentsCount,
       cardStyle: { backgroundColor: "#DFEEF7" },
     },
   ];
@@ -43,12 +44,12 @@ function AdminDashboard() {
   };
 
   return (
-    <>
-    {loading ? ( // Show loader while loading
-        <div className="flex justify-center items-center h-45">
-        <Spinner /> {/* Replace with your actual spinner component */}
-      </div>
-    ) : (
+    // <>
+    // {loading ? ( // Show loader while loading
+    //     <div className="flex justify-center items-center h-45">
+    //     <Spinner /> 
+    //   </div>
+    // ) : ( 
     <div className="admin-dashboard m-6 dashboard z-1">
       <div className="my-4">
         <h1 className="text-black font-bold text-2xl mb-4">Dashboard</h1>
@@ -104,8 +105,8 @@ function AdminDashboard() {
 
       <AddNewStudentModal visible={addStudentModalVisible} setVisible={setAddStudentModalVisible} setModalMode={setModalMode} mode={modalMode} initialData={currentStudent} setCurrentStudent={setCurrentStudent} />
     </div>
-    )}
-    </>
+    // )}
+    // </>
   );
 }
 

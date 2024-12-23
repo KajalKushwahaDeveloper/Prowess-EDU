@@ -5,8 +5,9 @@ import { useState } from "react";
 import { data } from "./data";
 import ViewAll from "../../common/viewAllFunctionality"
 import ViewTDVideoModal from "../modals/viewTDVideoModal";
+import Spinner from "../../atoms/Loader"; // Assuming you have a Spinner component
 
-const TeacherDashboardNewVideoTable = ({ videos }) => {
+const TeacherDashboardNewVideoTable = ({ videos, loading }) => {
     const [selectedVideos, setSelectedVideo] = useState("");
     const [showAll, setShowAll] = useState(false);
     const [visible, setVisible] = useState(false);
@@ -41,7 +42,7 @@ const TeacherDashboardNewVideoTable = ({ videos }) => {
                             backgroundColor="#00A943"
                             icon={Icons.viewIcon}
                         />
-                        
+
                     </div>
                 );
             },
@@ -51,20 +52,28 @@ const TeacherDashboardNewVideoTable = ({ videos }) => {
 
     return (
         <>
-            <Table
-                data={displayedData}
-                columns={columns}
-                tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
-            />
-            <ViewAll showAll={showAll} setShowAll={setShowAll} />
-            {visible && (
-        <ViewTDVideoModal
-          setVisible={setVisible}
-          visible={visible}
-          vedioData={selectedVideos} // Pass the selected assignment
-        />
-      )}
-        </>
+            {loading ? ( // Show loader while loading
+                <div className="flex justify-center items-center h-64">
+                    <Spinner /> {/* Replace with your actual spinner component */}
+                </div>
+            ) : (
+                <>
+                    <Table
+                        data={displayedData}
+                        columns={columns}
+                        tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
+                    />
+                    <ViewAll showAll={showAll} setShowAll={setShowAll} />
+                    {visible && (
+                        <ViewTDVideoModal
+                            setVisible={setVisible}
+                            visible={visible}
+                            vedioData={selectedVideos} // Pass the selected assignment
+                        />
+                    )}
+                </>
+            )}
+        </> 
     );
 };
 

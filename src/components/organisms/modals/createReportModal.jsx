@@ -63,10 +63,10 @@ function CreateReportModal({ visible, setVisible, mode = "add", initialData = {}
       setErrors({}); // Clear previous errors if validation passes
 
       if (mode === "add") {
-        await dispatch(createReport({ role: "student", payload: formData })).unwrap();
+        await dispatch(createReport({  payload: formData })).unwrap();
         toast.success(data?.data?.message || "Student added successfully!");
       } else if (mode === "edit") {
-        await dispatch(editReport({ role: "student", id: initialData?.id, payload: formData })).unwrap();
+        await dispatch(editReport({  id: initialData?.id, payload: formData })).unwrap();
         toast.success(data?.data?.message || "Student updated successfully!");
       }
       // Validate the form data

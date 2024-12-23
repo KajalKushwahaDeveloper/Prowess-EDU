@@ -15,7 +15,6 @@ const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
 
     const { data, teacherData, loading, error, shouldReloadTeacherData } = useSelector((state) => state.sharedApi);
     const tableData = teacherData?.teachers;
-    console.log("Redux Data:", data);
 
     useEffect(() => {
         dispatch(getItem({ role: "teacher" }));

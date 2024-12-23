@@ -14,17 +14,18 @@ function TeacherDashboard() {
     const [selectedAssignment, setSelectedAssignment] = useState(null);
     const dispatch = useDispatch();
   
-    const { error } = useSelector(
+    const { data, error, loading } = useSelector(
       (state) => state.studentDashboardNewVideosSharedApi
     );
-  
+    
     useEffect(() => {
-      // Fetch reports on mount
-      dispatch(getVideosForTeacher())
+        // Fetch reports on mount
+        dispatch(getVideosForTeacher())
         .unwrap()
         .then((response) => setVideos(response?.videos)) // Initialize local state
         .catch((err) => {
-          toast.error(error || "Failed to fetch reports");
+            toast.error(err|| "Failed to fetch reports");
+            console.log("videos:", err );
         });
     }, [dispatch]);
   
@@ -84,7 +85,7 @@ function TeacherDashboard() {
                     <hr className="mt-2" />
                 </h1>
                 <div className="md:overflow-none overflow-x-auto mb-8">
-                    <TeacherDashboardNewVideoTable videos={videos}/>
+                    <TeacherDashboardNewVideoTable videos={videos} loading={loading}/>
                 </div>
             </div>
             <div>
@@ -93,7 +94,7 @@ function TeacherDashboard() {
                     <hr className="mt-2" />
                 </h1>
                 <div className="md:overflow-none overflow-x-auto mb-8">
-                    <TeacherDashboardNewAssignmentsTable newAssignment={newAssignment}/>
+                    <TeacherDashboardNewAssignmentsTable newAssignment={newAssignment} loading={loading}/>
                 </div>
             </div>
         </div>
