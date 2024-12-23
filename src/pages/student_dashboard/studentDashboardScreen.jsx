@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { getNewVideosForStudent } from "../../features/dashboardSharedApi/studentDashboardvideosReducer";
 import { getNewAssignForStudent } from "../../features/dashboardSharedApi/studentDashboardSharedApiReducer";
+import  Spinner  from "../../components/atoms/Loader"; // Assuming you have a Spinner component
 
 function StudentDashboard() {
   const [videos, setVideos] = useState([]);
@@ -14,7 +15,7 @@ function StudentDashboard() {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const dispatch = useDispatch();
 
-  const { error } = useSelector(
+  const { error,loading } = useSelector(
     (state) => state.studentDashboardNewVideosSharedApi
   );
   const studentClass = JSON.parse(localStorage.getItem("data"));
@@ -58,6 +59,12 @@ console.log("newAssignment:",newAssignment);
     },
   ];
   return (
+    <>
+    {loading ? ( // Show loader while loading
+        <div className="flex justify-center items-center h-45">
+        <Spinner /> {/* Replace with your actual spinner component */}
+      </div>
+    ) : (
     <div className="admin-dashboard m-6 dashboard z-1">
       <div className="my-4">
         <h1 className="text-black font-bold text-2xl mb-4">Dashboard</h1>
@@ -93,10 +100,12 @@ console.log("newAssignment:",newAssignment);
           <hr className="mt-2" />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-8">
-          <StudentDashboardNewAssignmentsTable newAssignment={newAssignment} selectedAssignment={selectedAssignment} setSelectedAssignment={setSelectedAssignment} />
+          <StudentDashboardNewAssignmentsTable newAssignment={newAssignment} selectedAssignment={selectedAssignment} setSelectedAssignment={setSelectedAssignment} loading={loading}/>
         </div>
       </div>
     </div>
+     )}
+    </>
   );
 }
 

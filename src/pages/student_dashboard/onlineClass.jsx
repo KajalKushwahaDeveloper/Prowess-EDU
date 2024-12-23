@@ -5,9 +5,10 @@ import Card from "../../components/molecules/Card";
 import CompletedClassesTable from "../../components/organisms/tables/completedClasses";
 import { Icons } from "../../assets/icons";
 import JoinClassModal from "../../components/organisms/modals/joinClassModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getOnlineClassesForStudent } from "../../features/dashboardSharedApi/studentDashboardSharedApiReducer";
 import { toast } from "react-toastify";
+import  Spinner  from "../../components/atoms/Loader"; // Assuming you have a Spinner component
 
 const OnlineClass = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -17,7 +18,9 @@ const OnlineClass = () => {
     const studentClass = JSON.parse(localStorage.getItem("data"));
 
     console.log("setSelectedChapter:", selectedChapter);
-
+    const { error,loading } = useSelector(
+        (state) => state.studentDashboardNewAssignSharedApi
+      );
     useEffect(() => {
         // Fetch reports on mount
         dispatch(getOnlineClassesForStudent({ classId: `${studentClass?.Class}-${studentClass?.section}` }))
@@ -71,12 +74,18 @@ const OnlineClass = () => {
     };
 
     return (
+        <>
+        {loading ? ( // Show loader while loading
+            <div className="flex justify-center items-center h-45">
+            <Spinner /> {/* Replace with your actual spinner component */}
+          </div>
+        ) : (
         <div className="admin-dashboard m-6 dashboard z-1">
             <div className="my-4">
                 <div className="flex justify-between md:items-center items-start md:flex-row flex-col">
                     <h2 className="font-bold text-xl md:text-2xl">Online Class</h2>
                     <div className="flex justify-evenly items-center space-x-4">
-                        <Dropdown label="Teacher" />
+                        {/* <Dropdown label="Teacher" /> */}
                         <Calender />
                     </div>
                 </div>
@@ -112,6 +121,8 @@ const OnlineClass = () => {
                 selectedClass={selectedChapter}
             />
         </div>
+        )}
+        </>
     );
 };
 

@@ -1,24 +1,27 @@
 import React from 'react';
-import {  getTeachersForStudent } from "../../features/dashboardSharedApi/studentDashboardFeedbackReducer";
+import { getTeachersForStudent } from "../../features/dashboardSharedApi/studentDashboardFeedbackReducer";
+import { useState, useEffect } from 'react';
+import { useDispatch } from "react-redux";
 
 const Dropdown = ({ label, id, options = [], onChange, selectedOption, className = '' }) => {
   const [teacherForStudent, setTeacherForStudent] = useState([]);
   const studentClass = JSON.parse(localStorage.getItem("data"));
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    // Fetch reports on mount
-    dispatch(getTeachersForStudent(`${studentClass?.Class}-${studentClass?.section}`))
-      .unwrap()
-      .then((response) => {
+    const fetchTeachers = async () => {
+      try {
+        const response = await dispatch(
+          getTeachersForStudent(`${studentClass?.Class}-${studentClass?.section}`)
+        ).unwrap();
         setTeacherForStudent(response || []);
-      })
-      .catch((error) => {
+      } catch (error) {
         toast.error(error || "Failed to fetch FAQs");
-      });
-    console.log("getAssign1") // Log the response to check its structure
-
+      }
+    };
+  
+    fetchTeachers();
   }, [dispatch]);
-
+  
   return (
     <form className="max-w-sm mx-auto">
       <select

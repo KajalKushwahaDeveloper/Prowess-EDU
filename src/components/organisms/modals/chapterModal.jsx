@@ -35,7 +35,8 @@ const ChapterModal = ({ visible, setVisible, topics = [], chapterNo, selectedUrl
           {topics.length > 0 ? (
             <div className="grid lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-4 xsm:grid-cols-3 grid-cols-3 gap-4">
               <Card
-                cardHeading={topics || "Untitled Topic"}
+                cardHeading={`Topic: `}
+                totalNumber={topics|| "Untitled Topic"}
                 cardStyle={{ backgroundColor: "#EEDFF7" }}
                 iconClass={Icons.videoIcon}
               />

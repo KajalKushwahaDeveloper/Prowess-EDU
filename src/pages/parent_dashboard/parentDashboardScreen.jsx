@@ -15,7 +15,7 @@ function ParentDashboard() {
                     </div>
                     <div className="flex justify-evenly items-center space-x-4"> {/* Added space-x-4 for spacing */}
                         <div className="flex flex-col justify-evenly items-center"> {/* Add flex-col to ensure label is on top */}
-                            <Dropdown label="Teacher" />
+                            {/* <Dropdown label="Teacher" /> */}
                         </div>
                         <div className="flex justify-around items-center">
                             <Calender />

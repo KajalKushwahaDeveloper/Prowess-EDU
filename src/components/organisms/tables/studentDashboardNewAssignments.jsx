@@ -4,11 +4,12 @@ import Table from "../../common/Table";
 import { useState, useEffect } from "react";
 import ViewAll from "../../common/viewAllFunctionality";
 import ViewSDNewAssignModal from "../modals/viewSDNewAssignmentsModal.jsx";
+import  Spinner  from "../../atoms/Loader"; // Assuming you have a Spinner component
 
-const StudentDashboardNewAssignmentsTable = ({newAssignment, selectedAssignment, setSelectedAssignment}) => {
+const StudentDashboardNewAssignmentsTable = ({loading, newAssignment, selectedAssignment, setSelectedAssignment}) => {
   const [showAll, setShowAll] = useState(false);
   const [visible, setVisible] = useState(false);
-
+  
   const columns = [
     {
       field: "serialNo",
@@ -44,6 +45,12 @@ const StudentDashboardNewAssignmentsTable = ({newAssignment, selectedAssignment,
   const displayedData = showAll ? newAssignment : newAssignment?.slice(0, 2);
   return (
     <>
+    {loading ? ( // Show loader while loading
+      <div className="flex justify-center items-center h-64">
+        <Spinner /> {/* Replace with your actual spinner component */}
+      </div>
+    ) : (
+    <>
       <Table
         data={displayedData}
         columns={columns}
@@ -57,6 +64,8 @@ const StudentDashboardNewAssignmentsTable = ({newAssignment, selectedAssignment,
           assignmentData={selectedAssignment} // Pass the selected assignment
         />
       )}
+    </>
+     )}
     </>
   );
 };

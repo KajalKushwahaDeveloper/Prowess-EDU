@@ -144,6 +144,14 @@
 .login-form {
   height: 95vh;
 }
+/* loader */
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-left: 17rem;
+}
 
 /* dashborad content */
 @media screen and (min-width: 768px) {

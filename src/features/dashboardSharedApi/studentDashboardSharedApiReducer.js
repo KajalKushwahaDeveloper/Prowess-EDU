@@ -86,26 +86,33 @@ export const getTestQsnsForStudent = createAsyncThunk(
     "dashboard/getTestQsnsForStudent",
     async ({ classId, testId }, { rejectWithValue }) => {
         try {
-            const token = localStorage.getItem("token"); // Corrected token retrieval
+            const token = localStorage.getItem("token"); // Retrieve token from localStorage
+            console.log("Token retrieved:", token); // Debugging token
+
             if (!token) {
                 return rejectWithValue("Unauthorized - Missing Token");
             }
 
             const config = {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`, // Attach token in header
                 },
             };
 
-            const response = await axios.get(`${S_D_GET_TEST_QSNS_FOR_STUDENT}?Class=${classId}&testId=${testId}`, config);
+            const apiUrl = `${S_D_GET_TEST_QSNS_FOR_STUDENT}?Class=${classId}&testId=${testId}`;
+            console.log("API URL:", apiUrl); // Debugging API URL
 
+            const response = await axios.get(apiUrl, config);
+
+            console.log("API Response:", response?.data); // Debugging API response
             return response?.data || []; // Safeguard for undefined data
         } catch (error) {
-            console.error("API Error:", error);
+            console.error("API Error Details:", error.response?.data || error.message); // Enhanced error logging
             return rejectWithValue(error.response?.data?.message || "Get failed");
         }
     }
 );
+
 
 // get OnlineClassesForStudent
 export const getOnlineClassesForStudent = createAsyncThunk(

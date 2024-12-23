@@ -31,29 +31,31 @@ export const getFaqsForStudent = createAsyncThunk(
 // faq post api
 export const addFaq = createAsyncThunk(
     "dashboard/addFaq",
-    async ({  }, { rejectWithValue }) => {
-        try {
-            const token = localStorage.getItem("token"); // Corrected token retrieval
-            if (!token) {
-                return rejectWithValue("Unauthorized - Missing Token");
-            }
-
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            };
-
-            const response = await axios.post(S_D_ADD_FAQ_FOR_STUDENT, config);
-
-            return response?.data || []; // Safeguard for undefined data
-        } catch (error) {
-            console.error("API Error:", error);
-            return rejectWithValue(error.response?.data?.message || "Get failed");
+    async ({ payload }, { rejectWithValue }) => { // Accept the payload as a parameter
+      try {
+        const token = localStorage.getItem("token"); // Corrected token retrieval
+        if (!token) {
+          return rejectWithValue("Unauthorized - Missing Token");
         }
+  
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // Ensure the Content-Type is set correctly
+          },
+        };
+  
+        // Send the payload as the request body
+        const response = await axios.post(S_D_ADD_FAQ_FOR_STUDENT, payload, config);
+  
+        return response?.data || []; // Safeguard for undefined data
+      } catch (error) {
+        console.error("API Error:", error);
+        return rejectWithValue(error.response?.data?.message || "Get failed");
+      }
     }
-);
-
+  );
+  
 const sharedStudentDashboardFaqReducer = createSlice({
     name: "studentDashboardFaqSharedApi",
     initialState: {

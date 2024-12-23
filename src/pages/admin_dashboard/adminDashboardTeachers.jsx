@@ -5,6 +5,8 @@ import TeachersTable from "../../components/organisms/tables/teachersTable";
 import Modal from "../../components/common/modal";
 import AddNewTeacherModal from "../../components/organisms/modals/addNewTeacherModal";
 import Pagination from "../../components/common/pagination"; // Import the reusable Pagination component
+import { useDispatch , useSelector} from "react-redux";
+import  Spinner  from "../../components/atoms/Loader";
 
 function AdminDashboardTeachers() {
   const [visible, setVisible] = useState(false);
@@ -13,7 +15,9 @@ function AdminDashboardTeachers() {
   const [currentStudent, setCurrentStudent] = useState(null); // For editing
   const pageSize = 10; // Define how many students to show per page
   const studentsData = [];
-
+  const { error,loading } = useSelector(
+    (state) => state.studentDashboardFaqSharedApi
+  );
   const handleAddTeacher = () => {
     setVisible(true);
   };
@@ -27,6 +31,12 @@ function AdminDashboardTeachers() {
   );
 
   return (
+    <>
+    {loading ? ( // Show loader while loading
+        <div className="flex justify-center items-center h-45">
+        <Spinner /> {/* Replace with your actual spinner component */}
+      </div>
+    ) : (
     <div className="admin-dashboard m-6 dashboard">
       <div className="my-4 flex justify-between md:items-center items-start md:flex-row flex-col">
         <h1 className="text-black font-bold text-2xl mb-4">Teachers</h1>
@@ -56,6 +66,8 @@ function AdminDashboardTeachers() {
       </div>
       <AddNewTeacherModal visible={visible} setVisible={setVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
     </div>
+    )}
+    </>
   );
 }
 

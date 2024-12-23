@@ -7,38 +7,37 @@ import { toast } from "react-toastify";
 import { getAssignQsnsForStudent } from "../../../features/dashboardSharedApi/studentDashboardSharedApiReducer.js";
 import { jsPDF } from "jspdf";
 
-const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] }) => {
+const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [],newAssignment }) => {
     const [filteredAssignQsn, setFilteredAssignQsn] = useState([]);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!Array.isArray(filteredAssignment) || filteredAssignment.length === 0) {
-            console.warn("filteredAssignment is empty or not an array:", filteredAssignment);
+        if (!newAssignment) {
+            console.warn("newAssignment is missing or undefined:", newAssignment);
             return;
         }
-
+    
+        // Continue with the fetch if newAssignment is available
         const fetchAssignments = async () => {
             try {
-                const promises = filteredAssignment.map((assignment) =>
-                    dispatch(
-                        getAssignQsnsForStudent({
-                            classId: assignment.Class,
-                            assignmentId: assignment.id,
-                        })
-                    ).unwrap()
-                );
-
-                const results = await Promise.all(promises);
-                const questions = results.flatMap((response) => response?.data?.questions || []);
+                const response = await dispatch(
+                    getAssignQsnsForStudent({
+                        classId: newAssignment.Class,
+                        assignmentId: newAssignment.id,
+                    })
+                ).unwrap();
+    
+                const questions = response?.data?.questions || [];
                 setFilteredAssignQsn(questions);
             } catch (err) {
                 console.error("Failed to fetch reports:", err);
                 toast.error(err || "Failed to fetch reports");
             }
         };
-
+    
         fetchAssignments();
-    }, [dispatch, filteredAssignment]);
+    }, [dispatch, newAssignment]);
+    
 
     const handleDownloadPdf = (assignmentDetails, questions) => {
         const doc = new jsPDF();
@@ -52,14 +51,14 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
 
         // Assignment details
         const details = [
-            `Subject: ${assignmentDetails.subject}`,
-            `Chapter: ${assignmentDetails.chapter}`,
-            `Topic Name: ${assignmentDetails.topic}`,
-            `Class: ${assignmentDetails.Class}`,
-            `Level: ${assignmentDetails.level}`,
-            `Student for: ${assignmentDetails.student}`,
-            `Start Date: ${assignmentDetails.startDate}`,
-            `Submit Date: ${assignmentDetails.endDate}`,
+            `Subject: ${newAssignment.subject}`,
+            `Chapter: ${newAssignment.chapter}`,
+            `Topic Name: ${newAssignment.topic}`,
+            `Class: ${newAssignment.Class}`,
+            `Level: ${newAssignment.level}`,
+            `Student for: ${newAssignment.student}`,
+            `Start Date: ${newAssignment.startDate}`,
+            `Submit Date: ${newAssignment.endDate}`,
         ];
 
         details.forEach((text, index) => doc.text(text, 10, 20 + index * 10));
@@ -74,7 +73,7 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
             doc.text(`${index + 1}. ${question.question}`, 10, 125 + index * 10);
         });
 
-        doc.save("assignment.pdf");
+        doc.save(`${newAssignment.subject} Test.pdf`);
     };
 
     return (
@@ -88,44 +87,42 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [] 
             <div className="bg-white m-4">
                 <h1 className="font-semibold text-2xl my-2">Download Test</h1>
                 <hr className="mb-8 border-gray-300" />
-                {Array.isArray(filteredAssignment) && filteredAssignment.length > 0 ? (
-                    filteredAssignment.map((currentData, index) => (
+                {newAssignment ? (
                         <div
                         className="grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-y-0 md:gap-x-8"
-                        key={index}
                     >
                         <div className="text-md font-semibold">
                             <h1 className="mb-2">
-                                Subject: <span className="font-normal">{currentData.subject}</span>
+                                Subject: <span className="font-normal">{newAssignment.subject}</span>
                             </h1>
                             <h1 className="mb-2">
-                                Chapter: <span className="font-normal">{currentData.chapter}</span>
+                                Chapter: <span className="font-normal">{newAssignment.chapter}</span>
                             </h1>
                             <h1 className="mb-2">
-                                Topic Name: <span className="font-normal">{currentData.topic}</span>
-                            </h1>
-                        </div>
-                        <div className="text-md font-semibold">
-                            <h1 className="mb-2">
-                                Class: <span className="font-normal">{currentData.Class}</span>
-                            </h1>
-                            <h1 className="mb-2">
-                                Level: <span className="font-normal">{currentData.level}</span>
-                            </h1>
-                            <h1 className="mb-2">
-                                Student for: <span className="font-normal">{currentData.subject}</span>
+                                Topic Name: <span className="font-normal">{newAssignment.topic}</span>
                             </h1>
                         </div>
                         <div className="text-md font-semibold">
                             <h1 className="mb-2">
-                                Start date: <span className="font-normal">{currentData.startDate}</span>
+                                Class: <span className="font-normal">{newAssignment.Class}</span>
                             </h1>
                             <h1 className="mb-2">
-                                Submit date: <span className="font-normal">{currentData.endDate}</span>
+                                Level: <span className="font-normal">{newAssignment.level}</span>
+                            </h1>
+                            <h1 className="mb-2">
+                                Student for: <span className="font-normal">{newAssignment.subject}</span>
+                            </h1>
+                        </div>
+                        <div className="text-md font-semibold">
+                            <h1 className="mb-2">
+                                Start date: <span className="font-normal">{newAssignment.startDate}</span>
+                            </h1>
+                            <h1 className="mb-2">
+                                Submit date: <span className="font-normal">{newAssignment.endDate}</span>
                             </h1>
                         </div>
                     </div>
-                    ))
+               
                 ) : (
                     <p className="text-gray-500">No assignments available.</p>
                 )}

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import Pagination from "../common/pagination";
 import Button from "../atoms/button";
 import { Icons } from "../../assets/icons";
 import { addFaq } from "../../features/dashboardSharedApi/studentDashboardFaqReducer";
+import { getFaqsForStudent } from "../../features/dashboardSharedApi/studentDashboardFaqReducer";
 
 const StudentFAQ = ({ filteredFaq }) => {
   const [open, setOpen] = useState(null);
@@ -16,39 +17,28 @@ const StudentFAQ = ({ filteredFaq }) => {
   const toggleFAQ = (index) => {
     setOpen(open === index ? null : index);
   };
+    // useEffect(() => {
+    //     dispatch(getFaqsForStudent());
+    //   }, [dispatch]);
 
   const handleAdd = async () => {
     if (!faqQuestion.trim()) {
       toast.error("Please enter a question.");
       return;
     }
-  
+
     // Prepare the payload
     const payload = {
       Class: `${studentClass?.Class}-${studentClass?.section}`,
-      subject: studentClass.subject, // You can change this to be dynamic if needed
+      subject: studentClass.subject,
       faqQuestion: faqQuestion,
     };
-  
-    // Get the token from localStorage (or wherever it's stored)
-    const token = localStorage.getItem("token"); // Assuming the token is stored in localStorage
-  
-    if (!token) {
-      toast.error("Authorization token is missing.");
-      return;
-    }
-  
-    // Prepare the headers with Authorization token
-    const headers = {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-  
+
     try {
-      // Dispatch the addFaq action with headers
-      const response = await dispatch(addFaq({ payload, headers })).unwrap();
+      // Dispatch the addFaq action with the payload
+      const response = await dispatch(addFaq({ payload })).unwrap();
       toast.success(response?.message || "FAQ added successfully!");
-  
+
       // Reset the textarea after successful submission
       setFaqQuestion("");
     } catch (error) {
@@ -56,7 +46,8 @@ const StudentFAQ = ({ filteredFaq }) => {
       toast.error("Failed to add FAQ. Please try again.");
     }
   };
-  
+
+
 
   return (
     <div className="w-full mx-auto pt-4 bg-gray-50">

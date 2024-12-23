@@ -5,16 +5,22 @@ import StudentFeedback from "../../components/common/studentFeedback";
 import Calender from "../../components/atoms/calender";
 import { getFaqsForStudent } from "../../features/dashboardSharedApi/studentDashboardFaqReducer";
 import { getFeedbackForStudent } from "../../features/dashboardSharedApi/studentDashboardFeedbackReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import  Spinner  from "../../components/atoms/Loader"; // Assuming you have a Spinner component
 
 const FAQFeedback = () => {
     const [activeTab, setActiveTab] = useState("FAQ");
     const [filteredFaq, setFilteredFaq] = useState([]);
     const [filteredFeedback, setFilteredFeedback] = useState([]);
     const dispatch = useDispatch();
+    
     const studentClass = JSON.parse(localStorage.getItem("data"));
     console.log("filteredFaq:", filteredFaq)
+
+    const { error, loading } = useSelector(
+        (state) => state.studentDashboardFaqSharedApi
+      );
     useEffect(() => {
         // Fetch reports on mount
         dispatch(getFaqsForStudent(`${studentClass?.Class}-${studentClass?.section}`))
@@ -44,6 +50,12 @@ const FAQFeedback = () => {
 
     }, [dispatch]);
     return (
+        <>
+        {loading ? ( // Show loader while loading
+            <div className="flex justify-center items-center h-45">
+            <Spinner /> {/* Replace with your actual spinner component */}
+          </div>
+        ) : (
         <div className="admin-dashboard m-6 dashboard z-1">
             <div className="my-4">
                 <div className="flex justify-between md:items-center items-start md:flex-row flex-col">
@@ -79,6 +91,8 @@ const FAQFeedback = () => {
                 {activeTab === "Feedback" && <StudentFeedback filteredFeedback={filteredFeedback} />}
             </div>
         </div>
+         )}
+              </>
     );
 };
 
