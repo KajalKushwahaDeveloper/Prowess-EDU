@@ -10,6 +10,7 @@ import capitalize from "lodash/capitalize";
 import { videoValidationSchema } from "../../common/validationSchema";
 import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
 import ClassTypeDropdown from "../../molecules/classTypeDropdown";
+import ButtonText from "../../atoms/buttonText";
 
 function AddNewVideoModal({ visible, setVisible, mode = "add", initialData = {} }) {
   const dispatch = useDispatch();
@@ -222,12 +223,12 @@ console.log("formData:",formData);
         </div>
 
         <div className="flex justify-end gap-4 mt-6">
-          <Button
+          <ButtonText
             label="Cancel"
             backgroundColor="#FF8A00"
             onClick={() => setVisible(false)}
           />
-          <Button
+          <ButtonText
             label={
               loading ? (
                 <FaSpinner className="animate-spin text-white mx-auto text-3xl" />

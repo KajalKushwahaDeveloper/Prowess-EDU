@@ -9,7 +9,7 @@ import AddNewTestModal from "../../components/organisms/modals/addNewTestModal";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAssign, getAssignForTeacher } from "../../features/dashboardSharedApi/teacherDashboardAssignReducer";
 import  Spinner  from "../../components/atoms/Loader"; // Assuming you have a Spinner component
-
+import { toast } from "react-toastify";
 
 const TeacherDashboardAssignment = () => {
   const [assignmentVisible, setAssignmentVisible] = useState(false);
@@ -34,7 +34,7 @@ const TeacherDashboardAssignment = () => {
 
       ) // Initialize local state
       .catch((err) => {
-        toast.error(error || "Failed to fetch reports");
+        toast.error(err || "Failed to fetch reports");
       });
   }, [dispatch]);
 
@@ -99,7 +99,7 @@ const TeacherDashboardAssignment = () => {
         {activeTab === "Assignment" && <AssignmentTable setModalMode={setModalMode} modalMode={modalMode} currentAssignment={currentAssignment} setCurrentAssignment={setCurrentAssignment} />}
 
 
-        {activeTab === "Test" && <TestTable setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />}
+        {activeTab === "Test" && <TestTable setModalMode={setModalMode} modalMode={modalMode} currentAssignment={currentAssignment} setCurrentStudent={setCurrentAssignment} />}
       </div>
 
       {/* Pagination Component */}
@@ -114,7 +114,7 @@ const TeacherDashboardAssignment = () => {
         assignmentVisible && <AddNewAssignmentModal visible={assignmentVisible} setVisible={setAssignmentVisible} setModalMode={setModalMode} modalMode={modalMode} initialData={currentAssignment} setCurrentAssignment={setCurrentAssignment} assignmentId={assignmentId.id} />
       }
       {
-        testVisible && <AddNewTestModal visible={testVisible} setVisible={setTestVisible} setModalMode={setModalMode} modalMode={modalMode} initialData={currentStudent} setCurrentStudent={setCurrentStudent} />
+        testVisible && <AddNewTestModal visible={testVisible} setVisible={setTestVisible} setModalMode={setModalMode} modalMode={modalMode} initialData={currentAssignment} setCurrentStudent={setCurrentStudent} />
       }
 
     </div>

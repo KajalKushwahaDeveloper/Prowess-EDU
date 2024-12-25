@@ -22,7 +22,7 @@ function GenderDropdown({
    : [
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
-    { value: "Other", label: "Other" },
+    // { value: "Other", label: "Other" },
   ];
   return (
     <div className={`input-container ${customClass}`}>

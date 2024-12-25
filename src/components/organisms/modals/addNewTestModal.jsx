@@ -18,6 +18,7 @@ import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
 import ClassTypeDropdown from "../../molecules/classTypeDropdown";
 import AddNewTestQsnModal from "./addNewTestQsnModal";
 import StudentDropdown from "../../molecules/studentDropdown";
+import ButtonText from "../../atoms/buttonText";
 
 const AddNewTestModal = ({
   visible,
@@ -344,13 +345,13 @@ const AddNewTestModal = ({
             </div>
           </div>
           <div className="flex justify-end gap-4 mt-6">
-            <Button
+            <ButtonText
               label="Cancel"
               backgroundColor="#FF8A00"
               onClick={() => setVisible(false)}
             // icon ={Icons.cancelIcon}
             />
-            <Button
+            <ButtonText
               label={loading ? (
                 <div className="spinner"></div>
               ) : mode === "add" ? (

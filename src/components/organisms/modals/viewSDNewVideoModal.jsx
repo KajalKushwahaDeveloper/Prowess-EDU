@@ -3,6 +3,7 @@ import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import { useSelector } from "react-redux";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
+import ButtonText from "../../atoms/buttonText";
 
 function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
 
@@ -68,7 +69,7 @@ function ViewSDNewVideoModal({ visible, setVisible ,videoData}) {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-4 mt-6">
-            <Button
+            <ButtonText
               label="Cancel"
               backgroundColor="#FF8A00"
               onClick={() => setVisible(false)}

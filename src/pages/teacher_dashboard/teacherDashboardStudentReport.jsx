@@ -10,6 +10,8 @@ const TeacherDashboardStudents = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [modalMode, setModalMode] = useState("add"); // Default to "add"
   const [currentStudent, setCurrentStudent] = useState(null);
+  const [filteredReports, setFilteredReports] = useState([]); // For local filtering
+
   const pageSize = 10; // Define how many students to show per page
   const studentsData = []; // Replace this with your actual data array
 
@@ -48,7 +50,7 @@ const TeacherDashboardStudents = () => {
           <hr className="mt-2" />
         </h1>
         <div className="md:overflow-none overflow-x-auto mb-16">
-          <TeacherDashboardStudentReportTable students={paginatedStudents} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
+          <TeacherDashboardStudentReportTable filteredReports={filteredReports} setFilteredReports={setFilteredReports} students={paginatedStudents} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent} />
         </div>
       </div>
 

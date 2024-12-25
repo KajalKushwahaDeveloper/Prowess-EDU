@@ -1,7 +1,9 @@
 
 
-const Calender = () => {
-
+const Calender = ({ onDateChange }) => {
+  const handleDateSelect = (date) => {
+    onDateChange(date);
+};
 
   return (
     <div className="relative max-w-sm mr-4">
@@ -20,6 +22,7 @@ const Calender = () => {
         datepicker
         id="default-datepicker"
         type="date"
+            onChange={(e) => handleDateSelect(new Date(e.target.value))}
         className="bg-gray-50 border text-gray-900 border-[#004871] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 w-[238px] outline-none"
         placeholder="Select date"
       />

@@ -17,6 +17,7 @@ import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
 import ClassTypeDropdown from "../../molecules/classTypeDropdown";
 import AddNewAssignmentQsnModal from "./addNewAssignQsnModal";
 import { getAssignForTeacher } from "../../../features/dashboardSharedApi/teacherDashboardAssignReducer";
+import ButtonText from "../../atoms/buttonText";
 
 const AddNewAssignmentModal = ({
   visible,
@@ -84,89 +85,63 @@ const AddNewAssignmentModal = ({
       });
     }
   };
-
-  const handleAdd = async () => {
-    try {
-      // Validate the form data with Yup
       // await addNewAssignmentSchema.validate(formData, { abortEarly: false });
-      // setErrors({}); // Clear previous errors
-
-      // Format the startDate and endDate as DD-MM-YYYY
-      const formattedStartDate = formData.startDate
-        ? formData.startDate.split("-").reverse().join("-")
-        : "";
-      const formattedEndDate = formData.endDate
-        ? formData.endDate.split("-").reverse().join("-")
-        : "";
-
-      const formDataToSend = new FormData();
-      console.log("formDataToSend:", formDataToSend);
-
-      Object.keys(formData).forEach((key) => {
-        if (key === "startDate") {
-          formDataToSend.append("startDate", formattedStartDate);
-        } else if (key === "endDate") {
-          formDataToSend.append("endDate", formattedEndDate);
-        } else if (key === "assignFile" && formData[key]) {
-          formDataToSend.append("assignFile", formData[key]);
-        } else {
-          formDataToSend.append(key, formData[key]);
+      const handleAdd = async () => {
+        try {
+          const formattedStartDate = formData.startDate
+            ? formData.startDate.split("-").reverse().join("-")
+            : "";
+          const formattedEndDate = formData.endDate
+            ? formData.endDate.split("-").reverse().join("-")
+            : "";
+      
+          const formDataToSend = new FormData();
+          Object.keys(formData).forEach((key) => {
+            if (key === "startDate") {
+              formDataToSend.append("startDate", formattedStartDate);
+            } else if (key === "endDate") {
+              formDataToSend.append("endDate", formattedEndDate);
+            } else if (key === "assignFile" && formData[key]) {
+              formDataToSend.append("assignFile", formData[key]);
+            } else {
+              formDataToSend.append(key, formData[key]);
+            }
+          });
+      
+          let resultAction;
+          if (mode === "add") {
+            resultAction = await dispatch(addAssign({ payload: formDataToSend })).unwrap();
+          } else if (mode === "edit") {
+            resultAction = await dispatch(
+              editAssign({ id: initialData?.id, payload: formDataToSend })
+            ).unwrap();
+          }
+      
+          // if (resultAction?.status === 200) {
+          //   toast.success(resultAction?.message || "Assignment added successfully!");
+          //   setIsSuccess(true); // Enable the arrow button
+          // } else {
+          //   throw new Error(resultAction?.message || "Failed to add assignment.");
+          // }
+      
+          setFormData({
+            id: "",
+            subject: "",
+            chapter: "",
+            topic: "",
+            Class: "",
+            assignedTo: "",
+            level: "",
+            assignFile: "",
+            startDate: "",
+            endDate: "",
+          });
+        } catch (err) {
+          setIsSuccess(false); // Disable the arrow button on error
+          toast.error(err?.message || "Failed to add Assignment. Please try again.");
         }
-      });
-
-      let resultAction;
-      if (mode === "add") {
-        // Dispatch 'addAssign' action and await the result
-        resultAction = await dispatch(
-          addAssign({ payload: formDataToSend })
-        ).unwrap();
-      } else if (mode === "edit") {
-        resultAction = await dispatch(
-          editAssign({ id: initialData?.id, payload: formDataToSend })
-        ).unwrap();
-      }
-      console.log("resultAction:", resultAction);
-
-      // Check for success after the dispatch
-      if (resultAction?.status === 200) {
-        toast.success(
-          resultAction?.message || "Assignment added successfully!"
-        );
-        setIsSuccess(true); // Mark as successful
-      } else {
-        throw new Error(resultAction?.message || "Failed to add assignment.");
-      }
-
-      // Reset the form data after successful add or edit
-      setFormData({
-        id: "",
-        subject: "",
-        chapter: "",
-        topic: "",
-        Class: "",
-        assignedTo: "",
-        level: "",
-        assignFile: "",
-        startDate: "",
-        endDate: "",
-      });
-    } catch (err) {
-      // Handle Yup validation errors
-      if (err?.inner) {
-        const validationErrors = {};
-        err.inner.forEach((e) => {
-          validationErrors[e.path] = e.message;
-        });
-        setErrors(validationErrors); // Set validation errors in the state
-        toast.error("Validation failed. Please fix the errors.");
-      } else {
-        toast.error(
-          err?.message || "Failed to add Assignment. Please try again."
-        );
-      }
-    }
-  };
-
+      };
+      
   const handleOpenModal = () => {
     console.log("Opening modal..."); // Debug log
     setIsModalOpen(true);
@@ -351,12 +326,12 @@ const AddNewAssignmentModal = ({
             </div>
           </div>
           <div className="flex justify-end gap-4 mt-6">
-            <Button
+            <ButtonText
               label="Cancel"
               backgroundColor="#FF8A00"
               onClick={() => setVisible(false)}
             />
-            <Button
+            <ButtonText
               label={
                 loading ? (
                   <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
@@ -375,7 +350,7 @@ const AddNewAssignmentModal = ({
               onClick={handleOpenModal}
               icon={Icons.rightArrow}
               disabled={!isSuccess} // Disable unless successful
-            />
+              />
             {isModalOpen && (
               <AddNewAssignmentQsnModal
                 visible={isModalOpen}

@@ -10,6 +10,7 @@ import {
   editAssignQsn,
   deleteAssignQsn,
 } from "../../../features/dashboardSharedApi/teacherDashboardAssignQsnReducer";
+import ButtonText from "../../atoms/buttonText";
 
 const AddNewTestQsnModal = ({ visible, onClose, initialData = {}, assignmentId }) => {
   const [TestQuestions, setTestQuestions] = useState([]);
@@ -145,7 +146,7 @@ const AddNewTestQsnModal = ({ visible, onClose, initialData = {}, assignmentId }
                 </div>
 
                 <div className="flex justify-end gap-4 mt-6">
-                    <Button
+                    <ButtonText
                         label="Cancel"
                         backgroundColor="#FF8A00"
                         onClick={onClose}

@@ -10,6 +10,7 @@ import GenderDropdown from "../../molecules/genderDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import capitalize from 'lodash/capitalize';
+import ButtonText from "../../atoms/buttonText";
 
 function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = {}}) {
   const [formData, setFormData] = useState({
@@ -299,12 +300,12 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
           </div>
 
           <div className="flex justify-end gap-4 mt-6">
-            <Button
+            <ButtonText
               label="Cancel"
               backgroundColor="#FF8A00"
               onClick={() => setVisible(false)}
             />
-            <Button
+            <ButtonText
               label={
                 loading ? (
                   <FaSpinner className="animate-spin text-white mx-auto text-3xl" />

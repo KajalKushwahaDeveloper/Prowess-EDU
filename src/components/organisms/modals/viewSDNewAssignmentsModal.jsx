@@ -1,6 +1,7 @@
 import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
 import Button from "../../atoms/button";
 import Modal from "../../common/modal";
+import ButtonText from "../../atoms/buttonText";
 
 function ViewSDNewAssignModal({ visible, setVisible, assignmentData }) {
 
@@ -67,7 +68,7 @@ function ViewSDNewAssignModal({ visible, setVisible, assignmentData }) {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-4 mt-6">
-            <Button
+            <ButtonText
               label="Cancel"
               backgroundColor="#FF8A00"
               onClick={() => setVisible(false)}

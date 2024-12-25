@@ -17,6 +17,7 @@ function DashboardSidebar({ links = [] }) {
     dispatch(logout());
     // Clear localStorage or sessionStorage if storing tokens
     localStorage.removeItem("token");
+    localStorage.removeItem("data");
     // Redirect to the login page
     navigate("/");
   };

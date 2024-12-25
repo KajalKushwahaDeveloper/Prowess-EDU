@@ -71,6 +71,10 @@ export const T_D_ADD_TIME_TABLE = BASE_URL + "/addTimeTable";
 export const T_D_UPDATE_TIME_TABLE = (id) => `${BASE_URL}/editTimeTable/${id}`;
 export const T_D_DELETE_TIME_TABLE = (id) => `${BASE_URL}/deleteTimeTable/${id}`;
 
+// getFeedbackForTeacher
+export const T_D_GET_FEEDBACK_FOR_TEACHER = BASE_URL + "/getFeedbackForTeacher";
+
 
 // PARENT DASHBOARD
 export const LOGIN_PARENT = BASE_URL + "/parentLogin";
+export const T_D_GET_CHILD_REPORTS_FOR_PARENT = BASE_URL + "/getChildReportsForParent";

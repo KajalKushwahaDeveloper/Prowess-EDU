@@ -27,6 +27,7 @@ import ParentLoginScreen from './pages/parent_dashboard/parentLoginScreen';
 import TeacherLoginScreen from './pages/teacher_dashboard/teacherLoginScreen';
 import StudentLoginScreen from './pages/student_dashboard/studentLoginScreen';
 import StudentDashboardTest from './pages/student_dashboard/studentDashboardTest';
+import TeacherFeedback from './pages/teacher_dashboard/teacherDashboardFeedback';
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
           <Route path="teacherDashboardAssignment" element={<TeacherDashboardAssignment />} />
           <Route path="teacherDashboardOnlineClass" element={<TeacherDashboardOnlineClass />} />
           <Route path="teacherDashboardTimeTable" element={<TeacherDashboardTimeTable />} />
+          <Route path="teacherFeedback" element={<TeacherFeedback />} />
         </Route>
 
 

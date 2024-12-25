@@ -22,7 +22,10 @@ const ParentLoginScreen = () => {
 
   useEffect(() => {
     if (data?.status === 200) {
+      console.log("data:",data);
+      
       localStorage.setItem("token", data?.data?.token);
+      localStorage.setItem("data", JSON.stringify(data?.data?.parent));
       toast.success(data?.data?.message || "Login successful!", { autoClose: 1000 });
   
       // Navigate after toast

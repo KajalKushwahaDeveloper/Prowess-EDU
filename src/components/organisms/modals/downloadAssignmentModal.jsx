@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getAssignQsnsForStudent } from "../../../features/dashboardSharedApi/studentDashboardSharedApiReducer.js";
 import { jsPDF } from "jspdf";
+import ButtonText from "../../atoms/buttonText.jsx";
 
 const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [],newAssignment }) => {
     const [filteredAssignQsn, setFilteredAssignQsn] = useState([]);
@@ -148,7 +149,7 @@ const DownloadAssignmentModal = ({ visible, setVisible, filteredAssignment = [],
                             handleDownloadPdf(filteredAssignment[0], filteredAssignQsn) // Example with first assignment
                         }
                     />
-                    <Button label="Cancel" backgroundColor="#FF8A00" onClick={() => setVisible(false)} />
+                    <ButtonText label="Cancel" backgroundColor="#FF8A00" onClick={() => setVisible(false)} />
                 </div>
             </div>
         </Modal>

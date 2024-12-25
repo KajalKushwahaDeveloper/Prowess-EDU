@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { FaSpinner } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { addTimeTable, editTimeTable } from "../../../features/dashboardSharedApi/teacherTimeTableReducer";
+import ButtonText from "../../atoms/buttonText";
 
 function CreateTimeTableModal({ visible, setVisible, mode = "add" }) {
     const [formData, setFormData] = useState({
@@ -190,12 +191,12 @@ function CreateTimeTableModal({ visible, setVisible, mode = "add" }) {
 
                 {/* Action buttons */}
                 <div className="flex justify-end gap-4 mt-6">
-                    <Button
+                    <ButtonText
                         label="Cancel"
                         backgroundColor="#FF8A00"
                         onClick={() => setVisible(false)}
                     />
-                    <Button
+                    <ButtonText
                         label={
                             loading ? (
                                 <FaSpinner className="animate-spin text-white mx-auto text-3xl" />

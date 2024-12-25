@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import capitalize from 'lodash/capitalize';
 import { addOnlineClass, editOnlineClass } from "../../../features/dashboardSharedApi/teacherDashboardSharedApiReducer";
 import { getOnlineClassesForTeacher } from "../../../features/dashboardSharedApi/teacherDashboardSharedApiReducer";
+import ButtonText from "../../atoms/buttonText";
 
 function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = "add", onlineClassId }) {
     const [formData, setFormData] = useState({
@@ -215,12 +216,12 @@ function CreateOnlineClassModal({ visible, setVisible, initialData = {}, mode = 
 
                 {/* Action buttons */}
                 <div className="flex justify-end gap-4 mt-6">
-                    <Button
+                    <ButtonText
                         label="Cancel"
                         backgroundColor="#FF8A00"
                         onClick={() => setVisible(false)}
                     />
-                    <Button
+                    <ButtonText
                         label={
                             loading ? (
                                 <FaSpinner className="animate-spin text-white mx-auto text-3xl" />

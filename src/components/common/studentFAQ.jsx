@@ -6,6 +6,7 @@ import Button from "../atoms/button";
 import { Icons } from "../../assets/icons";
 import { addFaq } from "../../features/dashboardSharedApi/studentDashboardFaqReducer";
 import { getFaqsForStudent } from "../../features/dashboardSharedApi/studentDashboardFaqReducer";
+import ButtonText from "../atoms/buttonText";
 
 const StudentFAQ = ({ filteredFaq }) => {
   const [open, setOpen] = useState(null);
@@ -97,7 +98,7 @@ const StudentFAQ = ({ filteredFaq }) => {
           onChange={(e) => setFaqQuestion(e.target.value)}
         />
         <div className="mt-6 flex justify-end">
-          <Button label="Submit" backgroundColor="#00A943" onClick={handleAdd} />
+          <ButtonText label="Submit" backgroundColor="#00A943" onClick={handleAdd} />
         </div>
       </div>
     </div>

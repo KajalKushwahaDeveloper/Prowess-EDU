@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getTestQsnsForStudent } from "../../../features/dashboardSharedApi/studentDashboardSharedApiReducer.js";
 import { jsPDF } from "jspdf";
+import ButtonText from "../../atoms/buttonText.jsx";
 
 const DownloadTestModal = ({ visible, setVisible, testData }) => {
     const [questions, setQuestions] = useState([]);
@@ -144,7 +145,7 @@ const DownloadTestModal = ({ visible, setVisible, testData }) => {
                         icon={Icons.downloadIcon}
                         onClick={handleDownloadPdf}
                     />
-                    <Button label="Cancel" backgroundColor="#FF8A00" onClick={() => setVisible(false)} />
+                    <ButtonText label="Cancel" backgroundColor="#FF8A00" onClick={() => setVisible(false)} />
                 </div>
             </div>
         </Modal>

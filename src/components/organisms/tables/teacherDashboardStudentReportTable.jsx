@@ -7,9 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import CreateReportModal from "../modals/createReportModal";
 
-const TeacherDashboardStudentReportTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
+const TeacherDashboardStudentReportTable = ({ setModalMode, filteredReports, setFilteredReports, modalMode, currentStudent, setCurrentStudent }) => {
     const [visible, setVisible] = useState(false);
-    const [filteredReports, setFilteredReports] = useState([]); // For local filtering
 
     const dispatch = useDispatch();
     const { data, loading, error } = useSelector((state) => state.teacherDashboardSharedApi);
@@ -54,7 +53,7 @@ const TeacherDashboardStudentReportTable = ({ setModalMode, modalMode, currentSt
                 setFilteredReports(response.reports); // Ensure you're setting the correct data
                 toast.info("Data reloaded successfully!");
             })
-            .catch((err) => toast.error("Failed to reload data"));
+            .catch((err) => toast.error(err || "Failed to reload data"));
     };
     
 

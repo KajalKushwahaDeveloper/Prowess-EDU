@@ -10,6 +10,7 @@ import {
   editAssignQsn,
   deleteAssignQsn,
 } from "../../../features/dashboardSharedApi/teacherDashboardAssignQsnReducer";
+import ButtonText from "../../atoms/buttonText";
 
 const AddNewAssignmentQsnModal = ({ visible, setVisible, onClose, initialData = {}, assignmentId }) => {
   const [assignmentQuestions, setAssignmentQuestions] = useState([]);
@@ -29,7 +30,7 @@ console.log("assignmentId56:", assignmentId, "AssignmentformData:",formData.id);
     dispatch(getAssignQnsnForTeacher({ assignmentId }))
       .unwrap()
       .then((response) => {
-        setAssignmentQuestions(response?.data?.questions);
+        setAssignmentQuestions(response?.questions);
       })
       .catch(() => {
         toast.error("Failed to fetch questions");
@@ -69,7 +70,7 @@ console.log("assignmentId56:", assignmentId, "AssignmentformData:",formData.id);
         });
     } else {
       // Add new question
-      dispatch(addAssignQsn({ id: formData.id, payload: { question: formData.question } }))
+      dispatch(addAssignQsn({  assignmentId, payload: { question: formData.question } }))
         .unwrap()
         .then((newQuestion) => {
           setAssignmentQuestions((prev) => [...prev, newQuestion]);
@@ -146,7 +147,7 @@ console.log("assignmentId56:", assignmentId, "AssignmentformData:",formData.id);
                 </div>
 
                 <div className="flex justify-end gap-4 mt-6">
-                    <Button
+                    <ButtonText
                         label="Cancel"
                         backgroundColor="#FF8A00"
                         onClick={onClose}

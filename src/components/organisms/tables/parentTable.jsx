@@ -46,7 +46,11 @@ const ParentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStuden
     toast.info("Data reloaded successfully!");
   };
   const columns = [
-    { field: "id", header: "Id" },
+    {
+      field: "serialNo",
+      header: "S.No",
+      body: (rowData, options) => options.rowIndex + 1,
+  },
     { field: "name", header: "Name" },
     { field: "email", header: "Email" },
     { field: "phone", header: "Phone nu." },

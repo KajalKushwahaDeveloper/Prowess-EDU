@@ -11,6 +11,7 @@ import SubjectsDropdown from "../../molecules/subjectsDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 import capitalize from 'lodash/capitalize';
+import ButtonText from "../../atoms/buttonText";
 
 function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {} }) {
   const [formData, setFormData] = useState({
@@ -267,19 +268,19 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
                 }}
               />
               {errors.subjects && (
-                <p className="text-rose-600 text-sm absolute left-0 " style={{ bottom: '-20px' }}>{errors.subjects}</p>
+                <p className="text-rose-600 text-sm absolute left-0" style={{ bottom: '-20px' }}>{errors.subjects}</p>
               )}
             </div>
           </div>
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-4 mt-6">
-            <Button
+            <ButtonText
               label="Cancel"
               backgroundColor="#FF8A00"
               onClick={() => setVisible(false)}
             />
-            <Button
+            <ButtonText
               label={loading ? (
                 <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
               ) : mode === "add" ? (

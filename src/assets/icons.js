@@ -38,6 +38,7 @@ export const teacherLinks = [
     path: "/teacher/teacherDashboardOnlineClass",
   },
   { icon: "pi-calendar-clock", name: "Timetable", path: "/teacher/teacherDashboardTimeTable" },
+  { icon: "pi-question-circle", name: "Feedback", path: "/teacher/teacherFeedback" },
 ];
 
 // Add parent links if necessary

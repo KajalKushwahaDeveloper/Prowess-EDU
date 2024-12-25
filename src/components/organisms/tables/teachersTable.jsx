@@ -43,7 +43,11 @@ const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
     };
 
     const columns = [
-        { field: "id", header: "Id" },
+        {
+            field: "serialNo",
+            header: "S.No",
+            body: (rowData, options) => options.rowIndex + 1,
+        },
         { field: "name", header: "Teacher Name" },
         { field: "email", header: "Email" },
         { field: "phone", header: "Phone Number" },

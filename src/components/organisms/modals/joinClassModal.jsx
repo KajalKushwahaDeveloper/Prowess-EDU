@@ -5,6 +5,7 @@ import Modal from "../../common/modal";
 import { toast } from "react-toastify"; // To show success or error messages
 import { useDispatch } from "react-redux";
 import { updateOnlineClassStatus } from "../../../features/dashboardSharedApi/studentDashboardSharedApiReducer";
+import ButtonText from "../../atoms/buttonText";
 
 const JoinClassModal = ({  visible, setVisible, selectedClass, setOnlineClass }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -80,8 +81,8 @@ const JoinClassModal = ({  visible, setVisible, selectedClass, setOnlineClass })
                 )}
 
                 <div className="flex items-center justify-end gap-4 mt-8">
-                    <Button label="Cancel" backgroundColor="#FF8A00" onClick={() => setVisible(false)} />
-                    <Button
+                    <ButtonText label="Cancel" backgroundColor="#FF8A00" onClick={() => setVisible(false)} />
+                    <ButtonText
                         label={isLoading ? "Joining..." : "Join"}
                         backgroundColor="#00A943"
                         onClick={() => handleJoin(selectedClass)} // Pass the selected class

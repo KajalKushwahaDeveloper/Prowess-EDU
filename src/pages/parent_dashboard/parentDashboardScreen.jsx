@@ -1,10 +1,41 @@
-import ParentDashboardStudentReportTable from "../../components/organisms/tables/parentdashboardStudentsReportTable";
 import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
-import Dropdown from "../../components/molecules/dropdown";
 import Calender from "../../components/atoms/calender";
+import { useState, useEffect } from "react";
+import { getChildReportsForParent } from "../../features/dashboardSharedApi/parentDashboardReducer";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import ParentDashboardStudentReportTable from "../../components/organisms/tables/parentdashboardStudentsReportTable";
+import { useDownloadCsv } from "../../hooks/useDownload";
 
-function ParentDashboard() {
+
+const ParentDashboard = () => {
+    const [filteredFeedback, setFilteredFeedback] = useState([]);
+    const dispatch = useDispatch();
+    const downloadCsv = useDownloadCsv();
+
+    // const studentClass = JSON.parse(localStorage.getItem("data"));
+    //  console.log("filteredFeedback:", filteredFeedback)
+
+    // const { error, loading } = useSelector(
+    //     (state) => state.studentDashboardFaqSharedApi
+    //   );
+  
+    useEffect(() => {
+        // Fetch reports on mount
+        dispatch(getChildReportsForParent())
+            .unwrap()
+            .then((response) => {
+                setFilteredFeedback(response?.reports || []);
+
+            })
+            .catch((error) => {
+                toast.error(error || "Failed to fetch reports");
+
+            });
+        console.log("getAssign1") // Log the response to check its structure
+
+    }, [dispatch]);
 
     return (
         <div className="admin-dashboard m-6 dashboard z-1">
@@ -18,11 +49,11 @@ function ParentDashboard() {
                             {/* <Dropdown label="Teacher" /> */}
                         </div>
                         <div className="flex justify-around items-center">
-                            <Calender />
+                            {/* <Calender /> */}
                             <Button
                                 icon={Icons.downloadIcon}
-                            //  onClick={handleDownload}
-                            />
+                                onClick={() => downloadCsv(filteredFeedback, "student_reports.csv")}
+                                />
                         </div>
                     </div>
                 </div>
@@ -30,7 +61,7 @@ function ParentDashboard() {
             <hr className="mb-4"/>
             <div>
                 <div className="md:overflow-none overflow-x-auto mb-16">
-                    <ParentDashboardStudentReportTable />
+                    <ParentDashboardStudentReportTable filteredFeedback={filteredFeedback}/>
                 </div>
             </div>
         </div>

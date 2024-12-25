@@ -10,8 +10,9 @@ import { createReport, editReport } from "../../../features/dashboardSharedApi/t
 import LevelDropdown from "../../molecules/levelDropdown";
 import capitalize from 'lodash/capitalize';
 import SubjectTypeDropdown from "../../molecules/subjectTypesDropdown";
+import ButtonText from "../../atoms/buttonText";
 
-function CreateReportModal({ visible, setVisible, mode = "add", initialData = {} }) {
+function CreateReportModal({ visible, setVisible, mode = "add", initialData = {} , setFilteredReports}) {
   const [formData, setFormData] = useState({
     studentName: "",
     sID: "",
@@ -55,21 +56,39 @@ function CreateReportModal({ visible, setVisible, mode = "add", initialData = {}
     }
   };
 
-
+  const updateReports = (newReport, mode) => {
+    setFilteredReports((prevReports) => {
+      if (mode === "add") {
+        return [newReport, ...prevReports]; // Add the new report at the beginning
+      } else if (mode === "edit") {
+        return prevReports.map((report) =>
+          report.id === newReport.id ? newReport : report
+        ); // Update the edited report
+      }
+      return prevReports;
+    });
+  };
+  
   const handleAdd = async () => {
     try {
-      // Dispatch the addItem action with role and payload
       await createReportSchema.validate(formData, { abortEarly: false });
-      setErrors({}); // Clear previous errors if validation passes
-
+      setErrors({});
+  
+      let response;
       if (mode === "add") {
-        await dispatch(createReport({  payload: formData })).unwrap();
-        toast.success(data?.data?.message || "Student added successfully!");
+        response = await dispatch(createReport({ payload: formData })).unwrap();
+        toast.success("Student added successfully!");
       } else if (mode === "edit") {
-        await dispatch(editReport({  id: initialData?.id, payload: formData })).unwrap();
-        toast.success(data?.data?.message || "Student updated successfully!");
+        response = await dispatch(editReport({ id: initialData?.id, payload: formData })).unwrap();
+        toast.success("Student updated successfully!");
       }
-      // Validate the form data
+  
+      // Update the parent component's state
+      if (response?.data) {
+        updateReports(response.data, mode); // Pass the new or updated report
+      }
+  
+      // Reset form and close modal
       setFormData({
         studentName: "",
         sID: "",
@@ -80,22 +99,19 @@ function CreateReportModal({ visible, setVisible, mode = "add", initialData = {}
         grade: "",
         level: "",
         recommendation: "",
-        comment: ""
+        comment: "",
       });
       setVisible(false);
-      // setModalMode("add")
-      // setCurrentStudent(null)// Optionally close the modal on success
     } catch (error) {
       const formattedErrors = {};
-      error?.inner?.forEach((error) => {
-        formattedErrors[error.path] = error.message;
+      error?.inner?.forEach((err) => {
+        formattedErrors[err.path] = err.message;
       });
-      console.log("Validation errors:", formattedErrors);
       setErrors(formattedErrors);
-      toast.error(error || "Failed to add student. Please fix errors.");
-      console.log("Validation or API errors:", error);
+      toast.error("Failed to add or update student. Please fix errors.");
     }
   };
+  
 
   return (
     <>
@@ -294,12 +310,12 @@ function CreateReportModal({ visible, setVisible, mode = "add", initialData = {}
           </div>
 
           <div className="flex justify-end gap-4 mt-6">
-            <Button
+            <ButtonText
               label="Cancel"
               backgroundColor="#FF8A00"
               onClick={() => setVisible(false)}
             />
-            <Button
+            <ButtonText
               label={
                 loading ? (
                   <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
