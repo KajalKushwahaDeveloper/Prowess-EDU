@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Button from "../atoms/button";
 // import { Icons } from "../../assets/icons";
 import SubjectTypeDropdown from "../molecules/subjectTypesDropdown";
-import TeacherDropdown from "../molecules/dropdown"; // Import the TeacherDropdown
+import TeacherDropdown from "../molecules/teacherDropdown"; // Import the TeacherDropdown
 import { addFeedback } from "../../features/dashboardSharedApi/studentDashboardFeedbackReducer";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";

@@ -11,11 +11,16 @@ import { toast } from "react-toastify";
 import AddNewParentModal from "../modals/addNewParentModal";
 import { Icons } from "../../../assets/icons";
 
-const ParentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStudent }) => {
+const ParentTable = ({
+  setModalMode,
+  modalMode,
+  currentStudent,
+  setCurrentStudent,
+}) => {
   const dispatch = useDispatch();
   const [showAll, setShowAll] = useState(false);
   const [visible, setVisible] = useState(false);
-
+  const [passwordVisibility, setPasswordVisibility] = useState({}); // State to manage password visibility
 
   const { parentData, loading, error, shouldReloadParentData } = useSelector(
     (state) => state.sharedApi
@@ -36,21 +41,28 @@ const ParentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStuden
     }
   };
   const handleEdit = (rowData) => {
-    setVisible(true)
-    setModalMode("edit")
-    setCurrentStudent(rowData)
-  }
+    setVisible(true);
+    setModalMode("edit");
+    setCurrentStudent(rowData);
+  };
   const handleReload = () => {
     // Dispatch an action to trigger data reload
     dispatch(getItem({ role: "parent" }));
     toast.info("Data reloaded successfully!");
   };
+  const togglePasswordVisibility = (id) => {
+    setPasswordVisibility((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   const columns = [
     {
       field: "serialNo",
       header: "S.No",
       body: (rowData, options) => options.rowIndex + 1,
-  },
+    },
     { field: "name", header: "Name" },
     { field: "email", header: "Email" },
     { field: "phone", header: "Phone nu." },
@@ -60,26 +72,44 @@ const ParentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStuden
     { field: "childClass", header: "Class" },
     { field: "childSection", header: "Section" },
     {
+      field: "password",
+      header: "Password",
+      body: (rowData) => (
+        <div className="flex items-center space-x-2">
+          <span>
+            {passwordVisibility[rowData.id] ? rowData.password : "••••••••••"}
+          </span>
+          <i
+            className="pi pi-info-circle cursor-pointer text-blue-600"
+            onClick={() => togglePasswordVisibility(rowData.id)}
+            title={
+              passwordVisibility[rowData.id] ? "Hide Password" : "Show Password"
+            }
+          ></i>
+        </div>
+      ),
+    },
+    {
       field: "Action",
       header: "Action",
       body: (rowData) => (
         <div className="flex justify-center space-x-2">
           <Button
-              backgroundColor="#FF8A00"
-              icon={Icons.editIcon}
-              onClick={() => handleEdit(rowData)}
+            backgroundColor="#FF8A00"
+            icon={Icons.editIcon}
+            onClick={() => handleEdit(rowData)}
             // onClick={() => setVisible(true)}
-            />
-            <Button
-              backgroundColor="#004871"
-              icon={Icons.reloadIcon}
-              onClick={handleReload}
-            />
-            <Button
-              backgroundColor="#FF4D00"
-              icon={Icons.deleteIcon}
-              onClick={() => handleDelete(rowData)}
-            />
+          />
+          <Button
+            backgroundColor="#004871"
+            icon={Icons.reloadIcon}
+            onClick={handleReload}
+          />
+          <Button
+            backgroundColor="#FF4D00"
+            icon={Icons.deleteIcon}
+            onClick={() => handleDelete(rowData)}
+          />
         </div>
       ),
     },
@@ -95,17 +125,15 @@ const ParentTable = ({ setModalMode, modalMode, currentStudent, setCurrentStuden
         tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
       />
       <ViewAll showAll={showAll} setShowAll={setShowAll} />
-      {
-        visible && (
-          <AddNewParentModal
-            visible={visible}
-            setVisible={setVisible}
-            mode={modalMode}
-            initialData={currentStudent}
-            onHide={() => setVisible(false)}
-          />
-        )
-      }
+      {visible && (
+        <AddNewParentModal
+          visible={visible}
+          setVisible={setVisible}
+          mode={modalMode}
+          initialData={currentStudent}
+          onHide={() => setVisible(false)}
+        />
+      )}
     </>
   );
 };

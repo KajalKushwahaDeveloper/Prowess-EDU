@@ -1,10 +1,10 @@
+import { useState, useEffect } from "react";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
-import { useState, useEffect } from "react";
 import { getItem, deleteItem } from "../../../features/dashboardSharedApi/sharedReducer";
 import { toast } from "react-toastify";
 import AddNewTeacherModal from "../modals/addNewTeacherModal";
-import ViewAll from "../../common/viewAllFunctionality"
+import ViewAll from "../../common/viewAllFunctionality";
 import { useDispatch, useSelector } from "react-redux";
 import { Icons } from "../../../assets/icons";
 
@@ -12,8 +12,9 @@ const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
     const dispatch = useDispatch();
     const [showAll, setShowAll] = useState(false);
     const [visible, setVisible] = useState(false);
+    const [passwordVisibility, setPasswordVisibility] = useState({}); // State to manage password visibility
 
-    const { data, teacherData, loading, error, shouldReloadTeacherData } = useSelector((state) => state.sharedApi);
+    const { teacherData, loading, error, shouldReloadTeacherData } = useSelector((state) => state.sharedApi);
     const tableData = teacherData?.teachers;
 
     useEffect(() => {
@@ -21,25 +22,31 @@ const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
     }, [dispatch, shouldReloadTeacherData]);
 
     const handleEdit = (rowData) => {
-        setVisible(true)
-        setModalMode("edit")
-        setCurrentStudent(rowData)
-    }
+        setVisible(true);
+        setModalMode("edit");
+        setCurrentStudent(rowData);
+    };
 
     const handleDelete = async (rowData) => {
         try {
             await dispatch(deleteItem({ role: "teacher", id: rowData.id }));
-            toast.success("Teacher delete successfully! ");
+            toast.success("Teacher deleted successfully!");
         } catch (error) {
-            console.log("error:", error);
+            console.error("error:", error);
             toast.error(error || "Failed to delete teacher. Please fix errors.");
         }
     };
 
     const handleReload = () => {
-        // Dispatch an action to trigger data reload
         dispatch(getItem({ role: "teacher" }));
         toast.info("Data reloaded successfully!");
+    };
+
+    const togglePasswordVisibility = (id) => {
+        setPasswordVisibility((prev) => ({
+            ...prev,
+            [id]: !prev[id],
+        }));
     };
 
     const columns = [
@@ -52,6 +59,20 @@ const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
         { field: "email", header: "Email" },
         { field: "phone", header: "Phone Number" },
         { field: "qualification", header: "Qualification" },
+        {
+            field: "password",
+            header: "Password",
+            body: (rowData) => (
+                <div className="flex items-center space-x-2">
+                    <span>{passwordVisibility[rowData.id] ? rowData.password : "••••••••••"}</span>
+                    <i
+                        className="pi pi-info-circle cursor-pointer text-blue-600"
+                        onClick={() => togglePasswordVisibility(rowData.id)}
+                        title={passwordVisibility[rowData.id] ? "Hide Password" : "Show Password"}
+                    ></i>
+                </div>
+            ),
+        },
         {
             field: "Action",
             header: "Action",
@@ -73,7 +94,7 @@ const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
                         onClick={() => handleDelete(rowData)}
                     />
                 </div>
-            )
+            ),
         },
     ];
 
@@ -84,7 +105,6 @@ const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
 
     return (
         <>
-            {/* <ToastContainer /> */}
             <Table
                 data={displayData}
                 columns={columns}
@@ -92,17 +112,15 @@ const TeachersTable = ({ setModalMode, modalMode, currentStudent, setCurrentStud
             />
             <ViewAll showAll={showAll} setShowAll={setShowAll} />
 
-            {
-                visible && (
-                    <AddNewTeacherModal 
+            {visible && (
+                <AddNewTeacherModal
                     visible={visible}
                     setVisible={setVisible}
                     mode={modalMode}
                     initialData={currentStudent}
                     onHide={() => setVisible(false)}
-                    />
-                )
-            }
+                />
+            )}
         </>
     );
 };
