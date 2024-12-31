@@ -28,6 +28,9 @@ import TeacherLoginScreen from './pages/teacher_dashboard/teacherLoginScreen';
 import StudentLoginScreen from './pages/student_dashboard/studentLoginScreen';
 import StudentDashboardTest from './pages/student_dashboard/studentDashboardTest';
 import TeacherFeedback from './pages/teacher_dashboard/teacherDashboardFeedback';
+import ForgetPassword from './components/common/ForgetPassword';
+import PasswordOtp from './components/common/PasswordOtp';
+import ResetPassword from './components/common/ResetPassword';
 
 function App() {
   return (
@@ -38,6 +41,10 @@ function App() {
         <Route path="/parentLogin" element={<ParentLoginScreen />} />
         <Route path="/studentLogin" element={<StudentLoginScreen />} />
         <Route path="/teacherLogin" element={<TeacherLoginScreen />} />
+        <Route path="/forgetPassword" element={<ForgetPassword/>} />
+        <Route path="/otp" element={<PasswordOtp/>} />
+        <Route path="/resetPassword" element={<ResetPassword/>} />
+        
 
         {/*  Admin Dashboard */}
         <Route path="/admin" element={<ProtectedRoute userRole="admin"><AdminDashboard /></ProtectedRoute>}>

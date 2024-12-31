@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { getTeachersForStudent } from '../../features/dashboardSharedApi/studentDashboardFeedbackReducer';
 import ButtonText from "../atoms/buttonText";
+import { Rating } from "primereact/rating";
 
 const StudentFeedback = ({ filteredFeedback }) => {
   const [formData, setFormData] = useState({
@@ -15,8 +16,10 @@ const StudentFeedback = ({ filteredFeedback }) => {
     subject: "",
     teacherId: "",
     teacherName: "",
-    feedbackText: "",
+    rating: "",
   });
+
+  const [value, setValue] = useState(null);
   const [teacherOptions, setTeacherOptions] = useState([]);
   const dispatch = useDispatch();
   const studentClass = JSON.parse(localStorage.getItem("data"));
@@ -50,7 +53,7 @@ const StudentFeedback = ({ filteredFeedback }) => {
         subject: formData.subject,
         teacherId: formData.teacherId,
         teacherName: formData.teacherName,
-        feedbackText: formData.feedbackText,
+        rating: formData.rating,
       };
 
       await dispatch(addFeedback({ payload: feedbackData })).unwrap();
@@ -58,11 +61,11 @@ const StudentFeedback = ({ filteredFeedback }) => {
 
       // Reset the form data
       setFormData({
-        Class: "",
+        Class: {studentClass},
         subject: "",
         teacherId: "",
         teacherName: "",
-        feedbackText: "",
+        rating: "",
       });
     } catch (error) {
       toast.error(error.message || "Failed to add feedback. Please fix errors.");
@@ -93,7 +96,7 @@ const StudentFeedback = ({ filteredFeedback }) => {
     <div className="w-full mx-auto pt-4">
       {/* Feedback List */}
       <div className="flex items-center justify-between gap-2 lg:flex-row">
-        {filteredFeedback.map((faq, index) => (
+        {filteredFeedback?.map((faq, index) => (
           <div
             key={index}
             className="bg-white p-4 shadow-lg rounded-lg border"
@@ -111,16 +114,13 @@ const StudentFeedback = ({ filteredFeedback }) => {
         ))}
       </div>
 
-      {/* Feedback Form */}
+      {/* Feedback Stars */}
       <div className="mt-8">
-        <div className="text-lg font-semibold mb-2">Enter your Query here...</div>
-        <textarea
-          name="feedbackText"
-          value={formData.feedbackText}
-          onChange={handleInputChange}
-          className="w-full h-24 p-2 border shadow-lg rounded-lg resize-none focus:outline-none"
-          placeholder="Enter your Query here..."
-        />
+        <div className="text-lg font-semibold mb-2">Enter your feedback here...</div>
+        
+        <div className="card flex justify-content-center">
+            <Rating value={value} onChange={(e) => setValue(e.value)} cancel={false} />
+        </div>
 
         <div className="flex flex-row items-center justify-between mt-4">
           {/* Teacher Dropdown */}
