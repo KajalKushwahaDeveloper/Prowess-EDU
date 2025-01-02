@@ -144,6 +144,21 @@
 .login-form {
   height: 95vh;
 }
+
+/* rating */
+.p-rating .p-rating-icon {
+  outline: none !important; /* Remove focus outline */
+  box-shadow: none !important; /* Remove any shadow */
+}
+
+.p-rating .p-rating-icon:focus,
+.p-rating .p-rating-icon:hover,
+.p-rating .p-rating-icon:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
 /* loader */
 .spinner {
   display: flex;
@@ -184,4 +199,8 @@
     height: 17rem;
   }
 
+}
+
+.p-inputtext{
+  border: 1px solid gray;
 }

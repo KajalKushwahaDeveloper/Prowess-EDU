@@ -52,7 +52,7 @@ const FAQFeedback = () => {
           <Spinner /> {/* Replace with your actual spinner component */}
         </div>
       ) : (
-        <div className="admin-dashboard m-6 dashboard z-1">
+        <div className="m-6 dashboard z-1">
           <div className="my-4">
             <div className="flex justify-between md:items-center items-start md:flex-row flex-col">
               <h2 className="font-bold text-3xl md:text-2xl">Feedback</h2>
