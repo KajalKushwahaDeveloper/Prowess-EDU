@@ -1,7 +1,7 @@
-import React from 'react';
 
 const TeacherDropdown = ({ label, id, onChange, selectedOption, options = [], className = '' }) => {
   return (
+    
     <form className="max-w-sm mx-auto">
       <select
         id={id}

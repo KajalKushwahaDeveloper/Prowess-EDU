@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
-import Button from "../atoms/button";
-// import { Icons } from "../../assets/icons";
 import SubjectTypeDropdown from "../molecules/subjectTypesDropdown";
 import TeacherDropdown from "../molecules/dropdown"; // Import the TeacherDropdown
 import { addFeedback } from "../../features/dashboardSharedApi/studentDashboardFeedbackReducer";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { getTeachersForStudent } from '../../features/dashboardSharedApi/studentDashboardFeedbackReducer';
+import { getTeachersForStudent } from "../../features/dashboardSharedApi/studentDashboardFeedbackReducer";
 import ButtonText from "../atoms/buttonText";
 import { Rating } from "primereact/rating";
+import Pagination from "./pagination";
 // import axios from "axios";
 
 const StudentFeedback = ({ filteredFeedback }) => {
@@ -29,17 +28,17 @@ const StudentFeedback = ({ filteredFeedback }) => {
   //feedback api integration
 
   // useEffect(()=>{
-       
+
   // },[])
-
-
 
   // Fetch teacher options
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
         const response = await dispatch(
-          getTeachersForStudent(`${studentClass?.Class}-${studentClass?.section}`)
+          getTeachersForStudent(
+            `${studentClass?.Class}-${studentClass?.section}`
+          )
         ).unwrap();
         const formattedOptions = response?.map((teacher) => ({
           value: teacher.id, // Assuming `id` is the unique identifier
@@ -50,11 +49,9 @@ const StudentFeedback = ({ filteredFeedback }) => {
         toast.error(error.message || "Failed to fetch teachers");
       }
     };
-   
 
     fetchTeachers();
   }, [dispatch, studentClass]);
-
 
   const handleAdd = async () => {
     try {
@@ -81,7 +78,9 @@ const StudentFeedback = ({ filteredFeedback }) => {
         rating: "",
       });
     } catch (error) {
-      toast.error(error.message || "Failed to add feedback. Please fix errors.");
+      toast.error(
+        error.message || "Failed to add feedback. Please fix errors."
+      );
     }
   };
 
@@ -110,29 +109,58 @@ const StudentFeedback = ({ filteredFeedback }) => {
       {/* Feedback List */}
       <div className="flex items-center justify-between gap-2 lg:flex-row">
         {filteredFeedback?.map((faq, index) => (
-          <div
-            key={index}
-            className="bg-white p-4 shadow-lg rounded-lg border"
-          >
+          <div key={index} className="bg-white p-4 shadow-lg rounded-lg border">
             <div className="font-semibold flex items-center justify-between mb-2">
               <h1>{faq?.teacherName}</h1>
-              <h1>{faq.Class}</h1>
             </div>
-            {/* <p>{faq.feedbackText}</p> */}
-            <div className="font-semibold flex items-center justify-between mt-2">
-              <h1>{faq?.studentName}</h1>
+            <Rating
+              value={faq.rating}
+              cancel={false}
+              readOnly
+              onIcon={
+                <i
+                  className="pi pi-star-fill"
+                  style={{ fontSize: "30px", color: "#007bff" }}
+                ></i>
+              }
+              offIcon={
+                <i className="pi pi-star" style={{ fontSize: "30px" }}></i>
+              }
+            />
+
+            {/* <p>{faq.rating}</p> */}
+            <div className="font-semibold flex items-center justify-between mt-2 gap-5">
+              <h1>{faq.Class}</h1>
               <h1>{new Date(faq?.createdAt).toLocaleDateString()}</h1>
             </div>
           </div>
         ))}
       </div>
-
+      <div className="flex items-center justify-center mt-10">
+        <Pagination />
+      </div>
       {/* Feedback Stars */}
-      <div className="mt-8">
-        <div className="text-lg font-semibold mb-2">Enter your feedback here...</div>
-        
-        <div className="card flex justify-content-center">
-            <Rating value={formData.rating} onChange={(e) => setFormData({ ...formData, rating: e.value })} cancel={false} />
+      <div className="mt-8 bg-gray-50 p-8 ">
+        <div className="text-lg font-semibold mb-2">
+          Enter your feedback here...
+        </div>
+
+        <div className="card flex justify-content-center border rounded-lg	mb-8 p-4 ">
+          <Rating
+            value={formData.rating}
+            onChange={(e) => setFormData({ ...formData, rating: e.value })}
+            cancel={false}
+            onIcon={
+              <i
+                className="pi pi-star-fill"
+                style={{ fontSize: "30px", color: "#007bff" }}
+              ></i>
+            }
+            offIcon={
+              <i className="pi pi-star" style={{ fontSize: "30px" }}></i>
+            }
+            style={{ outline: 'none', boxShadow: 'none' }}
+          />
         </div>
 
         <div className="flex flex-row items-center justify-between mt-4">
@@ -163,7 +191,11 @@ const StudentFeedback = ({ filteredFeedback }) => {
 
       {/* Submit Button */}
       <div className="mt-8 flex items-center justify-end">
-        <ButtonText label="Submit" backgroundColor="#00A943" onClick={handleAdd} />
+        <ButtonText
+          label="Submit"
+          backgroundColor="#00A943"
+          onClick={handleAdd}
+        />
       </div>
     </div>
   );

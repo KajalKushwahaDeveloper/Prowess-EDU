@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import StudentFAQ from "../../components/common/studentFAQ";
 import StudentFeedback from "../../components/common/studentFeedback";
 import Calender from "../../components/atoms/calender";
@@ -18,7 +17,7 @@ const FAQFeedback = () => {
     const studentClass = JSON.parse(localStorage.getItem("data"));
     console.log("filteredFaq:", filteredFaq)
 
-    const { error, loading } = useSelector(
+    const { loading } = useSelector(
         (state) => state.studentDashboardFaqSharedApi
       );
     useEffect(() => {
@@ -86,7 +85,7 @@ const FAQFeedback = () => {
             </div>
 
             {/* Tab Content */}
-            <div className="w-full mx-auto p-6 bg-gray-50">
+            <div className="w-full mx-auto p-6 ">
                 {activeTab === "FAQ" && <StudentFAQ filteredFaq={filteredFaq} />}
                 {activeTab === "Feedback" && <StudentFeedback filteredFeedback={filteredFeedback} />}
             </div>
