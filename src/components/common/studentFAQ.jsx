@@ -18,9 +18,6 @@ const StudentFAQ = ({ filteredFaq }) => {
   const toggleFAQ = (index) => {
     setOpen(open === index ? null : index);
   };
-    // useEffect(() => {
-    //     dispatch(getFaqsForStudent());
-    //   }, [dispatch]);
 
   const handleAdd = async () => {
     if (!faqQuestion.trim()) {
@@ -51,7 +48,7 @@ const StudentFAQ = ({ filteredFaq }) => {
 
 
   return (
-    <div className="w-full mx-auto pt-4 bg-gray-50">
+    <div className="w-full mx-auto pt-4">
       {/* FAQ Section */}
       <div className="space-y-4">
         {filteredFaq?.map((faq, index) => (
@@ -87,7 +84,7 @@ const StudentFAQ = ({ filteredFaq }) => {
       </div>
 
       {/* Add FAQ Section */}
-      <div className="mt-10">
+      <div className="mt-10 bg-gray-50 p-4">
         <div className="text-lg font-semibold mb-2 text-gray-800">
           Enter your FAQ Question
         </div>

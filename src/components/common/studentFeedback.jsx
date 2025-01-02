@@ -19,54 +19,45 @@ const StudentFeedback = ({ filteredFeedback }) => {
     rating: "",
   });
 
-  const [value, setValue] = useState(null);
   const [teacherOptions, setTeacherOptions] = useState([]);
   const dispatch = useDispatch();
   const studentClass = JSON.parse(localStorage.getItem("data"));
   console.log("teacherOptions:", teacherOptions);
 
-  //feedback api integration
-
-  // useEffect(()=>{
-
-  // },[])
-
   // Fetch teacher options
   useEffect(() => {
     const fetchTeachers = async () => {
-      try {
-        const response = await dispatch(
-          getTeachersForStudent(
-            `${studentClass?.Class}-${studentClass?.section}`
-          )
-        ).unwrap();
-        const formattedOptions = response?.map((teacher) => ({
-          value: teacher.id, // Assuming `id` is the unique identifier
-          label: teacher.name, // Assuming `name` is the teacher's name
-        }));
-        setTeacherOptions(formattedOptions || []);
-      } catch (error) {
-        toast.error(error.message || "Failed to fetch teachers");
-      }
+        try {
+            const response = await dispatch(getTeachersForStudent()).unwrap();
+            console.log("getTeacher:", response);
+            
+            const formattedOptions = response.map((teacher) => ({
+                value: teacher.id, // Unique identifier
+                label: teacher.name, // Teacher's name
+            }));
+            setTeacherOptions(formattedOptions || []);
+        } catch (error) {
+            toast.error(error.message || "Failed to fetch teachers");
+        }
     };
-
     fetchTeachers();
-  }, [dispatch, studentClass]);
+}, [dispatch]);
+
 
   const handleAdd = async () => {
     try {
       // Ensure all necessary fields are in the formData before submitting
-      const feedbackData = {
-        Class: studentClass?.Class,
+      const payload = {
+        Class: `${studentClass?.Class}-${studentClass?.section}`,
         subject: formData.subject,
         teacherId: formData.teacherId,
         teacherName: formData.teacherName,
         rating: formData.rating,
       };
 
-      console.log(feedbackData);
+      console.log(payload);
 
-      await dispatch(addFeedback({ payload: feedbackData })).unwrap();
+      await dispatch(addFeedback({ payload })).unwrap();
       toast.success("Feedback added successfully!");
 
       // Reset the form data
@@ -79,7 +70,7 @@ const StudentFeedback = ({ filteredFeedback }) => {
       });
     } catch (error) {
       toast.error(
-        error.message || "Failed to add feedback. Please fix errors."
+        error || "Failed to add feedback. Please fix errors."
       );
     }
   };
@@ -107,7 +98,7 @@ const StudentFeedback = ({ filteredFeedback }) => {
   return (
     <div className="w-full mx-auto pt-4">
       {/* Feedback List */}
-      <div className="flex items-center justify-between gap-2 lg:flex-row">
+      <div className="flex items-center justify-center gap-2 flex-wrap">
         {filteredFeedback?.map((faq, index) => (
           <div key={index} className="bg-white p-4 shadow-lg rounded-lg border">
             <div className="font-semibold flex items-center justify-between mb-2">
@@ -120,11 +111,11 @@ const StudentFeedback = ({ filteredFeedback }) => {
               onIcon={
                 <i
                   className="pi pi-star-fill"
-                  style={{ fontSize: "30px", color: "#007bff" }}
+                  style={{ fontSize: "25px", color: "#007bff" }}
                 ></i>
               }
               offIcon={
-                <i className="pi pi-star" style={{ fontSize: "30px" }}></i>
+                <i className="pi pi-star" style={{ fontSize: "25px" }}></i>
               }
             />
 
@@ -145,7 +136,7 @@ const StudentFeedback = ({ filteredFeedback }) => {
           Enter your feedback here...
         </div>
 
-        <div className="card flex justify-content-center border rounded-lg	mb-8 p-4 ">
+        <div className="card flex justify-start border rounded-lg	mb-8 p-4 ">
           <Rating
             value={formData.rating}
             onChange={(e) => setFormData({ ...formData, rating: e.value })}
@@ -153,19 +144,19 @@ const StudentFeedback = ({ filteredFeedback }) => {
             onIcon={
               <i
                 className="pi pi-star-fill"
-                style={{ fontSize: "30px", color: "#007bff" }}
+                style={{ fontSize: "25px", color: "#007bff" }}
               ></i>
             }
             offIcon={
-              <i className="pi pi-star" style={{ fontSize: "30px" }}></i>
+              <i className="pi pi-star" style={{ fontSize: "25px" }}></i>
             }
             style={{ outline: 'none', boxShadow: 'none' }}
           />
         </div>
 
-        <div className="flex flex-row items-center justify-between mt-4">
+        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-0 justify-between mt-4">
           {/* Teacher Dropdown */}
-          <div className="flex flex-col items-start justify-start gap-2">
+          <div className="flex flex-col items-start justify-start gap-2 md:mb-4">
             <h2 className="font-semibold">Select Teacher</h2>
             <TeacherDropdown
               label="Teacher"

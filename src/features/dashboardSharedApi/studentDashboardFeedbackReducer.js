@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { S_D_GET_FEEDBACK_FOR_STUDENT, S_D_ADD_FEEDBACK_FOR_STUDENT } from "../../constants/apiConfig";
+import { S_D_GET_FEEDBACK_FOR_STUDENT, S_D_ADD_FEEDBACK_FOR_STUDENT,S_D_GET_TEACHER_FOR_STUDENT } from "../../constants/apiConfig";
 
 // get feedback api 
 export const getFeedbackForStudent = createAsyncThunk(
@@ -31,7 +31,7 @@ export const getFeedbackForStudent = createAsyncThunk(
 // get TestQsnsForStudent
 export const addFeedback = createAsyncThunk(
     "dashboard/addFeedback",
-    async ({ classId, testId }, { rejectWithValue }) => {
+    async ({payload}, { rejectWithValue }) => {
         try {
             const token = localStorage.getItem("token"); // Corrected token retrieval
             if (!token) {
@@ -44,7 +44,7 @@ export const addFeedback = createAsyncThunk(
                 },
             };
 
-            const response = await axios.post(`${S_D_ADD_FEEDBACK_FOR_STUDENT}?Class=${classId}&testId=${testId}`, config);
+            const response = await axios.post(S_D_ADD_FEEDBACK_FOR_STUDENT, payload, config);
 
             return response?.data || []; 
         } catch (error) {
@@ -58,7 +58,7 @@ export const getTeachersForStudent = createAsyncThunk(
     "dashboard/getTeachersForStudent",
     async (classId, { rejectWithValue }) => {
         try {
-            const token = localStorage.getItem("token"); // Corrected token retrieval
+            const token = localStorage.getItem("token");
             if (!token) {
                 return rejectWithValue("Unauthorized - Missing Token");
             }
@@ -69,9 +69,10 @@ export const getTeachersForStudent = createAsyncThunk(
             };
             console.log("classIdAssign:", classId);
 
-            const response = await axios.get(`${S_D_GET_FEEDBACK_FOR_STUDENT}?Class=${classId}`, config);
+            const response = await axios.get(S_D_GET_TEACHER_FOR_STUDENT, config);
 
-            return response?.data?.data || []; // Safeguard for undefined data
+            // Return only the teachers array
+            return response?.data?.data?.teachers || [];
         } catch (error) {
             console.error("API Error:", error);
             return rejectWithValue(error.response?.data?.message || "Get failed");
