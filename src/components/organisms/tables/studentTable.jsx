@@ -10,6 +10,7 @@ import ViewAll from "../../common/viewAllFunctionality";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import AddNewStudentModal from "../modals/addNewStudentModal";
+import ViewStudentDetailModal from "../modals/viewStudentDetailModal";
 
 const StudentsTable = ({
   setModalMode,
@@ -21,7 +22,7 @@ const StudentsTable = ({
   const [showAll, setShowAll] = useState(false);
   const [visible, setVisible] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState({}); // State to manage password visibility
-  const [showDetails, setShowdetails] = useState(false);
+  const [visibleShowDetailsModal, setVisibleShowdetailsModal] = useState(false);
 
   const { studentData, loading, error, shouldReloadStudentData } = useSelector(
     (state) => state.sharedApi
@@ -49,7 +50,7 @@ const StudentsTable = ({
   };
 
   const handView = () => {
-    setShowdetails(true)
+    setVisibleShowdetailsModal(true);
   };
 
   const togglePasswordVisibility = (id) => {
@@ -135,11 +136,13 @@ const StudentsTable = ({
           onHide={() => setVisible(false)}
         />
       )}
-      {
-        showDetails && (
-          <
-        )
-      }
+      {visibleShowDetailsModal && (
+        <ViewStudentDetailModal
+          visible={visibleShowDetailsModal}
+          setVisible={setVisibleShowdetailsModal}
+          onHide={() => setVisible(false)}
+        />
+      )}
     </>
   );
 };
