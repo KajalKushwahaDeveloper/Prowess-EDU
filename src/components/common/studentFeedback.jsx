@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { getTeachersForStudent } from '../../features/dashboardSharedApi/studentDashboardFeedbackReducer';
 import ButtonText from "../atoms/buttonText";
 import { Rating } from "primereact/rating";
+// import axios from "axios";
 
 const StudentFeedback = ({ filteredFeedback }) => {
   const [formData, setFormData] = useState({
@@ -24,6 +25,14 @@ const StudentFeedback = ({ filteredFeedback }) => {
   const dispatch = useDispatch();
   const studentClass = JSON.parse(localStorage.getItem("data"));
   console.log("teacherOptions:", teacherOptions);
+
+  //feedback api integration
+
+  // useEffect(()=>{
+       
+  // },[])
+
+
 
   // Fetch teacher options
   useEffect(() => {
@@ -41,9 +50,11 @@ const StudentFeedback = ({ filteredFeedback }) => {
         toast.error(error.message || "Failed to fetch teachers");
       }
     };
+   
 
     fetchTeachers();
   }, [dispatch, studentClass]);
+
 
   const handleAdd = async () => {
     try {
@@ -56,12 +67,14 @@ const StudentFeedback = ({ filteredFeedback }) => {
         rating: formData.rating,
       };
 
+      console.log(feedbackData);
+
       await dispatch(addFeedback({ payload: feedbackData })).unwrap();
       toast.success("Feedback added successfully!");
 
       // Reset the form data
       setFormData({
-        Class: {studentClass},
+        Class: "",
         subject: "",
         teacherId: "",
         teacherName: "",
@@ -105,7 +118,7 @@ const StudentFeedback = ({ filteredFeedback }) => {
               <h1>{faq?.teacherName}</h1>
               <h1>{faq.Class}</h1>
             </div>
-            <p>{faq.feedbackText}</p>
+            {/* <p>{faq.feedbackText}</p> */}
             <div className="font-semibold flex items-center justify-between mt-2">
               <h1>{faq?.studentName}</h1>
               <h1>{new Date(faq?.createdAt).toLocaleDateString()}</h1>
@@ -119,7 +132,7 @@ const StudentFeedback = ({ filteredFeedback }) => {
         <div className="text-lg font-semibold mb-2">Enter your feedback here...</div>
         
         <div className="card flex justify-content-center">
-            <Rating value={value} onChange={(e) => setValue(e.value)} cancel={false} />
+            <Rating value={formData.rating} onChange={(e) => setFormData({ ...formData, rating: e.value })} cancel={false} />
         </div>
 
         <div className="flex flex-row items-center justify-between mt-4">
