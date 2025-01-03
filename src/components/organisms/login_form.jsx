@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -26,9 +25,11 @@ const LoginForm = () => {
     if (data?.status === 200) {
       localStorage.setItem("token", data?.data?.token);
       localStorage.setItem("data", JSON.stringify(data?.data?.user));
-      
-      toast.success(data?.data?.message || "Login successful!", { autoClose: 1000 });
-  
+
+      toast.success(data?.data?.message || "Login successful!", {
+        autoClose: 1000,
+      });
+
       // Navigate after toast
       setTimeout(() => {
         navigate("/admin");
@@ -37,7 +38,6 @@ const LoginForm = () => {
       toast.error(error || "Login failed. Please try again.");
     }
   }, [data, error, navigate]);
-  
 
   const handleLogin = () => {
     const { email, password } = formData;
@@ -51,7 +51,6 @@ const LoginForm = () => {
     // Dispatch the login action
     dispatch(login({ email, password }));
   };
-
 
   const inputFields = [
     {
@@ -78,12 +77,14 @@ const LoginForm = () => {
 
   return (
     <div className="lg:h-screen flex items-center justify-center">
-    <ToastContainer />
+      <ToastContainer />
       <div className="bg-white p-8 md:p-0 w-full max-w-lg">
         <h1 className="text_color text-4xl md:text-5xl mb-5 text-center md:justify-start">
           Welcome <span className="text-black">Back!</span>
         </h1>
-        <p className="text-xl mb-12 text-center md:justify-start">Login to get started</p>
+        <p className="text-xl mb-12 text-center md:justify-start">
+          Login to get started
+        </p>
 
         {inputFields.map((inputFieldsData, index) => (
           <div key={index} className="mb-4">
@@ -117,18 +118,28 @@ const LoginForm = () => {
             </label>
           </div>
           <div className="text-[#004871]">
-            <p>Forgot password?</p>
+            <p
+              className="cursor-pointer"
+              onClick={() => navigate("/forgetPassword")}
+            >
+              Forgot password?
+            </p>
           </div>
         </div>
 
         <div className="w-full">
-          <Button  label={
+          <Button
+            label={
               loading ? (
                 <FaSpinner className="animate-spin text-white mx-auto text-3xl" />
               ) : (
                 "Login"
               )
-            } onClick={handleLogin} width="100%" backgroundColor="#004871" />
+            }
+            onClick={handleLogin}
+            width="100%"
+            backgroundColor="#004871"
+          />
         </div>
       </div>
     </div>
