@@ -150,6 +150,32 @@ function AddNewTeacherModal({ visible, setVisible, mode = "add", initialData = {
                 <p className="text-rose-600 text-sm absolute left-0 " style={{ bottom: '-20px' }}>{errors.email}</p>
               )}
             </div>
+            <div className="relative">
+              <InputFieldWithLabel
+                type="number"
+                labelText="Start Range"
+                name="startRange"
+                placeholder="Enter Start Range"
+                // value={formData.email}
+                onChange={handleInputChange}
+              />
+              {errors.email && (
+                <p className="text-rose-600 text-sm absolute left-0 " style={{ bottom: '-20px' }}>{errors.email}</p>
+              )}
+            </div>
+            <div className="relative">
+              <InputFieldWithLabel
+                type="number"
+                labelText="End Range"
+                name="endRange"
+                placeholder="Enter End Range"
+                // value={formData.email}
+                onChange={handleInputChange}
+              />
+              {errors.email && (
+                <p className="text-rose-600 text-sm absolute left-0 " style={{ bottom: '-20px' }}>{errors.email}</p>
+              )}
+            </div>
 
             <div className="relative">
               <InputFieldWithLabel
