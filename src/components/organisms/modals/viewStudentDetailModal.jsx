@@ -3,7 +3,7 @@ import Modal from "../../common/modal";
 import { useDispatch } from "react-redux";
 import ButtonText from "../../atoms/buttonText";
 
-const ViewStudentDetailModal = ({  visible, setVisible, selectedClass, setOnlineClass }) => {
+const ViewStudentDetailModal = ({  visible, setVisible, selectedClass }) => {
 
     return (
         <Modal

@@ -6,7 +6,7 @@ import "primeicons/primeicons.css";
 
 function Header({ isOpen, toggleSidebar }) {
   const user = JSON.parse(localStorage.getItem("data"));
-  console.log("userName:", user.name);
+  // console.log("userName:", user.name);
   
   return (
     <div>

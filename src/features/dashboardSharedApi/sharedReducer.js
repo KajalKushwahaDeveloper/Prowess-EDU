@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { ADD_TEACHER , GET_PARENT} from "../../constants/apiConfig";
 import { BASE_URL } from "../../constants/apiConfig";
 
 // Common actions for all roles

@@ -10,7 +10,7 @@ import ViewAll from "../../common/viewAllFunctionality";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import AddNewStudentModal from "../modals/addNewStudentModal";
-import ViewStudentDetailModal from "../modals/viewStudentDetailModal";
+import A_D_ViewStudentInfoModal from "../modals/viewStudentListADModal";
 
 const StudentsTable = ({
   setModalMode,
@@ -23,6 +23,7 @@ const StudentsTable = ({
   const [visible, setVisible] = useState(false);
   const [passwordVisibility, setPasswordVisibility] = useState({}); // State to manage password visibility
   const [visibleShowDetailsModal, setVisibleShowdetailsModal] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null); // Initialize with null
 
   const { studentData, loading, error, shouldReloadStudentData } = useSelector(
     (state) => state.sharedApi
@@ -49,7 +50,8 @@ const StudentsTable = ({
     setCurrentStudent(rowData);
   };
 
-  const handView = () => {
+  const handView = (rowData) => {
+    setSelectedStudent(rowData); // Set the selected student data
     setVisibleShowdetailsModal(true);
   };
 
@@ -62,14 +64,17 @@ const StudentsTable = ({
 
   const columns = [
     {
-      field: "serialNo",
-      header: "S.No",
-      body: (rowData, options) => options.rowIndex + 1,
+      field: "sID",
+      header: "Id",
+    },
+    {
+      field: "RegNo",
+      header: "Reg No.",
     },
     { field: "name", header: "Student Name" },
     { field: "email", header: "Email" },
     { field: "parentPhone", header: "Phone No." },
-    { field: "Class", header: "Class" },
+    { header: "Class" , body : (rowData) =>(rowData.Class) || "N/A" },
     {
       field: "password",
       header: "Password",
@@ -106,7 +111,7 @@ const StudentsTable = ({
           <Button
             backgroundColor="#00A943"
             icon={Icons.viewIcon}
-            onClick={handView}
+            onClick={() => handView(rowData)} // Set selected student data here
           />
         </div>
       ),
@@ -137,10 +142,11 @@ const StudentsTable = ({
         />
       )}
       {visibleShowDetailsModal && (
-        <ViewStudentDetailModal
+        <A_D_ViewStudentInfoModal
           visible={visibleShowDetailsModal}
           setVisible={setVisibleShowdetailsModal}
           onHide={() => setVisible(false)}
+          selectedStudent={selectedStudent} // Pass selected student data to the modal
         />
       )}
     </>

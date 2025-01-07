@@ -14,7 +14,7 @@ const LoginForm = () => {
     email: "",
     password: "",
   });
-
+  const role = "admin";
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -120,7 +120,7 @@ const LoginForm = () => {
           <div className="text-[#004871]">
             <p
               className="cursor-pointer"
-              onClick={() => navigate("/forgetPassword")}
+              onClick={() => navigate("/forgotPassword", { state: { role: role } })}
             >
               Forgot password?
             </p>

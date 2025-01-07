@@ -15,7 +15,7 @@ function StudentDashboard() {
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const dispatch = useDispatch();
 
-  const { error,loading } = useSelector(
+  const { loading } = useSelector(
     (state) => state.studentDashboardNewVideosSharedApi
   );
   const studentClass = JSON.parse(localStorage.getItem("data"));
@@ -27,7 +27,7 @@ console.log("newAssignment:",newAssignment);
       .unwrap()
       .then((response) => setVideos(response?.videos)) // Initialize local state
       .catch((err) => {
-        toast.error(error || "Failed to fetch reports");
+        toast.error(err || "Failed to fetch reports");
       });
   }, [dispatch]);
 

@@ -13,8 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 createRoot(document.getElementById("root")).render(
   <>
     <ToastContainer />
-  <Provider store={Store}>
-    <App />
-  </Provider>
+    <Provider store={Store}>
+      <App />
+    </Provider>
   </>
 );

@@ -17,7 +17,7 @@ const SharedLayout = () => {
     setIsOpen(!isOpen);
   };
   const userData = JSON.parse(localStorage.getItem("data"));
-  const userRole = userData.type; // Get the type from user data
+  const userRole = userData?.type; // Get the type from user data
   
   let links;
   

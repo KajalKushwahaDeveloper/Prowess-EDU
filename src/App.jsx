@@ -46,7 +46,7 @@ function App() {
         <Route path="/parentLogin" element={<ParentLoginScreen />} />
         <Route path="/studentLogin" element={<StudentLoginScreen />} />
         <Route path="/teacherLogin" element={<TeacherLoginScreen />} />
-        <Route path="/forgetPassword" element={<ForgetPassword />} />
+        <Route path="/forgotPassword" element={<ForgetPassword />} />
         <Route path="/otp" element={<PasswordOtp />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
 

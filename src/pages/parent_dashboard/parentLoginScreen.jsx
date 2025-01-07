@@ -13,7 +13,7 @@ const ParentLoginScreen = () => {
     email: "",
     password: "",
   });
-
+  const role = "parent";
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -127,7 +127,12 @@ const ParentLoginScreen = () => {
             </label>
           </div>
           <div className="text-[#004871]">
-            <p>Forgot password?</p>
+          <p
+              className="cursor-pointer"
+              onClick={() => navigate("/forgotPassword", { state: { role: role } })}
+            >
+              Forgot password?
+            </p>
           </div>
         </div>
 

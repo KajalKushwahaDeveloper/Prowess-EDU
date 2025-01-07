@@ -4,19 +4,30 @@ import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 import { addStudentSchema } from "../../common/validationSchema";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem ,editItem} from "../../../features/dashboardSharedApi/sharedReducer";
+import {
+  addItem,
+  editItem,
+} from "../../../features/dashboardSharedApi/sharedReducer";
 import SubjectsDropdown from "../../molecules/subjectsDropdown";
 import GenderDropdown from "../../molecules/genderDropdown";
 import { FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
-import capitalize from 'lodash/capitalize';
+import capitalize from "lodash/capitalize";
 import ButtonText from "../../atoms/buttonText";
 
-function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = {}}) {
+function AddNewStudentModal({
+  visible,
+  setVisible,
+  mode = "add",
+  initialData = {},
+}) {
   const [formData, setFormData] = useState({
     name: "",
+    RegNo:"",
     parentName: "",
     parentPhone: "",
+    schoolName: "",
+    schoolAddress: "",
     email: "",
     dob: null,
     gender: "",
@@ -29,7 +40,6 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
   const [errors, setErrors] = useState({});
   const [selectedSubjects, setSelectedSubjects] = useState([]);
 
-
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.sharedApi);
 
@@ -41,36 +51,40 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
       setFormData({ ...formData, [name]: formattedDate });
     } else {
       // setFormData({ ...formData, [name]: value });
-      setFormData({ 
+      setFormData({
         ...formData,
-        [name]:
-          ["name", "parentName", "address", "section"].includes(name)
-            ? capitalize(value) // Use lodash capitalize for these fields
-            : value, // Use raw value for other fields
-          })
-        };
-    
+        [name]: ["name", "parentName", "address", "section","schoolName","schoolAddress"].includes(name)
+          ? capitalize(value) // Use lodash capitalize for these fields
+          : value, // Use raw value for other fields
+      });
+    }
   };
-
 
   const handleAdd = async () => {
     try {
       // Dispatch the addItem action with role and payload
       await addStudentSchema.validate(formData, { abortEarly: false });
       setErrors({}); // Clear previous errors if validation passes
-   
+
       if (mode === "add") {
-        await dispatch(addItem({ role: "student", payload: formData })).unwrap();
+        await dispatch(
+          addItem({ role: "student", payload: formData })
+        ).unwrap();
         toast.success(data?.data?.message || "Student added successfully!");
       } else if (mode === "edit") {
-        await dispatch(editItem({ role: "student", id: initialData?.id, payload: formData })).unwrap();
+        await dispatch(
+          editItem({ role: "student", id: initialData?.id, payload: formData })
+        ).unwrap();
         toast.success(data?.data?.message || "Student updated successfully!");
       }
-       // Validate the form data
+      // Validate the form data
       setFormData({
         name: "",
+        RegNo:"",
         parentName: "",
         parentPhone: "",
+        schoolName: "",
+        schoolAddress: "",
         email: "",
         dob: null,
         gender: "",
@@ -105,10 +119,12 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
         className="rounded-lg"
       >
         <div className="bg-white lg:m-0 m-4">
-          <h1 className="font-medium text-2xl my-2">{mode === "add" ? "Add New Student" : "Edit Student"}</h1>
-          <hr className="mb-8 border-gray-300" />
+          <h1 className="font-medium text-2xl my-2">
+            {mode === "add" ? "Add New Student" : "Edit Student"}
+          </h1>
+          <hr className="mb-4 border-gray-300" />
 
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
@@ -127,7 +143,37 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
                 </p>
               )}
             </div>
-
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Registration No."
+                name="RegNo"
+                placeholder="Enter Registration No."
+                value={formData.RegNo}
+                onChange={handleInputChange}
+              />
+             
+            </div>
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Student School Name"
+                name="schoolName"
+                placeholder="Enter School Name"
+                value={formData.schoolName}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Student School Address"
+                name="schoolAddress"
+                placeholder="Enter School Address"
+                value={formData.schoolAddress}
+                onChange={handleInputChange}
+              />
+            </div>
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
@@ -146,13 +192,12 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
                 </p>
               )}
             </div>
-
             <div className="relative">
               <InputFieldWithLabel
-                type="text"
-                labelText="Student/Parent Phone"
+                type="number"
+                labelText="Parent Phone"
                 name="parentPhone"
-                placeholder="Enter Phone Number"
+                placeholder="Enter Parent Phone"
                 value={formData.parentPhone}
                 onChange={handleInputChange}
               />
@@ -165,7 +210,6 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
                 </p>
               )}
             </div>
-
             <div className="relative">
               <InputFieldWithLabel
                 type="email"
@@ -299,7 +343,7 @@ function AddNewStudentModal({ visible, setVisible  ,mode = "add", initialData = 
             </div>
           </div>
 
-          <div className="flex justify-end gap-4 mt-6">
+          <div className="flex justify-end gap-4 mt-0">
             <ButtonText
               label="Cancel"
               backgroundColor="#FF8A00"

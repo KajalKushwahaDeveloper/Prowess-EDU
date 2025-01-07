@@ -14,6 +14,12 @@ export const DELETE_TEACHER = (id) => `${BASE_URL}/deleteTeacher${id}`;
 export const DELETE_STUDENT = (id) => `${BASE_URL}/deleteStudent/${id}`;
 export const DELETE_PARENT = (id) => `${BASE_URL}/deleteParent/${id}`;
 
+//forgot, reset, otp
+export const FORGOT_PASSWORD = BASE_URL + "/forgotPassword";
+export const VERIFY_OTP = BASE_URL + "/verifyOtp";
+export const RESET_PASSWORD = BASE_URL + "/resetPassword";
+
+
 // STUDENT_DASHBOARD
 export const LOGIN_STUDENT = BASE_URL + "/studentLogin";
 export const S_D_GET_NEW_ASIGN_FOR_STUDENT =  BASE_URL + "/getNewAssignForStudent";
