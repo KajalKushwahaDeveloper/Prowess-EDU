@@ -23,7 +23,26 @@ const StudentFeedback = ({ filteredFeedback }) => {
   const dispatch = useDispatch();
   const studentClass = JSON.parse(localStorage.getItem("data"));
   console.log("teacherOptions:", teacherOptions);
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
+  const handleTeacherChange = (e) => {
+    const selectedTeacher = e.target.value;
+    const selectedTeacherData = teacherOptions.find(
+      (teacher) => teacher.value === selectedTeacher
+    );
+    setFormData({
+      ...formData,
+      teacherId: selectedTeacherData?.value || "",
+      teacherName: selectedTeacherData?.label || "",
+    });
+  };
   // Fetch teacher options
   useEffect(() => {
     const fetchTeachers = async () => {
@@ -75,25 +94,6 @@ const StudentFeedback = ({ filteredFeedback }) => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleTeacherChange = (e) => {
-    const selectedTeacher = e.target.value;
-    const selectedTeacherData = teacherOptions.find(
-      (teacher) => teacher.value === selectedTeacher
-    );
-    setFormData({
-      ...formData,
-      teacherId: selectedTeacherData?.value || "",
-      teacherName: selectedTeacherData?.label || "",
-    });
-  };
 
   return (
     <div className="w-full mx-auto pt-4">

@@ -17,13 +17,14 @@ const StudentsTable = ({
   modalMode,
   currentStudent,
   setCurrentStudent,
+  selectedClassSection,
 }) => {
   const dispatch = useDispatch();
   const [showAll, setShowAll] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState({}); // State to manage password visibility
+  const [passwordVisibility, setPasswordVisibility] = useState({});
   const [visibleShowDetailsModal, setVisibleShowdetailsModal] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState(null); // Initialize with null
+  const [selectedStudent, setSelectedStudent] = useState(null);
 
   const { studentData, loading, error, shouldReloadStudentData } = useSelector(
     (state) => state.sharedApi
@@ -33,6 +34,18 @@ const StudentsTable = ({
   useEffect(() => {
     dispatch(getItem({ role: "student" }));
   }, [dispatch, shouldReloadStudentData]);
+
+  // Filter students dynamically based on selected class-section
+  const filteredStudents = selectedClassSection
+    ? tableData.filter((student) => {
+        if (!student.Class || !student.section) return false; // Skip invalid entries
+        const [selectedClass, selectedSection] = selectedClassSection.split("-");
+        return (
+          String(student.Class) === selectedClass &&
+          String(student.section) === selectedSection
+        );
+      })
+    : tableData;
 
   const handleDelete = (rowData) => {
     try {
@@ -51,7 +64,7 @@ const StudentsTable = ({
   };
 
   const handView = (rowData) => {
-    setSelectedStudent(rowData); // Set the selected student data
+    setSelectedStudent(rowData);
     setVisibleShowdetailsModal(true);
   };
 
@@ -74,7 +87,14 @@ const StudentsTable = ({
     { field: "name", header: "Student Name" },
     { field: "email", header: "Email" },
     { field: "parentPhone", header: "Phone No." },
-    { header: "Class" , body : (rowData) =>(rowData.Class) || "N/A" },
+    {
+      header: "Class",
+      body: (rowData) => {
+        return rowData.Class && rowData.section
+          ? `${rowData.Class}-${rowData.section}`
+          : "N/A";
+      },
+    },
     {
       field: "password",
       header: "Password",
@@ -111,14 +131,16 @@ const StudentsTable = ({
           <Button
             backgroundColor="#00A943"
             icon={Icons.viewIcon}
-            onClick={() => handView(rowData)} // Set selected student data here
+            onClick={() => handView(rowData)}
           />
         </div>
       ),
     },
   ];
 
-  const displayedData = showAll ? tableData : tableData?.slice(0, 2);
+  const displayedData = showAll
+    ? filteredStudents
+    : filteredStudents.slice(0, 2);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -146,7 +168,7 @@ const StudentsTable = ({
           visible={visibleShowDetailsModal}
           setVisible={setVisibleShowdetailsModal}
           onHide={() => setVisible(false)}
-          selectedStudent={selectedStudent} // Pass selected student data to the modal
+          selectedStudent={selectedStudent}
         />
       )}
     </>

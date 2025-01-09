@@ -1,9 +1,7 @@
-import { useState } from "react";
 import Modal from "../../common/modal";
-import { useDispatch } from "react-redux";
 import ButtonText from "../../atoms/buttonText";
 
-const ViewStudentDetailModal = ({  visible, setVisible, selectedClass }) => {
+const ViewPDStudentReportModal = ({  visible, setVisible, selectedClass }) => {
 
     return (
         <Modal
@@ -49,4 +47,4 @@ const ViewStudentDetailModal = ({  visible, setVisible, selectedClass }) => {
     );
 };
 
-export default ViewStudentDetailModal;
+export default ViewPDStudentReportModal;

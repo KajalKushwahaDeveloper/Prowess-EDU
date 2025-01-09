@@ -2,12 +2,11 @@ import { useState } from "react";
 import Button from "../../components/atoms/button";
 import Card from "../../components/molecules/Card";
 import { Icons } from "../../assets/icons";
-import TeachersTable from "../../components/organisms/tables/teachersTable";
+import TeachersTable from "../../components/organisms/tables/teachersTable"
 import StudentsTable from "../../components/organisms/tables/studentTable";
 import AddNewTeacherModal from "../../components/organisms/modals/addNewTeacherModal";
 import AddNewStudentModal from "../../components/organisms/modals/addNewStudentModal";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../../components/atoms/Loader";
 
 function AdminDashboard() {
   const [addTeacherModalVisible, setAddTeacherModalVisible] = useState(false);

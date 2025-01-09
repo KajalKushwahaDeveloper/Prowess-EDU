@@ -48,11 +48,9 @@ export const getItem = createAsyncThunk(
 
 export const addItem = createAsyncThunk(
     "dashboard/addItem",
-    async ({ role, payload }, { rejectWithValue, getState }) => {
-        localStorage.getItem("token")
+    async ({ role, payload }, { rejectWithValue }) => {
         try {
-
-            const token = localStorage.getItem("token"); // Replace with appropriate method
+            const token = localStorage.getItem("token");
             if (!token) {
                 return rejectWithValue("Unauthorized - Missing Token");
             }
@@ -78,9 +76,15 @@ export const addItem = createAsyncThunk(
                 },
             };
 
+            // Debug Logs
+            console.log("API Endpoint:", `${BASE_URL}${apiEndpoint}`);
+            console.log("Payload:", payload);
+            console.log("Token:", token);
+
             const response = await axios.post(`${BASE_URL}${apiEndpoint}`, payload, config);
-            return { role, data: response?.data }
+            return { role, data: response?.data };
         } catch (error) {
+            console.error("Server Error:", error.response?.data || error.message);
             return rejectWithValue(error.response?.data?.message || "Add failed");
         }
     }

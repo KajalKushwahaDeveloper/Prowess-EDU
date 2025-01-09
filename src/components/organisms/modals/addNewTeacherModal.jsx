@@ -27,22 +27,22 @@ function AddNewTeacherModal({
     email: "",
     schoolName: "",
     schoolAddress: "",
-    startRange: "",
-    endRange: "",
+    startRange: 0, // Default to a number
+    endRange: 0,   // Default to a number
     phone: "",
     qualification: "",
     dob: null,
     gender: "",
     address: "",
-    classesCanTeach: [],
+    classesCanTeach: [], // Default to an empty array
     experience: "",
     subjects: [],
     ...initialData,
   });
+
   console.log("formData:", formData);
 
   const [errors, setErrors] = useState({});
-  const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const dispatch = useDispatch();
 
@@ -50,51 +50,38 @@ function AddNewTeacherModal({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+  
     if (name === "dob") {
-      // Format the date as DD-MM-YYYY
       const formattedDate = value.split("-").reverse().join("-");
       setFormData({ ...formData, [name]: formattedDate });
     } else {
-      setFormData({
-        ...formData,
-        [name]: [
-          "name",
-          "subject",
-          "qualification",
-          "address",
-          "schoolAddress",
-          "schoolName",
-        ].includes(name)
-          ? capitalize(value)
-          : value,
-      });
+      const updatedValue = ["startRange", "endRange"].includes(name)
+        ? Number(value)
+        : ["name", "subject", "qualification", "address", "schoolAddress", "schoolName"].includes(name)
+        ? capitalize(value)
+        : value;
+  
+      setFormData({ ...formData, [name]: updatedValue });
+      console.log(`Updated ${name}:`, updatedValue); // Debugging
     }
-  };
+  };  
 
   const handleAdd = async () => {
     try {
-      // Ensure classesCanTeach is properly formatted as an array
-      const updatedClassesCanTeach = Array.isArray(formData.classesCanTeach)
-        ? formData.classesCanTeach.map((item) => item.trim()) // Trim spaces for each item
-        : formData.classesCanTeach
-            .split(",") // Split by commas if it's a string
-            .map((item) => item.trim()); // Trim spaces for each item
-
-      // Update the formData with the transformed classesCanTeach
       const updatedFormData = {
         ...formData,
-        classesCanTeach: updatedClassesCanTeach, // Ensure it's an array
+        startRange: Number(formData.startRange), // Ensure it's a number
+        endRange: Number(formData.endRange), // Ensure it's a number
+       
       };
-
+  
       // Validate the updated form data
       await addTeacherSchema.validate(updatedFormData, { abortEarly: false });
       setErrors({});
-
-      // Dispatch the action based on the mode
+  
+      // Dispatch the action
       if (mode === "add") {
-        await dispatch(
-          addItem({ role: "teacher", payload: updatedFormData })
-        ).unwrap();
+        await dispatch(addItem({ role: "teacher", payload: updatedFormData })).unwrap();
         toast.success(data?.data?.message || "Teacher added successfully!");
       } else if (mode === "edit") {
         await dispatch(
@@ -106,8 +93,8 @@ function AddNewTeacherModal({
         ).unwrap();
         toast.success(data?.data?.message || "Teacher updated successfully!");
       }
-
-      // Reset form data
+  
+      // Reset form and close modal
       setFormData({
         name: "",
         email: "",
@@ -115,8 +102,8 @@ function AddNewTeacherModal({
         schoolAddress: "",
         phone: "",
         qualification: "",
-        startRange: "",
-        endRange: "",
+        startRange: 0,
+        endRange: 0,
         dob: null,
         gender: "",
         address: "",
@@ -124,20 +111,17 @@ function AddNewTeacherModal({
         experience: "",
         subjects: [],
       });
-
-      setVisible(false); // Optionally close the modal on success
+      setVisible(false);
     } catch (error) {
       const formattedErrors = {};
       error?.inner?.forEach((error) => {
         formattedErrors[error.path] = error.message;
       });
-      console.log("Validation errors:", formattedErrors);
       setErrors(formattedErrors);
       toast.error(error || "Failed to add teacher. Please fix errors.");
-      console.log("Validation or API errors:", error);
     }
   };
-
+  
   return (
     <>
       <Modal
@@ -173,6 +157,7 @@ function AddNewTeacherModal({
                 </p>
               )}
             </div>
+
             <div className="relative">
               <InputFieldWithLabel
                 type="email"
@@ -191,6 +176,7 @@ function AddNewTeacherModal({
                 </p>
               )}
             </div>
+
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
@@ -201,6 +187,7 @@ function AddNewTeacherModal({
                 onChange={handleInputChange}
               />
             </div>
+
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
@@ -211,6 +198,7 @@ function AddNewTeacherModal({
                 onChange={handleInputChange}
               />
             </div>
+
             <div className="relative">
               <InputFieldWithLabel
                 type="number"
@@ -220,7 +208,16 @@ function AddNewTeacherModal({
                 value={formData.startRange}
                 onChange={handleInputChange}
               />
+              {errors.startRange && (
+                <p
+                  className="text-rose-600 text-sm absolute left-0 "
+                  style={{ bottom: "-20px" }}
+                >
+                  {errors.startRange}
+                </p>
+              )}
             </div>
+
             <div className="relative">
               <InputFieldWithLabel
                 type="number"
@@ -230,12 +227,12 @@ function AddNewTeacherModal({
                 value={formData.endRange}
                 onChange={handleInputChange}
               />
-              {errors.email && (
+              {errors.endRange && (
                 <p
                   className="text-rose-600 text-sm absolute left-0 "
                   style={{ bottom: "-20px" }}
                 >
-                  {errors.email}
+                  {errors.endRange}
                 </p>
               )}
             </div>
@@ -335,24 +332,16 @@ function AddNewTeacherModal({
             <div className="relative">
               <ClassDropdown
                 label="Classes"
-                selectedValues={formData.classesCanTeach} // Bind to formData
-                onChange={(newSelectedClasses) => {
-                  setFormData({
-                    ...formData,
-                    classesCanTeach: newSelectedClasses, // Ensure it's an array
-                  });
+                name="classesCanTeach"
+                onChange={(selectedClasses) => {
+                  console.log("Selected Classes:", selectedClasses);
+                  setFormData((prev) => ({
+                    ...prev,
+                    classesCanTeach: selectedClasses, // Ensure it's updating
+                  }));
                 }}
                 customClass="w-full"
               />
-
-              {errors.classesCanTeach && (
-                <p
-                  className="text-rose-600 text-sm absolute absolute left-0 "
-                  style={{ bottom: "-20px" }}
-                >
-                  {errors.classesCanTeach}
-                </p>
-              )}
             </div>
 
             <div className="relative">

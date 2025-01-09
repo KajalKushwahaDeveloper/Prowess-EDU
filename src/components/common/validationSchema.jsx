@@ -35,11 +35,19 @@ export const addTeacherSchema = Yup.object().shape({
   address: Yup.string().required("Address is required"),
 
   classesCanTeach: Yup.array()
-    .of(Yup.string().required("Each class must be valid"))
-    .min(1, "Please select at least one class")
-    .required("Classes you can teach are required"),
+    .of(Yup.string())
+    .min(0, "Please select at least one class") // Update this to remove the error
+    .optional(),
+
+  startRange: Yup.number()
+    .required("Start Range is required")
+    .min(0, "Start Range must be at least 0"),
+  endRange: Yup.number()
+    .required("End Range is required")
+    .min(0, "End Range must be at least 0"),
 
   experience: Yup.string().required("Experience is required"),
+
   subjects: Yup.array()
     .of(Yup.string().required("Each subject must be valid"))
     .min(1, "Please select at least one subject")
@@ -115,6 +123,7 @@ export const addNewAssignmentSchema = Yup.object().shape({
     .required("End date is required")
     .min(Yup.ref("startDate"), "End date must be after the start date"),
 });
+
 export const addNewTestSchema = Yup.object().shape({
   subject: Yup.string()
     .required("Subject is required")
@@ -207,4 +216,8 @@ export const videoValidationSchema = Yup.object().shape({
   topic: Yup.string().required("Topic is required").trim(),
   Class: Yup.string().required("Class is required").trim(),
   videoFile: Yup.mixed().required("Video file is required"),
+});
+export const addClassValidationSchema = Yup.object().shape({
+  Class: Yup.string().required("Class is required").trim(),
+  section: Yup.string().required("Section is required"),
 });

@@ -18,6 +18,7 @@ import sharedStudentDashboardFeedbackReducer from "../features/dashboardSharedAp
 import sharedTeacherDashboardFeedbackReducer from "../features/dashboardSharedApi/teacherDashboardFeedbackReducer.js"
 import sharedParentDashboardReducer from "../features/dashboardSharedApi/parentDashboardReducer.js"
 import passwordSharedReducer from "../features/auth/forgotPasswordReducer.js"
+import sharedClassSectionReducer from "../features/dashboardSharedApi/classSectionReducer.js"
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
     teacherDashboardFeedbackSharedApi : sharedTeacherDashboardFeedbackReducer,
     parentDashboardSharedApi : sharedParentDashboardReducer,
     passwordSharedApi : passwordSharedReducer,
+    classSectionSharedApi : sharedClassSectionReducer,
 });
 
 export default rootReducer;

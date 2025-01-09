@@ -13,6 +13,9 @@ export const EDIT_PARENT = (id) => `${BASE_URL}/editParent/${id}`;
 export const DELETE_TEACHER = (id) => `${BASE_URL}/deleteTeacher${id}`;
 export const DELETE_STUDENT = (id) => `${BASE_URL}/deleteStudent/${id}`;
 export const DELETE_PARENT = (id) => `${BASE_URL}/deleteParent/${id}`;
+export const GET_CLASS_SECTION = BASE_URL + "/getClassSection";
+export const ADD_CLASS_SECTION = BASE_URL + "/createClassSection";
+
 
 //forgot, reset, otp
 export const FORGOT_PASSWORD = BASE_URL + "/forgotPassword";

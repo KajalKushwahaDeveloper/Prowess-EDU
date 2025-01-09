@@ -1,7 +1,7 @@
 import Modal from "../../common/modal";
 import ButtonText from "../../atoms/buttonText";
 
-const A_D_ViewStudentInfoModal = ({
+const ViewADStudentInfoModal = ({
   visible,
   setVisible,
   selectedStudent, // Receive selectedStudent as a prop
@@ -128,4 +128,4 @@ const A_D_ViewStudentInfoModal = ({
   );
 };
 
-export default A_D_ViewStudentInfoModal;
+export default ViewADStudentInfoModal;
