@@ -12,14 +12,7 @@ const ParentDashboard = () => {
   const [filteredFeedback, setFilteredFeedback] = useState([]);
   const dispatch = useDispatch();
   const downloadCsv = useDownloadCsv();
-
-  // const studentClass = JSON.parse(localStorage.getItem("data"));
-  //  console.log("filteredFeedback:", filteredFeedback)
-
-  // const { error, loading } = useSelector(
-  //     (state) => state.studentDashboardFaqSharedApi
-  //   );
-
+  
   useEffect(() => {
     // Fetch reports on mount
     dispatch(getChildReportsForParent())

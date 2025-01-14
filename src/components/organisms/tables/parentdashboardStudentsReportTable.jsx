@@ -6,12 +6,16 @@ import ViewPDStudentReportModal from "../../organisms/modals/viewPDStudentReport
 
 const ParentDashboardStudentReportTable = ({ filteredFeedback }) => {
   const [visible, setVisible] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
 
-  const handleView = () => {
+  const handleView = (rowData) => {
+    console.log("click", rowData);
+    setSelectedStudent(rowData)
     setVisible(true);
   };
   const columns = [
     { field: "sID", header: "Id" },
+    { field: "studentName", header: "Name" },
     { field: "teacherName", header: "Teacher name" },
     { field: "subject", header: "Subject" },
     { field: "grade", header: "Grade" },
@@ -20,12 +24,12 @@ const ParentDashboardStudentReportTable = ({ filteredFeedback }) => {
     {
       field: "Action",
       header: "Action",
-      body: () => {
+      body: (rowData) => {
         return (
           <div className="flex space-x-2">
             <Button
               // label="view"
-              onClick={(rowData) => handleView(rowData)}
+              onClick={() => handleView(rowData)}
               backgroundColor="#00A943"
               icon={Icons.viewIcon}
             />
@@ -42,7 +46,7 @@ const ParentDashboardStudentReportTable = ({ filteredFeedback }) => {
         columns={columns}
         tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
       />
-      <div>{visible && <ViewPDStudentReportModal />}</div>
+      <div>{visible && <ViewPDStudentReportModal visible={visible} setVisible={setVisible} selectedStudent={selectedStudent} />}</div>
     </>
   );
 };

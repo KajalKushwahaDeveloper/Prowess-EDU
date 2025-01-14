@@ -86,4 +86,5 @@ export const T_D_GET_FEEDBACK_FOR_TEACHER = BASE_URL + "/getFeedbackForTeacher";
 
 // PARENT DASHBOARD
 export const LOGIN_PARENT = BASE_URL + "/parentLogin";
-export const T_D_GET_CHILD_REPORTS_FOR_PARENT = BASE_URL + "/getChildReportsForParent";
+export const P_D_GET_CHILD_REPORTS_FOR_PARENT = BASE_URL + "/getChildReportsForParent";
+export const P_D_GET_CHILD_INFO_FOR_PARENT = BASE_URL + "/getChildInfo";

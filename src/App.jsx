@@ -36,6 +36,7 @@ import TeacherFeedback from "./pages/teacher_dashboard/teacherDashboardFeedback"
 import ForgetPassword from "./components/common/ForgetPassword";
 import PasswordOtp from "./components/common/PasswordOtp";
 import ResetPassword from "./components/common/ResetPassword";
+import ParentDashboardChildInfo from "./pages/parent_dashboard/parentDashoardChildInfo";
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
           {/* Nested routes */}
           <Route path="strongArea" element={<ParentDashboardStrongArea />} />
           <Route path="weakArea" element={<ParentDashboardWeakArea />} />
+          <Route path="childInfo" element={<ParentDashboardChildInfo />} />
         </Route>
 
         {/*  Student Dashboard */}

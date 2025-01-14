@@ -50,6 +50,7 @@ export const parentLinks = [
     path: "/parent/WeakArea",
   },
   { icon: "pi-check-circle", name: "Strong Area", path: "/parent/strongArea" },
+  { icon: "pi-user", name: "Child Info", path: "/parent/childInfo" },
 ];
 
 export const Icons = {
