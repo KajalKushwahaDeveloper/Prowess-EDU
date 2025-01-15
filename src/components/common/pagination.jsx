@@ -1,58 +1,45 @@
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import { Icons } from "../../assets/icons";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    const pages = [];
-
-    // Generate page numbers dynamically
-    for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-    }
-
-    const handlePrevClick = () => {
-        if (currentPage > 1) {
-            onPageChange(currentPage - 1);
-        }
+    const handlePageClick = (page) => {
+      if (page >= 1 && page <= totalPages) {
+        onPageChange(page);
+      }
     };
-
-    const handleNextClick = () => {
-        if (currentPage < totalPages) {
-            onPageChange(currentPage + 1);
-        }
-    };
-
+  
     return (
-        <div className="flex items-center space-x-2">
-            {/* Left Arrow */}
-            <button
-                className={`p-2 ${currentPage === 1 ? 'text-gray-300' : 'hover:bg-gray-100 text-gray-500'}`}
-                onClick={handlePrevClick}
-                disabled={currentPage === 1}
-            >
-                <FaArrowLeft />
-            </button>
-
-            {/* Page Numbers */}
-            {pages.map((page) => (
-                <button
-                    key={page}
-                    className={`px-4 py-2 border border-gray-300 rounded-md text-gray-600 focus:outline-none hover:text-gray-400 ${currentPage === page ? 'bg-blue-500 text-white' : ''
-                        }`}
-                    onClick={() => onPageChange(page)}
-                >
-                    {page}
-                </button>
-            ))}
-
-            {/* Right Arrow */}
-            <button
-                className={`p-2 ${currentPage === totalPages ? 'text-gray-300' : 'hover:bg-gray-100 text-gray-500'}`}
-                onClick={handleNextClick}
-                disabled={currentPage === totalPages}
-            >
-                <FaArrowRight />
-            </button>
-        </div>
+      <div className="flex justify-center items-center space-x-2 mt-8">
+        <button
+          className="m-2"
+          onClick={() => handlePageClick(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          <i className={Icons.doubleAngleLeft}></i>
+        </button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            className={`px-3 py-1 border rounded ${
+              currentPage === i + 1 ? "bg-[#004871]  text-white" : ""
+            }`}
+            onClick={() => handlePageClick(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button
+           className="m-2"
+          onClick={() => handlePageClick(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          <i className={Icons.doubleAngleRight}></i>
+        </button>
+      </div>
     );
-};
+  };
+  
+  export default Pagination;
+  
 
-export default Pagination;
+
+

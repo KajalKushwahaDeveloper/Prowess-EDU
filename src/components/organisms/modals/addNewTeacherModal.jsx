@@ -45,6 +45,7 @@ function AddNewTeacherModal({
   const [errors, setErrors] = useState({});
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const dispatch = useDispatch();
+  console.error("Validation error:", errors);
 
   const { data, loading } = useSelector((state) => state.sharedApi);
 
@@ -67,6 +68,8 @@ function AddNewTeacherModal({
   };  
 
   const handleAdd = async () => {
+    console.log("click");
+    
     try {
       const updatedFormData = {
         ...formData,
@@ -81,7 +84,9 @@ function AddNewTeacherModal({
   
       // Dispatch the action
       if (mode === "add") {
+        console.log("Payload being sent to addItem:", updatedFormData);
         await dispatch(addItem({ role: "teacher", payload: updatedFormData })).unwrap();
+        
         toast.success(data?.data?.message || "Teacher added successfully!");
       } else if (mode === "edit") {
         await dispatch(
@@ -186,6 +191,14 @@ function AddNewTeacherModal({
                 value={formData.schoolName}
                 onChange={handleInputChange}
               />
+              {errors.schoolName && (
+                <p
+                  className="text-rose-600 text-sm absolute left-0 "
+                  style={{ bottom: "-20px" }}
+                >
+                  {errors.schoolName}
+                </p>
+              )}
             </div>
 
             <div className="relative">
@@ -197,6 +210,14 @@ function AddNewTeacherModal({
                 value={formData.schoolAddress}
                 onChange={handleInputChange}
               />
+              {errors.schoolAddress && (
+                <p
+                  className="text-rose-600 text-sm absolute left-0 "
+                  style={{ bottom: "-20px" }}
+                >
+                  {errors.schoolAddress}
+                </p>
+              )}
             </div>
 
             <div className="relative">
@@ -342,6 +363,14 @@ function AddNewTeacherModal({
                 }}
                 customClass="w-full"
               />
+              {errors.classesCanTeach && (
+                <p
+                  className="text-rose-600 text-sm absolute absolute left-0 "
+                  style={{ bottom: "-20px" }}
+                >
+                  {errors.classesCanTeach}
+                </p>
+              )}
             </div>
 
             <div className="relative">

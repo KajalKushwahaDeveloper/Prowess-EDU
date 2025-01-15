@@ -20,12 +20,20 @@ export const studentLinks = [
     path: "/student/test",
   },
   { icon: "pi-desktop", name: "Online Class", path: "/student/OnlineClass" },
-  { icon: "pi-question-circle", name: "FAQ/Feedback", path: "/student/faqFeedback" },
+  {
+    icon: "pi-question-circle",
+    name: "FAQ/Feedback",
+    path: "/student/faqFeedback",
+  },
 ];
 
 export const teacherLinks = [
   { icon: "pi-home", name: "Dashboard", path: "/teacher" },
-  { icon: "pi-user", name: "Students", path: "/teacher/teacherDashboardStudents" },
+  {
+    icon: "pi-user",
+    name: "Students",
+    path: "/teacher/teacherDashboardStudents",
+  },
   { icon: "pi-video", name: "Video", path: "/teacher/teacherDashboardVideos" },
   {
     icon: "pi-file-check",
@@ -37,8 +45,16 @@ export const teacherLinks = [
     name: "Online Classes",
     path: "/teacher/teacherDashboardOnlineClass",
   },
-  { icon: "pi-calendar-clock", name: "Timetable", path: "/teacher/teacherDashboardTimeTable" },
-  { icon: "pi-question-circle", name: "Feedback", path: "/teacher/teacherFeedback" },
+  {
+    icon: "pi-calendar-clock",
+    name: "Timetable",
+    path: "/teacher/teacherDashboardTimeTable",
+  },
+  {
+    icon: "pi-question-circle",
+    name: "Feedback",
+    path: "/teacher/teacherFeedback",
+  },
 ];
 
 // Add parent links if necessary
@@ -56,15 +72,18 @@ export const parentLinks = [
 export const Icons = {
   plusIcon: "pi pi-plus",
   editIcon: "pi pi-pen-to-square",
-  viewIcon:"pi pi-eye",
-  deleteIcon:"pi pi-trash",
+  viewIcon: "pi pi-eye",
+  deleteIcon: "pi pi-trash",
   reloadIcon: "pi-refresh",
   downloadIcon: "pi-download",
   leftArrow: "pi pi-arrow-left",
   videoIcon: "pi pi-play",
   angleRight: "pi pi-angle-right",
-  angleDown:"pi pi-angle-down",
-  rightArrow:"pi pi-arrow-right",
+  angleLeft: "pi pi-angle-left",
+  doubleAngleRight: "pi pi-angle-double-right",
+  doubleAngleLeft: "pi pi-angle-double-left",
+  angleDown: "pi pi-angle-down",
+  rightArrow: "pi pi-arrow-right",
   cancelIcon: "pi pi-times",
   infoIcon: "pi pi-info-circle",
 };

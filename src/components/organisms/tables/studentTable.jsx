@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import AddNewStudentModal from "../modals/addNewStudentModal";
 import A_D_ViewStudentInfoModal from "../modals/viewStudentListADModal";
+import { paginate, calculateTotalPages } from "../../../utils/pagination"; // Import the pagination utility
+import Pagination from "../../common/pagination";
 
 const StudentsTable = ({
   setModalMode,
@@ -25,6 +27,10 @@ const StudentsTable = ({
   const [passwordVisibility, setPasswordVisibility] = useState({});
   const [visibleShowDetailsModal, setVisibleShowdetailsModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 2; // Number of records per page
 
   const { studentData, loading, error, shouldReloadStudentData } = useSelector(
     (state) => state.sharedApi
@@ -73,6 +79,10 @@ const StudentsTable = ({
       ...prev,
       [id]: !prev[id],
     }));
+  };
+  
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   const columns = [
@@ -140,7 +150,9 @@ const StudentsTable = ({
 
   const displayedData = showAll
     ? filteredStudents
-    : filteredStudents.slice(0, 2);
+    : paginate(filteredStudents, currentPage, pageSize); // Paginate only if showAll is false
+
+  const totalPages = calculateTotalPages(filteredStudents, pageSize); // Total pages based on filtered data
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -153,7 +165,13 @@ const StudentsTable = ({
         tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
       />
       <ViewAll showAll={showAll} setShowAll={setShowAll} />
-
+      {!showAll && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
       {visible && (
         <AddNewStudentModal
           visible={visible}

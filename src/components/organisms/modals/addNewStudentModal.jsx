@@ -1,6 +1,5 @@
 import { useState } from "react";
 import InputFieldWithLabel from "../../molecules/InputfieldWithLabel";
-import Button from "../../atoms/button";
 import Modal from "../../common/modal";
 import { addStudentSchema } from "../../common/validationSchema";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +22,7 @@ function AddNewStudentModal({
 }) {
   const [formData, setFormData] = useState({
     name: "",
-    RegNo:"",
+    RegNo: "",
     parentName: "",
     parentPhone: "",
     schoolName: "",
@@ -53,7 +52,14 @@ function AddNewStudentModal({
       // setFormData({ ...formData, [name]: value });
       setFormData({
         ...formData,
-        [name]: ["name", "parentName", "address", "section","schoolName","schoolAddress"].includes(name)
+        [name]: [
+          "name",
+          "parentName",
+          "address",
+          "section",
+          "schoolName",
+          "schoolAddress",
+        ].includes(name)
           ? capitalize(value) // Use lodash capitalize for these fields
           : value, // Use raw value for other fields
       });
@@ -80,7 +86,7 @@ function AddNewStudentModal({
       // Validate the form data
       setFormData({
         name: "",
-        RegNo:"",
+        RegNo: "",
         parentName: "",
         parentPhone: "",
         schoolName: "",
@@ -152,7 +158,14 @@ function AddNewStudentModal({
                 value={formData.RegNo}
                 onChange={handleInputChange}
               />
-             
+              {errors.RegNo && (
+                <p
+                  className="text-rose-600 text-sm absolute left-0 "
+                  style={{ bottom: "-20px" }}
+                >
+                  {errors.RegNo}
+                </p>
+              )}
             </div>
             <div className="relative">
               <InputFieldWithLabel
@@ -163,6 +176,14 @@ function AddNewStudentModal({
                 value={formData.schoolName}
                 onChange={handleInputChange}
               />
+              {errors.schoolName && (
+                <p
+                  className="text-rose-600 text-sm absolute left-0 "
+                  style={{ bottom: "-20px" }}
+                >
+                  {errors.schoolName}
+                </p>
+              )}
             </div>
             <div className="relative">
               <InputFieldWithLabel
@@ -173,6 +194,14 @@ function AddNewStudentModal({
                 value={formData.schoolAddress}
                 onChange={handleInputChange}
               />
+              {errors.schoolAddress && (
+                <p
+                  className="text-rose-600 text-sm absolute left-0 "
+                  style={{ bottom: "-20px" }}
+                >
+                  {errors.schoolAddress}
+                </p>
+              )}
             </div>
             <div className="relative">
               <InputFieldWithLabel
@@ -264,45 +293,6 @@ function AddNewStudentModal({
                 </p>
               )}
             </div>
-
-            <div className="relative">
-              <InputFieldWithLabel
-                type="text"
-                labelText="Section"
-                name="section"
-                placeholder="Enter Section"
-                value={formData.section}
-                onChange={handleInputChange}
-              />
-              {errors.section && (
-                <p
-                  className="text-rose-600 text-md  absolute left-0 "
-                  style={{ bottom: "-22px" }}
-                >
-                  {errors.section}
-                </p>
-              )}
-            </div>
-
-            <div className="relative">
-              <InputFieldWithLabel
-                type="text"
-                labelText="Class"
-                name="Class"
-                placeholder="Enter Class"
-                value={formData.Class}
-                onChange={handleInputChange}
-              />
-              {errors.Class && (
-                <p
-                  className="text-rose-600 text-md  absolute left-0 "
-                  style={{ bottom: "-22px" }}
-                >
-                  {errors.Class}
-                </p>
-              )}
-            </div>
-
             <div className="relative">
               <InputFieldWithLabel
                 type="text"
@@ -321,7 +311,42 @@ function AddNewStudentModal({
                 </p>
               )}
             </div>
-
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Class"
+                name="Class"
+                placeholder="Enter Class"
+                value={formData.Class}
+                onChange={handleInputChange}
+              />
+              {errors.Class && (
+                <p
+                  className="text-rose-600 text-md  absolute left-0 "
+                  style={{ bottom: "-22px" }}
+                >
+                  {errors.Class}
+                </p>
+              )}
+            </div>
+            <div className="relative">
+              <InputFieldWithLabel
+                type="text"
+                labelText="Section"
+                name="section"
+                placeholder="Enter Section"
+                value={formData.section}
+                onChange={handleInputChange}
+              />
+              {errors.section && (
+                <p
+                  className="text-rose-600 text-md  absolute left-0 "
+                  style={{ bottom: "-22px" }}
+                >
+                  {errors.section}
+                </p>
+              )}
+            </div>
             <div className="relative">
               <SubjectsDropdown
                 label="Subjects"

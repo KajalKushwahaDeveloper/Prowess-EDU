@@ -1,15 +1,14 @@
+import { useState, useEffect } from "react";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
-import { useState, useEffect } from "react";
-import {
-  deleteItem,
-  getItem,
-} from "../../../features/dashboardSharedApi/sharedReducer";
-import ViewAll from "../../common/viewAllFunctionality";
+import { deleteItem, getItem } from "../../../features/dashboardSharedApi/sharedReducer";
+import Pagination from "../../common/pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import AddNewParentModal from "../modals/addNewParentModal";
 import { Icons } from "../../../assets/icons";
+import { paginate, calculateTotalPages } from "../../../utils/pagination"; 
+import ViewAll from "../../common/viewAllFunctionality"; 
 
 const ParentTable = ({
   setModalMode,
@@ -18,14 +17,18 @@ const ParentTable = ({
   setCurrentStudent,
 }) => {
   const dispatch = useDispatch();
-  const [showAll, setShowAll] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState({}); // State to manage password visibility
+  const [passwordVisibility, setPasswordVisibility] = useState({});
+  const [showAll, setShowAll] = useState(false); // State for ViewAll functionality
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5; // Number of records per page
 
   const { parentData, loading, error, shouldReloadParentData } = useSelector(
     (state) => state.sharedApi
   );
-  const tableData = parentData?.parents;
+  const tableData = parentData?.parents || [];
 
   useEffect(() => {
     dispatch(getItem({ role: "parent" }));
@@ -34,22 +37,18 @@ const ParentTable = ({
   const handleDelete = (rowData) => {
     try {
       dispatch(deleteItem({ role: "parent", id: rowData.id }));
-      toast.success("Parent delete successfully! ");
+      toast.success("Parent deleted successfully!");
     } catch (error) {
-      console.log("error:", error);
       toast.error(error || "Failed to delete parent. Please fix errors.");
     }
   };
+
   const handleEdit = (rowData) => {
     setVisible(true);
     setModalMode("edit");
     setCurrentStudent(rowData);
   };
-  const handleReload = () => {
-    // Dispatch an action to trigger data reload
-    dispatch(getItem({ role: "parent" }));
-    toast.info("Data reloaded successfully!");
-  };
+
   const togglePasswordVisibility = (id) => {
     setPasswordVisibility((prev) => ({
       ...prev,
@@ -57,11 +56,19 @@ const ParentTable = ({
     }));
   };
 
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  // Use the paginate function to get the paginated data
+  const paginatedData = paginate(tableData, currentPage, pageSize);
+  const totalPages = calculateTotalPages(tableData, pageSize);
+
   const columns = [
     {
       field: "serialNo",
       header: "S.No",
-      body: (rowData, options) => options.rowIndex + 1,
+      body: (rowData, options) => options.rowIndex + 1 + (currentPage - 1) * pageSize,
     },
     { field: "name", header: "Name" },
     { field: "email", header: "Email" },
@@ -98,12 +105,6 @@ const ParentTable = ({
             backgroundColor="#FF8A00"
             icon={Icons.editIcon}
             onClick={() => handleEdit(rowData)}
-            // onClick={() => setVisible(true)}
-          />
-          <Button
-            backgroundColor="#004871"
-            icon={Icons.reloadIcon}
-            onClick={handleReload}
           />
           <Button
             backgroundColor="#FF4D00"
@@ -114,17 +115,29 @@ const ParentTable = ({
       ),
     },
   ];
-  const displayData = showAll ? tableData : tableData?.slice(0, 2);
+
+  const displayedData = showAll ? tableData : paginatedData; 
 
   return (
     <>
-      {/* <ToastContainer /> */}
       <Table
-        data={displayData}
+        data={displayedData}
         columns={columns}
         tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
       />
+      
+      {/* ViewAll functionality */}
       <ViewAll showAll={showAll} setShowAll={setShowAll} />
+
+      {/* Pagination only if not showing all */}
+      {!showAll && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
+
       {visible && (
         <AddNewParentModal
           visible={visible}

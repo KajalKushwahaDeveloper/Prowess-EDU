@@ -7,6 +7,7 @@ import ButtonText from "../../atoms/buttonText";
 import { FaSpinner } from "react-icons/fa";
 import { addClassSection } from "../../../features/dashboardSharedApi/classSectionReducer";
 import { addClassValidationSchema } from "../../common/validationSchema";
+import capitalize from "lodash/capitalize";
 
 function AddClassesModal({ visible, setVisible }) {
   const [formData, setFormData] = useState({
@@ -21,9 +22,10 @@ function AddClassesModal({ visible, setVisible }) {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: ["section"].includes(name) ? value.toUpperCase() : value, // Convert to uppercase for these fields
     });
   };
+  
 
   const handleAdd = async () => {
     try {

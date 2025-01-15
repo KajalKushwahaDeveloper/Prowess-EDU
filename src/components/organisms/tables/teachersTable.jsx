@@ -8,6 +8,8 @@ import {
 import { toast } from "react-toastify";
 import AddNewTeacherModal from "../modals/addNewTeacherModal";
 import ViewAll from "../../common/viewAllFunctionality";
+import Pagination from "../../common/pagination";
+import { paginate, calculateTotalPages } from "../../../utils/pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { Icons } from "../../../assets/icons";
 import { Rating } from "primereact/rating";
@@ -21,7 +23,9 @@ const TeachersTable = ({
   const dispatch = useDispatch();
   const [showAll, setShowAll] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState({}); // State to manage password visibility
+  const [passwordVisibility, setPasswordVisibility] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 2; // Number of records per page
 
   const { teacherData, loading, error, shouldReloadTeacherData } = useSelector(
     (state) => state.sharedApi
@@ -47,11 +51,6 @@ const TeachersTable = ({
     }
   };
 
-  const handleReload = () => {
-    dispatch(getItem({ role: "teacher" }));
-    toast.info("Data reloaded successfully!");
-  };
-
   const togglePasswordVisibility = (id) => {
     setPasswordVisibility((prev) => ({
       ...prev,
@@ -59,11 +58,16 @@ const TeachersTable = ({
     }));
   };
 
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   const columns = [
     {
       field: "serialNo",
       header: "S.No",
-      body: (rowData, options) => options.rowIndex + 1,
+      body: (rowData, options) =>
+        options.rowIndex + 1 + (currentPage - 1) * pageSize,
     },
     { field: "name", header: "Teacher Name" },
     { field: "email", header: "Email" },
@@ -89,21 +93,25 @@ const TeachersTable = ({
     },
     {
       header: "Range",
-      body: (rowdata) => `${rowdata.startRange}-${rowdata.endRange}`,
+      body: (rowData) => `${rowData.startRange}-${rowData.endRange}`,
     },
     {
-        header: "Rating",
-        body: (rowdata) => (
-          <Rating
-            value={rowdata.rating} // Pass the rating value (e.g., 3.6)
-            cancel={false} // Disable the cancel button
-            readOnly // Make it read-only
-            onIcon={<i className="pi pi-star-fill" style={{ fontSize: "15px", color: "#007bff" }}></i>}
-            offIcon={<i className="pi pi-star" style={{ fontSize: "15px" }}></i>}
-          />
-        ),
-      },
-      
+      header: "Rating",
+      body: (rowData) => (
+        <Rating
+          value={rowData.rating}
+          cancel={false}
+          readOnly
+          onIcon={
+            <i
+              className="pi pi-star-fill"
+              style={{ fontSize: "15px", color: "#007bff" }}
+            ></i>
+          }
+          offIcon={<i className="pi pi-star" style={{ fontSize: "15px" }}></i>}
+        />
+      ),
+    },
     {
       field: "Action",
       header: "Action",
@@ -115,11 +123,6 @@ const TeachersTable = ({
             onClick={() => handleEdit(rowData)}
           />
           <Button
-            backgroundColor="#004871"
-            icon={Icons.reloadIcon}
-            onClick={handleReload}
-          />
-          <Button
             backgroundColor="#FF4D00"
             icon={Icons.deleteIcon}
             onClick={() => handleDelete(rowData)}
@@ -128,12 +131,16 @@ const TeachersTable = ({
       ),
     },
   ];
-  const tableData = teacherData?.teachers || []; // Ensure tableData is always an array
 
-  const sortedTableData = [...tableData].sort((a, b) => b.rating - a.rating); // Sort teachers by rating in descending order
-  
-  const displayData = showAll ? sortedTableData : sortedTableData.slice(0, 2); // Show all or first 2 based on 'showAll'
-  
+  const tableData = teacherData?.teachers || [];
+  const sortedTableData = [...tableData].sort((a, b) => b.rating - a.rating);
+
+  // Use pagination or show all data
+  const displayedData = showAll
+    ? sortedTableData
+    : paginate(sortedTableData, currentPage, pageSize);
+
+  const totalPages = calculateTotalPages(sortedTableData, pageSize);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -141,12 +148,18 @@ const TeachersTable = ({
   return (
     <>
       <Table
-        data={displayData}
+        data={displayedData}
         columns={columns}
         tableStyle={{ minWidth: "40rem", fontSize: "1.1rem" }}
       />
       <ViewAll showAll={showAll} setShowAll={setShowAll} />
-
+      {!showAll && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
       {visible && (
         <AddNewTeacherModal
           visible={visible}

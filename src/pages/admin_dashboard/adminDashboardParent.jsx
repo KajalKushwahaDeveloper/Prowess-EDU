@@ -23,11 +23,11 @@ const dispatch = useDispatch();
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-  // Calculate paginated data
-  const paginatedStudents = studentsData.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  // // Calculate paginated data
+  // const paginatedStudents = studentsData.slice(
+  //   (currentPage - 1) * pageSize,
+  //   currentPage * pageSize
+  // );
   // const { loading, parentData } = useSelector((state) => state.sharedApi);
   useEffect(() => {
     // Dispatch the getItem action to fetch parent data
@@ -35,12 +35,7 @@ const dispatch = useDispatch();
   }, [dispatch]);
 
   return (
-    // <>
-    // {loading ? ( // Show loader while loading
-    //     <div className="flex justify-center items-center h-45">
-    //     <Spinner /> {/* Replace with your actual spinner component */}
-    //   </div>
-    // ) : (
+   
     <div className="admin-dashboard m-6 dashboard">
       <div className="my-4 flex justify-between md:items-center items-start md:flex-row flex-col">
         <h1 className="text-black font-bold text-2xl mb-4">Parent</h1>
@@ -61,13 +56,13 @@ const dispatch = useDispatch();
         </div>
       </div>
       {/* Pagination Component */}
-      <div className="flex items-center justify-center">
+      {/* <div className="flex items-center justify-center">
         <Pagination
           currentPage={currentPage}
           totalPages={Math.ceil(studentsData.length / pageSize)}
           onPageChange={handlePageChange}
         />
-      </div>
+      </div> */}
       <AddNewParentModal visible={visible} setVisible={setVisible} setModalMode={setModalMode} modalMode={modalMode} currentStudent={currentStudent} setCurrentStudent={setCurrentStudent}/>
     </div>
     // )}

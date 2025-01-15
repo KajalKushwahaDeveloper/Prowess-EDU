@@ -3,7 +3,6 @@ import Button from "../../components/atoms/button";
 import { Icons } from "../../assets/icons";
 import StudentsTable from "../../components/organisms/tables/studentTable";
 import AddNewStudentModal from "../../components/organisms/modals/addNewStudentModal";
-import Pagination from "../../components/common/pagination";
 import AddClassesModal from "../../components/organisms/modals/addClassesModal";
 import Dropdown from "../../components/molecules/classDropdown";
 import { getClassSection } from "../../features/dashboardSharedApi/classSectionReducer";
@@ -13,7 +12,6 @@ import { toast } from "react-toastify";
 function AdminDashboardStudent() {
   const [visibleStudentModal, setVisibleStudentModal] = useState(false);
   const [visibleClassModal, setVisibleClassModal] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [modalMode, setModalMode] = useState("add");
   const [currentStudent, setCurrentStudent] = useState(null);
   const [classData, setClassData] = useState([]);
@@ -22,7 +20,6 @@ function AdminDashboardStudent() {
   const [selectedClassSection, setSelectedClassSection] = useState(null);
 
   const dispatch = useDispatch();
-  const pageSize = 10;
 
   // Fetch class-section data on mount
   useEffect(() => {
@@ -50,22 +47,10 @@ function AdminDashboardStudent() {
         (student) => `${student.Class}-${student.section}` === selectedValue
       );
       setFilteredStudents(filtered);
-      setCurrentPage(1); // Reset pagination
     } else {
       setFilteredStudents(studentsData); // Show all students if no filter is selected
     }
   };
-
-  // Handle pagination changes
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-  };
-
-  // Get paginated data for display
-  const paginatedStudentsToDisplay = filteredStudents.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
 
   return (
     <div className="admin-dashboard m-6 dashboard">
@@ -105,7 +90,6 @@ function AdminDashboardStudent() {
       <div className="mt-4">
         <div className="overflow-x-auto">
           <StudentsTable
-            students={paginatedStudentsToDisplay}
             setModalMode={setModalMode}
             modalMode={modalMode}
             currentStudent={currentStudent}
@@ -113,15 +97,6 @@ function AdminDashboardStudent() {
             selectedClassSection={selectedClassSection}
           />
         </div>
-      </div>
-
-      {/* Pagination */}
-      <div className="flex justify-center mt-6">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(filteredStudents.length / pageSize)}
-          onPageChange={handlePageChange}
-        />
       </div>
 
       {/* Modals */}

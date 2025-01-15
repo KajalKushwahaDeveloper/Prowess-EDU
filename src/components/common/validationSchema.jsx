@@ -3,6 +3,9 @@ import * as Yup from "yup";
 export const addStudentSchema = Yup.object().shape({
   name: Yup.string().required("Student name is required"),
   parentName: Yup.string().required("Parent name is required"),
+  RegNo: Yup.string().required("Registration Number is required"),
+  schoolName: Yup.string().required("School Name is required"),
+  schoolAddress: Yup.string().required("School Address is required"),
   parentPhone: Yup.string()
     .required("Phone number is required")
     .matches(/^[0-9]+$/, "Phone number must be digits")
@@ -21,32 +24,59 @@ export const addStudentSchema = Yup.object().shape({
     .required("Subjects are required"),
 });
 
+
+
 export const addTeacherSchema = Yup.object().shape({
-  name: Yup.string().required("Teacher name is required"),
+  name: Yup.string()
+    .required("Teacher name is required")
+    .matches(/^[A-Za-z\s]+$/, "Name can only contain letters and spaces"),
+
   email: Yup.string()
     .email("Invalid email format")
     .required("Email is required"),
+
   phone: Yup.string()
-    .matches(/^\d+$/, "Phone number must contain only digits")
+    .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
     .required("Phone number is required"),
-  qualification: Yup.string().required("Qualification is required"),
+
+  qualification: Yup.string()
+    .required("Qualification is required")
+    .min(2, "Qualification must be at least 2 characters long"),
+
   dob: Yup.string().required("Please select a date"),
-  gender: Yup.string().required("Gender is required"),
-  address: Yup.string().required("Address is required"),
+  gender: Yup.string()
+    .required("Gender is required")
+    .oneOf(["Male", "Female", "Other"], "Invalid gender selected"),
+
+  address: Yup.string()
+    .required("Address is required")
+    .min(5, "Address must be at least 5 characters long"),
 
   classesCanTeach: Yup.array()
-    .of(Yup.string())
-    .min(0, "Please select at least one class") // Update this to remove the error
-    .optional(),
+    .of(Yup.string().required("Invalid class selected"))
+    .min(1, "Please select at least one class")
+    .required("Classes are required"),
 
-  startRange: Yup.number()
+    startRange: Yup.number()
     .required("Start Range is required")
-    .min(0, "Start Range must be at least 0"),
+    .min(1, "Start Range must be at least 1"),
+
   endRange: Yup.number()
     .required("End Range is required")
-    .min(0, "End Range must be at least 0"),
-
-  experience: Yup.string().required("Experience is required"),
+    .min(1, "End Range must be at least 1")
+    .test(
+      "endRangeGreaterThanStartRange",
+      "End Range must be greater than or equal to Start Range",
+      function (value) {
+        const { startRange } = this.parent;
+        return value >= startRange;
+      }
+    ),
+  schoolName: Yup.string().required("School Name is required"),
+  schoolAddress: Yup.string().required("School Address is required"),
+  experience: Yup.string()
+    .required("Experience is required")
+    .matches(/^\d+$/, "Experience must be a positive number"),
 
   subjects: Yup.array()
     .of(Yup.string().required("Each subject must be valid"))
