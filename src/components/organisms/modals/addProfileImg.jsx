@@ -5,31 +5,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ButtonText from "../../atoms/buttonText";
 import { FaSpinner } from "react-icons/fa";
-import { addClassSection } from "../../../features/dashboardSharedApi/classSectionReducer";
-import { addClassValidationSchema } from "../../common/validationSchema";
-
-function AddClassesModal({ visible, setVisible }) {
+import { addProfileImg } from "../../../features/auth/authReducer";
+import logo from "../../../assets/images/logo.png";
+function AddProfileImgModal({ visible, setVisible }) {
   const [formData, setFormData] = useState({
-    Class: "",
-    section: "",
+    profileImg: "",
   });
+  console.log("formDataprofileImg:",formData )
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.sharedApi);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: ["section"].includes(name) ? value.toUpperCase() : value, // Convert to uppercase for these fields
-    });
-  };
-  
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({
+        ...formData,
+        [name]: ["section"].includes(name) ? value.toUpperCase() : value, // Convert to uppercase for these fields
+      });
+    };
 
   const handleAdd = async () => {
     try {
-      await addClassValidationSchema.validate(formData, { abortEarly: false });
-      await dispatch(addClassSection({ payload: formData })).unwrap();
+      //   await addClassValidationSchema.validate(formData, { abortEarly: false });
+      await dispatch(addProfileImg({ payload: formData })).unwrap();
       toast.success("Class section added successfully!");
       setFormData({
         Class: "",
@@ -64,42 +62,19 @@ function AddClassesModal({ visible, setVisible }) {
         <h1 className="font-medium text-2xl my-2">Add Student Class</h1>
         <hr className="mb-8 border-gray-300" />
 
+        <div className="w-3/12 h-50 border-2 rounded-md mb-8">
+          <img src={logo} alt="img" />
+        </div>
         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
           <div className="relative">
             <InputFieldWithLabel
-              type="text"
-              labelText="Student Class"
-              name="Class"
-              placeholder="Enter Class"
-              value={formData.Class}
+              type="file"
+              labelText="Profile Image"
+              name="profileImg"
+              placeholder="Upload Profile Image"
+              value={formData.profileImg}
               onChange={handleInputChange}
             />
-            {errors.Class && (
-              <p
-                className="text-rose-600 text-md  absolute left-0 "
-                style={{ bottom: "-22px" }}
-              >
-                {errors?.Class}
-              </p>
-            )}
-          </div>
-          <div className="relative">
-            <InputFieldWithLabel
-              type="text"
-              labelText="Student Section"
-              name="section"
-              placeholder="Enter Section"
-              value={formData.section}
-              onChange={handleInputChange}
-            />
-            {errors.section && (
-              <p
-                className="text-rose-600 text-md  absolute left-0 "
-                style={{ bottom: "-22px" }}
-              >
-                {errors?.section}
-              </p>
-            )}
           </div>
         </div>
 
@@ -126,4 +101,4 @@ function AddClassesModal({ visible, setVisible }) {
   );
 }
 
-export default AddClassesModal;
+export default AddProfileImgModal;

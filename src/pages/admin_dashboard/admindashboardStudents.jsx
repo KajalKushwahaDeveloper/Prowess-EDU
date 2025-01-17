@@ -38,20 +38,7 @@ function AdminDashboardStudent() {
     fetchClassData();
   }, [dispatch]);
 
-  // Handle class-section filtering
-  const handleDropdownChange = (selectedValue) => {
-    setSelectedClassSection(selectedValue);
-
-    if (selectedValue) {
-      const filtered = studentsData.filter(
-        (student) => `${student.Class}-${student.section}` === selectedValue
-      );
-      setFilteredStudents(filtered);
-    } else {
-      setFilteredStudents(studentsData); // Show all students if no filter is selected
-    }
-  };
-
+  
   return (
     <div className="admin-dashboard m-6 dashboard">
       {/* Header */}
@@ -73,18 +60,7 @@ function AdminDashboardStudent() {
       </div>
       <hr className="mb-4" />
 
-      {/* Class-Section Filter */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-black font-bold text-xl">Student List</h2>
-        <Dropdown
-          name="classSectionDropdown"
-          onChange={(e) => handleDropdownChange(e.value)} // Pass the selected value
-          customClass="w-full max-w-md"
-          disabled={false}
-          options={classData.map((item) => ({ label: item, value: item }))} // Convert to label-value pairs
-        />
-      </div>
-      <hr />
+     
 
       {/* Students Table */}
       <div className="mt-4">

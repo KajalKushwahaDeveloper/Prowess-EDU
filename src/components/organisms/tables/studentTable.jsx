@@ -1,36 +1,36 @@
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { Icons } from "../../../assets/icons";
 import Button from "../../atoms/button";
 import Table from "../../common/Table";
-import { useState, useEffect } from "react";
+import ViewAll from "../../common/viewAllFunctionality";
+import Pagination from "../../common/pagination";
 import {
   getItem,
   deleteItem,
 } from "../../../features/dashboardSharedApi/sharedReducer";
-import ViewAll from "../../common/viewAllFunctionality";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { paginate, calculateTotalPages } from "../../../utils/pagination";
 import AddNewStudentModal from "../modals/addNewStudentModal";
 import A_D_ViewStudentInfoModal from "../modals/viewStudentListADModal";
-import { paginate, calculateTotalPages } from "../../../utils/pagination"; // Import the pagination utility
-import Pagination from "../../common/pagination";
+import ClassFilterDropdown from "../../molecules/filterClassDropdown";
 
 const StudentsTable = ({
   setModalMode,
   modalMode,
   currentStudent,
   setCurrentStudent,
-  selectedClassSection,
 }) => {
   const dispatch = useDispatch();
   const [showAll, setShowAll] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [passwordVisibility, setPasswordVisibility] = useState({});
   const [visibleShowDetailsModal, setVisibleShowdetailsModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [selectedClassSection, setSelectedClassSection] = useState("");
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 2; // Number of records per page
+  const pageSize = 2;
 
   const { studentData, loading, error, shouldReloadStudentData } = useSelector(
     (state) => state.sharedApi
@@ -44,7 +44,6 @@ const StudentsTable = ({
   // Filter students dynamically based on selected class-section
   const filteredStudents = selectedClassSection
     ? tableData.filter((student) => {
-        if (!student.Class || !student.section) return false; // Skip invalid entries
         const [selectedClass, selectedSection] = selectedClassSection.split("-");
         return (
           String(student.Class) === selectedClass &&
@@ -69,57 +68,39 @@ const StudentsTable = ({
     setCurrentStudent(rowData);
   };
 
-  const handView = (rowData) => {
+  const handleView = (rowData) => {
     setSelectedStudent(rowData);
     setVisibleShowdetailsModal(true);
   };
 
-  const togglePasswordVisibility = (id) => {
-    setPasswordVisibility((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-  
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
 
+  const handleDropdownChange = (value) => {
+    setSelectedClassSection(value);
+    setCurrentPage(1); // Reset to the first page when the filter changes
+  };
+
   const columns = [
-    {
-      field: "sID",
-      header: "Id",
-    },
-    {
-      field: "RegNo",
-      header: "Reg No.",
-    },
+    { field: "sID", header: "Id" },
+    { field: "RegNo", header: "Reg No." },
     { field: "name", header: "Student Name" },
     { field: "email", header: "Email" },
     { field: "parentPhone", header: "Phone No." },
     {
       header: "Class",
-      body: (rowData) => {
-        return rowData.Class && rowData.section
+      body: (rowData) =>
+        rowData.Class && rowData.section
           ? `${rowData.Class}-${rowData.section}`
-          : "N/A";
-      },
+          : "N/A",
     },
     {
       field: "password",
       header: "Password",
       body: (rowData) => (
         <div className="flex items-center space-x-2">
-          <span>
-            {passwordVisibility[rowData.id] ? rowData.password : "••••••••••"}
-          </span>
-          <i
-            className="pi pi-info-circle cursor-pointer text-blue-600"
-            onClick={() => togglePasswordVisibility(rowData.id)}
-            title={
-              passwordVisibility[rowData.id] ? "Hide Password" : "Show Password"
-            }
-          ></i>
+          <span>••••••••••</span>
         </div>
       ),
     },
@@ -141,7 +122,7 @@ const StudentsTable = ({
           <Button
             backgroundColor="#00A943"
             icon={Icons.viewIcon}
-            onClick={() => handView(rowData)}
+            onClick={() => handleView(rowData)}
           />
         </div>
       ),
@@ -150,15 +131,26 @@ const StudentsTable = ({
 
   const displayedData = showAll
     ? filteredStudents
-    : paginate(filteredStudents, currentPage, pageSize); // Paginate only if showAll is false
+    : paginate(filteredStudents, currentPage, pageSize);
 
-  const totalPages = calculateTotalPages(filteredStudents, pageSize); // Total pages based on filtered data
+  const totalPages = calculateTotalPages(filteredStudents, pageSize);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-black font-bold text-xl">Student List</h2>
+        <ClassFilterDropdown
+          name="classSectionDropdown"
+          value={selectedClassSection}
+          onChange={handleDropdownChange}
+          customClass="w-60"
+          placeholder="Select Class-Section"
+        />
+      </div>
+      <hr />
       <Table
         data={displayedData}
         columns={columns}
@@ -185,7 +177,7 @@ const StudentsTable = ({
         <A_D_ViewStudentInfoModal
           visible={visibleShowDetailsModal}
           setVisible={setVisibleShowdetailsModal}
-          onHide={() => setVisible(false)}
+          onHide={() => setVisibleShowdetailsModal(false)}
           selectedStudent={selectedStudent}
         />
       )}

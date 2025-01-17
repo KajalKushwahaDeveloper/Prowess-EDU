@@ -68,25 +68,22 @@ function AddNewTeacherModal({
   };  
 
   const handleAdd = async () => {
-    console.log("click");
-    
     try {
       const updatedFormData = {
         ...formData,
-        startRange: Number(formData.startRange), // Ensure it's a number
-        endRange: Number(formData.endRange), // Ensure it's a number
-       
+        startRange: Number(formData.startRange),
+        endRange: Number(formData.endRange),
       };
   
+      console.log("Validating data:", updatedFormData);
+  
       // Validate the updated form data
-      await addTeacherSchema.validate(updatedFormData, { abortEarly: false });
+      // await addTeacherSchema.validate(updatedFormData, { abortEarly: false });
       setErrors({});
   
       // Dispatch the action
       if (mode === "add") {
-        console.log("Payload being sent to addItem:", updatedFormData);
         await dispatch(addItem({ role: "teacher", payload: updatedFormData })).unwrap();
-        
         toast.success(data?.data?.message || "Teacher added successfully!");
       } else if (mode === "edit") {
         await dispatch(
@@ -123,7 +120,7 @@ function AddNewTeacherModal({
         formattedErrors[error.path] = error.message;
       });
       setErrors(formattedErrors);
-      toast.error(error || "Failed to add teacher. Please fix errors.");
+      toast.error("Failed to add teacher. Please fix errors.");
     }
   };
   
@@ -351,18 +348,19 @@ function AddNewTeacherModal({
             </div>
 
             <div className="relative">
-              <ClassDropdown
-                label="Classes"
-                name="classesCanTeach"
-                onChange={(selectedClasses) => {
-                  console.log("Selected Classes:", selectedClasses);
-                  setFormData((prev) => ({
-                    ...prev,
-                    classesCanTeach: selectedClasses, // Ensure it's updating
-                  }));
-                }}
-                customClass="w-full"
-              />
+            <ClassDropdown
+  label="Classes"
+  name="classesCanTeach"
+  onChange={(selectedClasses) => {
+    console.log("Selected Classes:", selectedClasses); // Debugging
+    setFormData((prev) => ({
+      ...prev,
+      classesCanTeach: selectedClasses, // Ensure it's updating
+    }));
+  }}
+  customClass="w-full"
+/>
+
               {errors.classesCanTeach && (
                 <p
                   className="text-rose-600 text-sm absolute absolute left-0 "

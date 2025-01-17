@@ -24,8 +24,6 @@ export const addStudentSchema = Yup.object().shape({
     .required("Subjects are required"),
 });
 
-
-
 export const addTeacherSchema = Yup.object().shape({
   name: Yup.string()
     .required("Teacher name is required")
@@ -52,11 +50,11 @@ export const addTeacherSchema = Yup.object().shape({
     .required("Address is required")
     .min(5, "Address must be at least 5 characters long"),
 
-  classesCanTeach: Yup.array()
+    classesCanTeach: Yup.array()
     .of(Yup.string().required("Invalid class selected"))
     .min(1, "Please select at least one class")
     .required("Classes are required"),
-
+  
     startRange: Yup.number()
     .required("Start Range is required")
     .min(1, "Start Range must be at least 1"),
@@ -101,6 +99,7 @@ export const addNewVideoSchema = Yup.object().shape({
   Class: Yup.string().required("Class you can teach are required"),
   uploadVideo: Yup.mixed().required("Video upload is required"),
 });
+
 export const addNewAssignmentSchema = Yup.object().shape({
   subject: Yup.string()
     .required("Subject is required")

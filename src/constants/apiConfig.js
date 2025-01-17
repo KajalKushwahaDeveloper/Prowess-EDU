@@ -16,6 +16,8 @@ export const DELETE_PARENT = (id) => `${BASE_URL}/deleteParent/${id}`;
 export const GET_CLASS_SECTION = BASE_URL + "/getClassSection";
 export const ADD_CLASS_SECTION = BASE_URL + "/createClassSection";
 
+// addProfileImg
+export const ADD_PROFILE_IMG = BASE_URL + "/addProfileImg";
 
 //forgot, reset, otp
 export const FORGOT_PASSWORD = BASE_URL + "/forgotPassword";
